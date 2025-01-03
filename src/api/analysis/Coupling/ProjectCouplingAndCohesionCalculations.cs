@@ -1,0 +1,36 @@
+﻿using Giana.Api.Shared;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Linq;
+
+namespace Giana.Api.Analysis.Coupling;
+
+public static class ProjectCouplingAndCohesionRankingCalculations
+{
+  public static ImmutableList<ProjectCouplingAndCohesion> CreateProjectCouplingList(this IEnumerable<GitLogRecord> logRecords, IEnumerable<string> activeNames)
+  {
+    var fileCouplings = FileCouplingCalculations.CreateFileCouplingList(logRecords, activeNames);
+
+    var projectFileNames = activeNames.Where(x => x.EndsWith(".csproj"));
+
+    var projectCouplingRecords = new List<ProjectCouplingAndCohesion>();
+    foreach (var projectFileName in projectFileNames)
+    {
+      string projectPath = Calculations.GetPath(projectFileName);
+
+      var recordsOfThisProject = fileCouplings.Where(rec => rec.Name1.StartsWith(projectPath) || rec.Name2.StartsWith(projectPath)).ToList();
+
+      var intraProjectCommits = recordsOfThisProject.Where(rec => rec.Name1.StartsWith(projectPath) && rec.Name2.StartsWith(projectPath)).ToList();
+      var interProjectCommits = recordsOfThisProject.Except(intraProjectCommits).ToList();
+
+      int couplingCount = interProjectCommits.Sum(rec => rec.CouplingCount);
+      int cohesionCount = intraProjectCommits.Sum(rec => rec.CouplingCount);
+
+      double ratio = couplingCount > 0 ? cohesionCount * 1.0 / couplingCount : double.NaN;
+
+      projectCouplingRecords.Add(new ProjectCouplingAndCohesion(projectFileName, couplingCount, cohesionCount, ratio));
+    }
+
+    return projectCouplingRecords.ToImmutableList();
+  }
+}

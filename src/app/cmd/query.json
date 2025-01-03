@@ -1,0 +1,23 @@
+{
+  "sources": [ "https://github.com/mrstefangrimm/Collares.git" ],
+  "analyzer": "author-ranking",
+  "outputformat": "csv",
+  "renames": [
+    {
+      "to": "Stefan Grimm",
+      "from": "mrstefangrimm"
+    }
+  ],
+  "includes": {
+    "names": [],
+    "commits": [],
+    "authors": [],
+    "messages": []
+  },
+  "excludes": {
+    "names": [],
+    "commits": [],
+    "authors": [],
+    "messages": []
+  }
+}
