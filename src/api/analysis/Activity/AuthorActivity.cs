@@ -1,5 +1,4 @@
-﻿using Giana.Api.Shared;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 
 namespace Giana.Api.Analysis.Activity;
@@ -16,9 +15,9 @@ public static class AuthorActivityActions
     }
   }
 
-  public static void Execute(IEnumerable<GitLogRecord> records, IEnumerable<string> activeNames, StreamWriter writer)
+  public static void Execute(ExecutionContext context)
   {
-    var activitiesChart = AuthorActivityCalculations.CreateActivityChartAsCsv(records);
-    WriteChartAsCsv(activitiesChart, writer);
+    var activitiesChart = AuthorActivityCalculations.CreateActivityChartAsCsv(context.LogRecords);
+    WriteChartAsCsv(activitiesChart, context.Output);
   }
 }

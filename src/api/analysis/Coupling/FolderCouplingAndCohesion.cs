@@ -12,13 +12,13 @@ public static class FolderCouplingAndCohesionActions
   {
     foreach (var item in records)
     {
-      writer.WriteLine($"{item.ProjectName};{item.CouplingCount};{item.CohesionCount};{item.Ratio:0.000}");
+      writer.WriteLine($"{item.ProjectName}\t{item.CouplingCount}\t{item.CohesionCount}\t{item.Ratio:0.000}");
     }
   }
 
-  public static void Execute(IEnumerable<GitLogRecord> records, IEnumerable<string> activeNames, StreamWriter writer)
+  public static void Execute(ExecutionContext context)
   {
-    var list = FolderCouplingAndCohesionRankingCalculations.CreateFolderCouplingList(records, activeNames);
-    WriteAsCsv(list, writer);
+    var list = FolderCouplingAndCohesionRankingCalculations.CreateFolderCouplingList(context.LogRecords, context.ActiveNames);
+    WriteAsCsv(list, context.Output);
   }
 }

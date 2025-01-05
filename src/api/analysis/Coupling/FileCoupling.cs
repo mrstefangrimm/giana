@@ -12,13 +12,13 @@ public static class FileCouplingActions
   {
     foreach (var item in records)
     {
-      writer.WriteLine($"{item.Name1};{item.Name2};{item.CouplingCount}");
+      writer.WriteLine($"{item.Name1}\t{item.Name2}\t{item.CouplingCount}");
     }
   }
 
-  public static void Execute(IEnumerable<GitLogRecord> records, IEnumerable<string> activeNames, StreamWriter writer)
+  public static void Execute(ExecutionContext context)
   {
-    var activitiesChart = FileCouplingCalculations.CreateFileCouplingList(records, activeNames);
-    WriteAsCsv(activitiesChart, writer);
+    var activitiesChart = FileCouplingCalculations.CreateFileCouplingList(context.LogRecords, context.ActiveNames);
+    WriteAsCsv(activitiesChart, context.Output);
   }
 }

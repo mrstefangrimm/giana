@@ -13,13 +13,13 @@ public static class AuthorRankingActions
   {
     foreach (var item in records)
     {
-      Console.WriteLine($"{item.Author};{item.TouchedFiles}");
+      Console.WriteLine($"{item.Author}\t{item.TouchedFiles}");
     }
   }
 
-  public static void Execute(IEnumerable<GitLogRecord> records, IEnumerable<string> activeNames, StreamWriter writer)
+  public static void Execute(ExecutionContext context)
   {
-    var ranking = AuthorRankingCalculations.CreateAuthorRankingSorted(records);
-    WriteToCsv(ranking, writer);
+    var ranking = AuthorRankingCalculations.CreateAuthorRankingSorted(context.LogRecords);
+    WriteToCsv(ranking, context.Output);
   }
 }

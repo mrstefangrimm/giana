@@ -9,9 +9,9 @@ namespace Giana.App.Shared;
 
 public static class Calculations
 {
-  public static QueryAction CreateAction(this Query query)
+  public static QueryRoutine CreateAction(this Query query)
   {
-    var action = new QueryAction();
+    var action = new QueryRoutine();
 
     action.Sources = [.. query.Sources];
 
@@ -61,7 +61,7 @@ public static class Calculations
       action.Renames.Add((Api.Shared.Calculations.RenameAuthor, authorRename.To, authorRename.From));
     }
 
-    action.Analyzer = query.Analyzer.ToLower() switch
+    action.Analyze = query.Analyzer.ToLower() switch
     {
       "author-activity" => Api.Analysis.Activity.AuthorActivityActions.Execute,
       "file-coupling" => Api.Analysis.Coupling.FileCouplingActions.Execute,

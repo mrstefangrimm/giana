@@ -12,13 +12,13 @@ public static class CommitRankingActions
   {
     foreach (var item in records)
     {
-      writer.WriteLine($"{item.Commit};{item.ChangedFiles};{item.Description}");
+      writer.WriteLine($"{item.Commit}\t{item.ChangedFiles}\t{item.Description}");
     }
   }
 
-  public static void Execute(IEnumerable<GitLogRecord> records, IEnumerable<string> activeNames, StreamWriter writer)
+  public static void Execute(ExecutionContext context)
   {
-    var ranking = CommitRankingCalculations.CreateCommitRankingSorted(records);
-    WriteToCsv(ranking, writer);
+    var ranking = CommitRankingCalculations.CreateCommitRankingSorted(context.LogRecords);
+    WriteToCsv(ranking, context.Output);
   }
 }

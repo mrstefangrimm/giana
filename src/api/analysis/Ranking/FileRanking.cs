@@ -12,13 +12,13 @@ public static class FileRankingActions
   {
     foreach (var item in records)
     {
-      writer.WriteLine($"{item.Path};{item.ChangeCount}");
+      writer.WriteLine($"{item.Path}\t{item.ChangeCount}");
     }
   }
 
-  public static void Execute(IEnumerable<GitLogRecord> records, IEnumerable<string> activeNames, StreamWriter writer)
+  public static void Execute(ExecutionContext context)
   {
-    var ranking = FileRankingCalculations.CreateFileRankingSorted(records);
-    WriteToCsv(ranking, writer);
+    var ranking = FileRankingCalculations.CreateFileRankingSorted(context.LogRecords);
+    WriteToCsv(ranking, context.Output);
   }
 }

@@ -41,7 +41,7 @@ public static class Actions
     return reducedRecords;
   }
 
-  public static ImmutableList<GitLogRecord> Execute(QueryAction query)
+  public static ImmutableList<GitLogRecord> Execute(QueryRoutine query)
   {
     ImmutableList<GitLogRecord> reducedRecords = [];
     ImmutableList<string> allActiveNames = [];
@@ -71,8 +71,7 @@ public static class Actions
       allActiveNames = allActiveNames.AddRange(reducedActiveNames);
     }
 
-
-    query.Analyzer(reducedRecords, allActiveNames, query.OutputWriter);
+    query.Analyze(new Api.Analysis.ExecutionContext(reducedRecords, allActiveNames, query.OutputFormat, query.OutputWriter, new System.Threading.CancellationToken()));
 
     return reducedRecords;
   }
