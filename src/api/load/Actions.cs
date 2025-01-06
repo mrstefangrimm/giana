@@ -130,7 +130,7 @@ public static class Actions
     return changes.ToImmutableList();
   }
 
-  public static ImmutableList<string> RequestActiveNamesFromMainBranch(string repositoryRoot, string repositoryName, string gitExe)
+  public static ImmutableList<string> RequestActiveNamesFromMainBranch(string repositoryRoot, string gitExe)
   {
     string mainBranch = RequestMainBranchName(repositoryRoot, gitExe);
 
@@ -315,12 +315,12 @@ public static class Actions
     paths.AddRange(Directory.GetFiles(path));
   }
 
-  internal static void ObsoleteWriteHeaderToCsvFile(TextWriter writer)
+  internal static void ObsoleteWriteHeaderAsCsvFile(TextWriter writer)
   {
     writer.WriteLine("# Repository; Commit; Date; Author; Description; Path");
   }
 
-  internal static void ObsoleteWriteGitChangesToCsvFile(TextWriter writer, IEnumerable<GitLogRecord> gitChanges)
+  internal static void ObsoleteWriteGitChangesAsCsvFile(TextWriter writer, IEnumerable<GitLogRecord> gitChanges)
   {
     foreach (var gitChange in gitChanges)
     {

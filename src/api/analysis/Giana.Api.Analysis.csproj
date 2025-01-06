@@ -7,7 +7,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\shared\Giana.Api.Shared.csproj" />
+    <ProjectReference Include="..\core\Giana.Api.Core.csproj" />
   </ItemGroup>
 
 </Project>

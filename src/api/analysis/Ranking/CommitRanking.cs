@@ -8,7 +8,7 @@ public record CommitRanking(string Commit, string Description, int ChangedFiles)
 
 public static class CommitRankingActions
 {
-  public static void WriteToCsv(this ICollection<CommitRanking> records, StreamWriter writer)
+  public static void WriteAsCsv(this ICollection<CommitRanking> records, StreamWriter writer)
   {
     foreach (var item in records)
     {
@@ -19,6 +19,6 @@ public static class CommitRankingActions
   public static void Execute(ExecutionContext context)
   {
     var ranking = CommitRankingCalculations.CreateCommitRankingSorted(context.LogRecords);
-    WriteToCsv(ranking, context.Output);
+    WriteAsCsv(ranking, context.Output);
   }
 }

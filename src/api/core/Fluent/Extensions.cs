@@ -4,6 +4,26 @@ namespace Giana.Api.Shared.Fluent;
 
 public static class Extensions
 {
+  public static ITimeRangeBuilder TimePeriod(this IEnumerable<GitLogRecord> records)
+  {
+    return new TimeRangeBuilder(records);
+  }
+
+  public static ITimeRangeBuilder TimePeriod(this LazyRecords<GitLogRecord> lazyRecords)
+  {
+    return new TimeRangeBuilder(lazyRecords);
+  }
+
+  public static IRenameBuilder Rename(this IEnumerable<GitLogRecord> records)
+  {
+    return new RenameBuilder(records);
+  }
+
+  public static IRenameBuilder Rename(this LazyRecords<GitLogRecord> lazyRecords)
+  {
+    return new RenameBuilder(lazyRecords);
+  }
+
   public static IIncludeBuilder Include(this IEnumerable<GitLogRecord> records)
   {
     return new IncludeBuilder(records);
@@ -22,15 +42,5 @@ public static class Extensions
   public static IExcludeBuilder Exclude(this LazyRecords<GitLogRecord> lazyRecords)
   {
     return new ExcludeBuilder(lazyRecords);
-  }
-
-  public static IRenameBuilder Rename(this IEnumerable<GitLogRecord> records)
-  {
-    return new RenameBuilder(records);
-  }
-
-  public static IRenameBuilder Rename(this LazyRecords<GitLogRecord> lazyRecords)
-  {
-    return new RenameBuilder(lazyRecords);
   }
 }

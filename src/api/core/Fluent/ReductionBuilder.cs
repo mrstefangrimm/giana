@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -11,18 +12,21 @@ internal record Reduction(
   ICollection<string> IncludeCommits,
   ICollection<string> IncludeAuthors,
   ICollection<Regex> IncludeMessages,
+  ICollection<Regex> ExcludeNames,
   ICollection<string> ExcludeCommits,
   ICollection<string> ExcludeAuthors,
-  ICollection<(string To, string From)> RenameAuthors)
+  ICollection<Regex> ExcludeMessages,
+  ICollection<(string To, string From)> RenameAuthors,
+  ICollection<(DateTime Begin, DateTime End)> TimePeriods)
 {
   public static Reduction CreateEmpty(IEnumerable<GitLogRecord> records)
   {
-    return new Reduction(new LazyRecords<GitLogRecord>(records), new List<Regex>(), new List<string>(), new List<string>(), new List<Regex>(), new List<string>(), new List<string>(), new List<(string, string)>());
+    return new Reduction(new LazyRecords<GitLogRecord>(records), new List<Regex>(), new List<string>(), new List<string>(), new List<Regex>(), new List<Regex>(), new List<string>(), new List<string>(), new List<Regex>(), new List<(string, string)>(), new List<(DateTime, DateTime)>());
   }
 
   public static Reduction CreateEmpty(LazyRecords<GitLogRecord> lazyRecords)
   {
-    return new Reduction(new LazyRecords<GitLogRecord>(lazyRecords), new List<Regex>(), new List<string>(), new List<string>(), new List<Regex>(), new List<string>(), new List<string>(), new List<(string, string)>());
+    return new Reduction(new LazyRecords<GitLogRecord>(lazyRecords), new List<Regex>(), new List<string>(), new List<string>(), new List<Regex>(), new List<Regex>(), new List<string>(), new List<string>(), new List<Regex>(), new List<(string, string)>(), new List<(DateTime, DateTime)>());
   }
 }
 
@@ -39,7 +43,21 @@ internal class ReductionBuilder : IReductionBuilder
   {
     ImmutableList<GitLogRecord> Invoke()
     {
-      var includedNames = _query.LazyRecords.Value.Where(item =>
+      ImmutableList<GitLogRecord> reducedList = _query.LazyRecords.Value
+        .Where(item => _query.TimePeriods.Count == 0 || _query.TimePeriods.Any(tp => tp.Begin <= item.Date && item.Date <= tp.End)).ToImmutableList();
+
+      foreach (var renameItem in _query.RenameAuthors)
+      {
+        reducedList = reducedList.Select(rec => new GitLogRecord(
+          Author: rec.Author == renameItem.From ? renameItem.To : rec.Author,
+          RepoName: rec.RepoName,
+          Commit: rec.Commit,
+          Date: rec.Date,
+          Message: rec.Message,
+          Name: rec.Name)).ToImmutableList();
+      }
+
+      var includedNames = reducedList.Where(item =>
         _query.IncludeNames.Count == 0 || _query.IncludeNames.Any(regex => regex.IsMatch(item.Name)));
 
       var includedNamesAndCommits = includedNames.Where(item =>
@@ -52,21 +70,12 @@ internal class ReductionBuilder : IReductionBuilder
         _query.IncludeMessages.Count == 0 || _query.IncludeMessages.Any(regex => regex.IsMatch(item.Message))).ToArray();
 
       var excluded = includedNamesAndCommitsAndAuthorsAndMessages.Where(item =>
+      _query.ExcludeNames.Any(regex => regex.IsMatch(item.Name)) ||
         _query.ExcludeCommits.Contains(item.Commit) ||
-        _query.ExcludeAuthors.Contains(item.Author));
+        _query.ExcludeAuthors.Contains(item.Author) ||
+        _query.ExcludeMessages.Any(regex => regex.IsMatch(item.Message)));
 
       var includedAndExcluded = includedNamesAndCommitsAndAuthorsAndMessages.Except(excluded).ToImmutableList();
-
-      foreach (var renameItem in _query.RenameAuthors)
-      {
-        includedAndExcluded = includedAndExcluded.Select(rec => new GitLogRecord(
-          Author: rec.Author == renameItem.From ? renameItem.To : rec.Author,
-          RepoName: rec.RepoName,
-          Commit: rec.Commit,
-          Date: rec.Date,
-          Message: rec.Message,
-          Name: rec.Name)).ToImmutableList();
-      }
 
       return includedAndExcluded;
     }

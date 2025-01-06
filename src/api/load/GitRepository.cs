@@ -45,9 +45,8 @@ public sealed class GitRepository : IDisposable
 
   public ImmutableList<string> ActiveNames()
   {
-    return Actions.RequestActiveNamesFromMainBranch(_localPath, _repoName, _gitExePath);
+    return Actions.RequestActiveNamesFromMainBranch(_localPath, _gitExePath);
   }
-
 
   private GitRepository(string path, bool isTempDir, string repoName, string gitExePath)
   {

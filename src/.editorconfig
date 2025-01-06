@@ -1,0 +1,21 @@
+# To learn more about .editorconfig see https://aka.ms/editorconfigdocs
+root = true
+
+# All files
+[*]
+indent_size = 2
+indent_style = space
+
+# CSharp code style settings:
+[*.cs]
+csharp_new_line_before_catch = true:suggestion
+csharp_new_line_before_else = true:suggestion
+csharp_new_line_before_finally = true:suggestion
+csharp_new_line_before_members_in_anonymous_types = true:suggestion
+csharp_new_line_before_members_in_object_initializers = true:suggestion
+csharp_new_line_before_open_brace =all
+csharp_new_line_between_query_expression_clauses = true:suggestion
+csharp_prefer_braces = when_multiline:warning
+csharp_style_var_when_type_is_apparent =true:silent
+csharp_style_var_for_built_in_types=false:silent
+csharp_style_var_elsewhere=true:silent

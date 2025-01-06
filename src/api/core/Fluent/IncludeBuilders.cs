@@ -19,7 +19,6 @@ public interface IIncludeNameBuilder : IReductionBuilder
   IIncludeMessageBuilder Message(Regex message);
 
   IExcludeBuilder Exclude();
-  IRenameBuilder Rename();
 }
 
 public interface IIncludeCommitBuilder : IReductionBuilder
@@ -30,7 +29,6 @@ public interface IIncludeCommitBuilder : IReductionBuilder
   IIncludeMessageBuilder Message(Regex message);
 
   IExcludeBuilder Exclude();
-  IRenameBuilder Rename();
 }
 
 public interface IIncludeAuthorBuilder : IReductionBuilder
@@ -41,7 +39,6 @@ public interface IIncludeAuthorBuilder : IReductionBuilder
   IIncludeMessageBuilder Message(Regex message);
 
   IExcludeBuilder Exclude();
-  IRenameBuilder Rename();
 }
 
 public interface IIncludeMessageBuilder : IReductionBuilder
@@ -52,7 +49,6 @@ public interface IIncludeMessageBuilder : IReductionBuilder
   IIncludeAuthorBuilder Author(string author);
 
   IExcludeBuilder Exclude();
-  IRenameBuilder Rename();
 }
 
 internal class IncludeBuilder : ReductionBuilder, IIncludeBuilder

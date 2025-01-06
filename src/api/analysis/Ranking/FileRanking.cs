@@ -8,7 +8,7 @@ public record FileRanking(string Path, int ChangeCount);
 
 public static class FileRankingActions
 {
-  public static void WriteToCsv(this ICollection<FileRanking> records, StreamWriter writer)
+  public static void WriteAsCsv(this ICollection<FileRanking> records, StreamWriter writer)
   {
     foreach (var item in records)
     {
@@ -19,6 +19,6 @@ public static class FileRankingActions
   public static void Execute(ExecutionContext context)
   {
     var ranking = FileRankingCalculations.CreateFileRankingSorted(context.LogRecords);
-    WriteToCsv(ranking, context.Output);
+    WriteAsCsv(ranking, context.Output);
   }
 }

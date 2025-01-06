@@ -9,7 +9,7 @@ public record AuthorRanking(string Author, int TouchedFiles);
 
 public static class AuthorRankingActions
 {
-  public static void WriteToCsv(this ICollection<AuthorRanking> records, StreamWriter writer)
+  public static void WriteAsCsv(this ICollection<AuthorRanking> records, StreamWriter writer)
   {
     foreach (var item in records)
     {
@@ -20,6 +20,6 @@ public static class AuthorRankingActions
   public static void Execute(ExecutionContext context)
   {
     var ranking = AuthorRankingCalculations.CreateAuthorRankingSorted(context.LogRecords);
-    WriteToCsv(ranking, context.Output);
+    WriteAsCsv(ranking, context.Output);
   }
 }

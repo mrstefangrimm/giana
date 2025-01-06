@@ -5,15 +5,19 @@ VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.App.Cmd", "app\cmd\Giana.App.Cmd.csproj", "{33CE3891-ABA2-44BB-924B-430D49AEBEF2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api.Shared", "api\shared\Giana.Api.Shared.csproj", "{FC525DEB-E192-4EBD-8D12-2F046876A054}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api.Core", "api\core\Giana.Api.Core.csproj", "{FC525DEB-E192-4EBD-8D12-2F046876A054}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api.Shared.Tests", "api\shared.tests\Giana.Api.Shared.Tests.csproj", "{6EF84ED0-D883-4688-A465-36E43FD42A73}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api.Core.Tests", "api\core.tests\Giana.Api.Core.Tests.csproj", "{6EF84ED0-D883-4688-A465-36E43FD42A73}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api.Analysis", "api\analysis\Giana.Api.Analysis.csproj", "{13501C00-AC2F-40AA-8238-9E85724C2FCE}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.App.Shared", "app\shared\Giana.App.Shared.csproj", "{025133E2-5A97-47A7-B447-511F5848A34D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api.Load", "api\load\Giana.Api.Load.csproj", "{608BB009-1452-422E-930D-7ACEC45BA67C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api", "api\Giana.Api.csproj", "{1A9A5D1E-E90B-4FDC-846C-2693471D9933}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{2419EC0E-E322-448A-A044-23E28DB239D9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,8 +49,15 @@ Global
 		{608BB009-1452-422E-930D-7ACEC45BA67C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{608BB009-1452-422E-930D-7ACEC45BA67C}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{608BB009-1452-422E-930D-7ACEC45BA67C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1A9A5D1E-E90B-4FDC-846C-2693471D9933}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1A9A5D1E-E90B-4FDC-846C-2693471D9933}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1A9A5D1E-E90B-4FDC-846C-2693471D9933}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1A9A5D1E-E90B-4FDC-846C-2693471D9933}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{1A9A5D1E-E90B-4FDC-846C-2693471D9933} = {2419EC0E-E322-448A-A044-23E28DB239D9}
 	EndGlobalSection
 EndGlobal
