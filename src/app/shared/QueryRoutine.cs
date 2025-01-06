@@ -15,8 +15,9 @@ public class QueryRoutine
 
   public ICollection<string> Sources { get; set; }
 
-  public ICollection<(Func<IEnumerable<GitLogRecord>, Regex, ImmutableList<GitLogRecord>> Invoke, Regex Argument)> Reductions { get; set; }
   public ICollection<(Func<IEnumerable<GitLogRecord>, string, string, ImmutableList<GitLogRecord>> Invoke, string To, string From)> Renames { get; set; }
+  public ICollection<(Func<IEnumerable<GitLogRecord>, Regex, ImmutableList<GitLogRecord>> Invoke, Regex Argument)> Reductions { get; set; }
+  public (Func<IEnumerable<GitLogRecord>, int, int, ImmutableList<GitLogRecord>> Invoke, int startPosition, int Count) Elements { get; set; }
 
   public Action<ExecutionContext> Analyze { get; set; }
 }

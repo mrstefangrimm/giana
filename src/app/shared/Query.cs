@@ -10,4 +10,12 @@ public class Query
   public List<Author> Renames { get; set; }
   public Reduction Includes { get; set; }
   public Reduction Excludes { get; set; }
+  public ElementsRange Elements { get; set; }
+}
+
+// TODO: Remove
+public class ElementsRange
+{
+  public int StartPosition { get; set; }
+  public int Count { get; set; }
 }

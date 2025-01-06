@@ -42,13 +42,13 @@ using StreamReader jsonReader = new StreamReader(queryFilename);
 var query = JsonConvert.DeserializeObject<Query>(jsonReader.ReadToEnd());
 jsonReader.Close();
 
-var queryAction = Calculations.CreateAction(query);
+var routine = Calculations.CreateRoutine(query);
 
 using MemoryStream ms = new MemoryStream();
 using StreamWriter sw = new StreamWriter(ms);
-queryAction.OutputWriter = sw;
+routine.OutputWriter = sw;
 
-var gitLogRecords = Execute(queryAction);
+var gitLogRecords = Execute(routine);
 
 sw.Flush();
 ms.Position = 0;

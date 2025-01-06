@@ -64,10 +64,10 @@ public static class Actions
 
       reducedRecords = reducedRecords.AddRange(records);
 
+      reducedRecords = query.Elements.Invoke(reducedRecords, query.Elements.startPosition, query.Elements.Count);
+
       var reducedNamesFromCommits = reducedRecords.Select(x => x.Name).Distinct();
-
       var reducedActiveNames = gitRepo.ActiveNames().Where(x => reducedNamesFromCommits. Contains(x));
-
       allActiveNames = allActiveNames.AddRange(reducedActiveNames);
     }
 
