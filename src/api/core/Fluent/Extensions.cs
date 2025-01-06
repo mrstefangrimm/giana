@@ -1,15 +1,15 @@
 ﻿using System.Collections.Generic;
 
-namespace Giana.Api.Shared.Fluent;
+namespace Giana.Api.Core.Fluent;
 
 public static class Extensions
 {
-  public static ITimeRangeBuilder TimePeriod(this IEnumerable<GitLogRecord> records)
+  public static ITimeRangeBuilder TimeRange(this IEnumerable<GitLogRecord> records)
   {
     return new TimeRangeBuilder(records);
   }
 
-  public static ITimeRangeBuilder TimePeriod(this LazyRecords<GitLogRecord> lazyRecords)
+  public static ITimeRangeBuilder TimeRange(this LazyRecords<GitLogRecord> lazyRecords)
   {
     return new TimeRangeBuilder(lazyRecords);
   }
@@ -42,5 +42,15 @@ public static class Extensions
   public static IExcludeBuilder Exclude(this LazyRecords<GitLogRecord> lazyRecords)
   {
     return new ExcludeBuilder(lazyRecords);
+  }
+
+  public static IElementsRangeBuilder Elements(this IEnumerable<GitLogRecord> records)
+  {
+    return new ElementsRangeBuilder(records);
+  }
+
+  public static IElementsRangeBuilder Elements(this LazyRecords<GitLogRecord> lazyRecords)
+  {
+    return new ElementsRangeBuilder(lazyRecords);
   }
 }

@@ -1,5 +1,4 @@
-﻿using Giana.Api.Shared;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 
 namespace Giana.Api.Analysis.Ranking;
@@ -8,7 +7,7 @@ public record CommitRanking(string Commit, string Description, int ChangedFiles)
 
 public static class CommitRankingActions
 {
-  public static void WriteAsCsv(this ICollection<CommitRanking> records, StreamWriter writer)
+  public static void WriteAsCsv(this ICollection<CommitRanking> records, TextWriter writer)
   {
     foreach (var item in records)
     {

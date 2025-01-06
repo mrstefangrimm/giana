@@ -1,4 +1,4 @@
-﻿using Giana.Api.Shared;
+﻿using Giana.Api.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -20,45 +20,45 @@ public static class Calculations
     if (query.Includes.Names.Any())
     {
       var expr = string.Join('|', query.Includes.Names);
-      action.Reductions.Add((Api.Shared.Calculations.IncludeName, new Regex(expr)));
+      action.Reductions.Add((Api.Core.Calculations.IncludeName, new Regex(expr)));
     }
     if (query.Includes.Commits.Any())
     {
       var expr = string.Join('|', query.Includes.Commits);
-      action.Reductions.Add((Api.Shared.Calculations.IncludeCommit, new Regex(expr)));
+      action.Reductions.Add((Api.Core.Calculations.IncludeCommit, new Regex(expr)));
     }
     if (query.Includes.Authors.Any())
     {
       var expr = string.Join('|', query.Includes.Authors);
-      action.Reductions.Add((Api.Shared.Calculations.IncludeAuthor, new Regex(expr)));
+      action.Reductions.Add((Api.Core.Calculations.IncludeAuthor, new Regex(expr)));
     }
     if (query.Includes.Messages.Any())
     {
       var expr = string.Join('|', query.Includes.Messages);
-      action.Reductions.Add((Api.Shared.Calculations.IncludeMessage, new Regex(expr)));
+      action.Reductions.Add((Api.Core.Calculations.IncludeMessage, new Regex(expr)));
     }
 
     foreach (var name in query.Excludes.Names)
     {
-      action.Reductions.Add((Api.Shared.Calculations.ExcludeName, new Regex(name)));
+      action.Reductions.Add((Api.Core.Calculations.ExcludeName, new Regex(name)));
     }
     foreach (var commit in query.Excludes.Commits)
     {
-      action.Reductions.Add((Api.Shared.Calculations.ExcludeCommit, new Regex(commit)));
+      action.Reductions.Add((Api.Core.Calculations.ExcludeCommit, new Regex(commit)));
     }
     foreach (var author in query.Excludes.Authors)
     {
-      action.Reductions.Add((Api.Shared.Calculations.ExcludeAuthor, new Regex(author)));
+      action.Reductions.Add((Api.Core.Calculations.ExcludeAuthor, new Regex(author)));
     }
     foreach (var msg in query.Excludes.Messages)
     {
-      action.Reductions.Add((Api.Shared.Calculations.ExcludeMessage, new Regex(msg)));
+      action.Reductions.Add((Api.Core.Calculations.ExcludeMessage, new Regex(msg)));
     }
 
     action.Renames = new List<(Func<IEnumerable<GitLogRecord>, string, string, ImmutableList<GitLogRecord>> Invoke, string To, string From)>();
     foreach (var authorRename in query.Renames)
     {
-      action.Renames.Add((Api.Shared.Calculations.RenameAuthor, authorRename.To, authorRename.From));
+      action.Renames.Add((Api.Core.Calculations.RenameAuthor, authorRename.To, authorRename.From));
     }
 
     action.Analyze = query.Analyzer.ToLower() switch
@@ -75,5 +75,4 @@ public static class Calculations
 
     return action;
   }
-
 }

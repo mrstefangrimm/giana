@@ -1,10 +1,10 @@
 using FluentAssertions;
-using Giana.Api.Shared.Fluent;
+using Giana.Api.Core.Fluent;
 
-namespace Giana.Api.Shared.Tests;
+namespace Giana.Api.Core.Tests;
 
-public class FluentRenameTest : FluentTestBase {
-
+public class FluentRenameTest : FluentTestBase
+{
   [Fact]
   public void RenameAuthor_KnownAuthors_ChangesAuthorsRecords()
     => _testRecords

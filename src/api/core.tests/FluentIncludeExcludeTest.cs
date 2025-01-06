@@ -1,11 +1,11 @@
 using FluentAssertions;
-using Giana.Api.Shared.Fluent;
+using Giana.Api.Core.Fluent;
 using System.Text.RegularExpressions;
 
-namespace Giana.Api.Shared.Tests;
+namespace Giana.Api.Core.Tests;
 
-public class FluentIncludeExcludeTest : FluentTestBase {
-
+public class FluentIncludeExcludeTest : FluentTestBase
+{
   [Fact]
   public void IncludeName_KnownName_ReturnsNamesRecords()
   => _testRecords

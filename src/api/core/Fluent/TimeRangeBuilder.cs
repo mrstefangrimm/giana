@@ -1,16 +1,17 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Giana.Api.Shared.Fluent;
+namespace Giana.Api.Core.Fluent;
 
 public interface ITimeRangeBuilder : IReductionBuilder
 {
-  ITimeRangeBuilder TimePeriod(DateTime begin, DateTime end);
+  ITimeRangeBuilder In(DateTime begin, DateTime end);
   ITimeRangeBuilder And(DateTime begin, DateTime end);
 
   IRenameBuilder Rename();
   IIncludeBuilder Include();
   IExcludeBuilder Exclude();
+  IElementsRangeBuilder Elements();
 }
 
 internal class TimeRangeBuilder : ReductionBuilder, ITimeRangeBuilder
@@ -30,7 +31,7 @@ internal class TimeRangeBuilder : ReductionBuilder, ITimeRangeBuilder
     _query = query;
   }
 
-  public ITimeRangeBuilder TimePeriod(DateTime begin, DateTime end)
+  public ITimeRangeBuilder In(DateTime begin, DateTime end)
   {
     _query.TimePeriods.Add((begin, end));
     return this;
@@ -38,6 +39,6 @@ internal class TimeRangeBuilder : ReductionBuilder, ITimeRangeBuilder
 
   public ITimeRangeBuilder And(DateTime begin, DateTime end)
   {
-    return TimePeriod(begin, end);
+    return In(begin, end);
   }
 }

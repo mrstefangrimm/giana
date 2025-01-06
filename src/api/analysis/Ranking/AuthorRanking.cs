@@ -1,5 +1,4 @@
-﻿using Giana.Api.Shared;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 
@@ -9,7 +8,7 @@ public record AuthorRanking(string Author, int TouchedFiles);
 
 public static class AuthorRankingActions
 {
-  public static void WriteAsCsv(this ICollection<AuthorRanking> records, StreamWriter writer)
+  public static void WriteAsCsv(this ICollection<AuthorRanking> records, TextWriter writer)
   {
     foreach (var item in records)
     {

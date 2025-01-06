@@ -1,5 +1,4 @@
-﻿using Giana.Api.Shared;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.IO;
 
 namespace Giana.Api.Analysis.Coupling;

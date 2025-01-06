@@ -2,12 +2,12 @@
 
 namespace Giana.Api.Core.Tests;
 
-public class FluentTestBase
+public class CalculationsTestBase
 {
   protected static readonly IFormatProvider _fmt = new CultureInfo("en-US");
   protected readonly ICollection<GitLogRecord> _testRecords;
 
-  protected FluentTestBase()
+  protected CalculationsTestBase()
   {
     _testRecords = GitLogData().ToList();
   }

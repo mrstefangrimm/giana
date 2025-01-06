@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Giana.Api.Shared.Fluent;
+namespace Giana.Api.Core.Fluent;
 
 internal record Reduction(
   LazyRecords<GitLogRecord> LazyRecords,
@@ -17,16 +17,17 @@ internal record Reduction(
   ICollection<string> ExcludeAuthors,
   ICollection<Regex> ExcludeMessages,
   ICollection<(string To, string From)> RenameAuthors,
-  ICollection<(DateTime Begin, DateTime End)> TimePeriods)
+  ICollection<(DateTime Begin, DateTime End)> TimePeriods,
+  ICollection<(int StartPosition, int Count)> Elements)
 {
   public static Reduction CreateEmpty(IEnumerable<GitLogRecord> records)
   {
-    return new Reduction(new LazyRecords<GitLogRecord>(records), new List<Regex>(), new List<string>(), new List<string>(), new List<Regex>(), new List<Regex>(), new List<string>(), new List<string>(), new List<Regex>(), new List<(string, string)>(), new List<(DateTime, DateTime)>());
+    return new Reduction(new LazyRecords<GitLogRecord>(records), new List<Regex>(), new List<string>(), new List<string>(), new List<Regex>(), new List<Regex>(), new List<string>(), new List<string>(), new List<Regex>(), new List<(string, string)>(), new List<(DateTime, DateTime)>(), new List<(int, int)>());
   }
 
   public static Reduction CreateEmpty(LazyRecords<GitLogRecord> lazyRecords)
   {
-    return new Reduction(new LazyRecords<GitLogRecord>(lazyRecords), new List<Regex>(), new List<string>(), new List<string>(), new List<Regex>(), new List<Regex>(), new List<string>(), new List<string>(), new List<Regex>(), new List<(string, string)>(), new List<(DateTime, DateTime)>());
+    return new Reduction(new LazyRecords<GitLogRecord>(lazyRecords), new List<Regex>(), new List<string>(), new List<string>(), new List<Regex>(), new List<Regex>(), new List<string>(), new List<string>(), new List<Regex>(), new List<(string, string)>(), new List<(DateTime, DateTime)>(), new List<(int, int)>());
   }
 }
 
@@ -77,10 +78,20 @@ internal class ReductionBuilder : IReductionBuilder
 
       var includedAndExcluded = includedNamesAndCommitsAndAuthorsAndMessages.Except(excluded).ToImmutableList();
 
+      if (_query.Elements.Any())
+      {
+        return includedAndExcluded.Skip(_query.Elements.First().StartPosition).Take(_query.Elements.First().Count).ToImmutableList();
+      }
+
       return includedAndExcluded;
     }
 
     return new LazyRecords<GitLogRecord>(Invoke);
+  }
+
+  public IRenameBuilder Rename()
+  {
+    return new RenameBuilder(_query);
   }
 
   public IExcludeBuilder Exclude()
@@ -93,8 +104,8 @@ internal class ReductionBuilder : IReductionBuilder
     return new IncludeBuilder(_query);
   }
 
-  public IRenameBuilder Rename()
+  public IElementsRangeBuilder Elements()
   {
-    return new RenameBuilder(_query);
+    return new ElementsRangeBuilder(_query);
   }
 }

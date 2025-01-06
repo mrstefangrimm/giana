@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-namespace Giana.Api.Shared.Fluent;
+namespace Giana.Api.Core.Fluent;
 
 public interface IRenameBuilder : IReductionBuilder
 {
@@ -9,6 +9,7 @@ public interface IRenameBuilder : IReductionBuilder
 
   IIncludeBuilder Include();
   IExcludeBuilder Exclude();
+  IElementsRangeBuilder Elements();
 }
 
 internal class RenameBuilder : ReductionBuilder, IRenameBuilder

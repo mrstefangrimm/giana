@@ -1,4 +1,4 @@
-﻿using Giana.Api.Shared;
+﻿using Giana.Api.Core;
 using System.Collections.Generic;
 using System.IO;
 using System.Threading;

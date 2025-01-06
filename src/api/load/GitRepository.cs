@@ -1,4 +1,4 @@
-﻿using Giana.Api.Shared;
+﻿using Giana.Api.Core;
 using System;
 using System.Collections.Immutable;
 using System.IO;

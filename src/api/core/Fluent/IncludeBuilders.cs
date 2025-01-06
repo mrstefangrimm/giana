@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Text.RegularExpressions;
 
-namespace Giana.Api.Shared.Fluent;
+namespace Giana.Api.Core.Fluent;
 
 public interface IIncludeBuilder : IReductionBuilder
 {
@@ -19,6 +19,7 @@ public interface IIncludeNameBuilder : IReductionBuilder
   IIncludeMessageBuilder Message(Regex message);
 
   IExcludeBuilder Exclude();
+  IElementsRangeBuilder Elements();
 }
 
 public interface IIncludeCommitBuilder : IReductionBuilder
@@ -29,6 +30,7 @@ public interface IIncludeCommitBuilder : IReductionBuilder
   IIncludeMessageBuilder Message(Regex message);
 
   IExcludeBuilder Exclude();
+  IElementsRangeBuilder Elements();
 }
 
 public interface IIncludeAuthorBuilder : IReductionBuilder
@@ -39,6 +41,7 @@ public interface IIncludeAuthorBuilder : IReductionBuilder
   IIncludeMessageBuilder Message(Regex message);
 
   IExcludeBuilder Exclude();
+  IElementsRangeBuilder Elements();
 }
 
 public interface IIncludeMessageBuilder : IReductionBuilder
@@ -49,6 +52,7 @@ public interface IIncludeMessageBuilder : IReductionBuilder
   IIncludeAuthorBuilder Author(string author);
 
   IExcludeBuilder Exclude();
+  IElementsRangeBuilder Elements();
 }
 
 internal class IncludeBuilder : ReductionBuilder, IIncludeBuilder

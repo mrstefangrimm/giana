@@ -1,4 +1,4 @@
-﻿using Giana.Api.Shared;
+﻿using Giana.Api.Core;
 using System.Collections.Generic;
 using System.IO;
 
@@ -8,7 +8,7 @@ public record FileRanking(string Path, int ChangeCount);
 
 public static class FileRankingActions
 {
-  public static void WriteAsCsv(this ICollection<FileRanking> records, StreamWriter writer)
+  public static void WriteAsCsv(this ICollection<FileRanking> records, TextWriter writer)
   {
     foreach (var item in records)
     {

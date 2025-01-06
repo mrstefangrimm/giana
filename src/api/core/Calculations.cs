@@ -4,7 +4,7 @@ using System.Collections.Immutable;
 using System.Linq;
 using System.Text.RegularExpressions;
 
-namespace Giana.Api.Shared;
+namespace Giana.Api.Core;
 
 public static class Calculations
 {
@@ -106,8 +106,7 @@ public static class Calculations
     return records.Except(excluded).ToImmutableList();
   }
 
-
-  public static ImmutableList<GitLogRecord> IncludeTimePeriod(this IEnumerable<GitLogRecord> records, DateTime begin, DateTime end)
+  public static ImmutableList<GitLogRecord> WithTimeRange(this IEnumerable<GitLogRecord> records, DateTime begin, DateTime end)
   {
     // TODO:
     //var query = from item in records.AsParallel()
@@ -117,6 +116,11 @@ public static class Calculations
     //return query.ToImmutableList();
 
     return records.Where(item => begin <= item.Date && item.Date <= end).ToImmutableList();
+  }
+
+  public static ImmutableList<GitLogRecord> WithElements(this IEnumerable<GitLogRecord> records, int startPosition, int count)
+  {
+    return records.Skip(startPosition).Take(count).ToImmutableList();
   }
 
   public static string GetPath(string name)

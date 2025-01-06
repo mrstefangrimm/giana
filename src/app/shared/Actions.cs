@@ -1,6 +1,6 @@
 ﻿using Giana.Api.Load;
-using Giana.Api.Shared;
-using Giana.Api.Shared.Fluent;
+using Giana.Api.Core;
+using Giana.Api.Core.Fluent;
 using System;
 using System.Collections.Immutable;
 using System.Linq;

@@ -1,19 +1,10 @@
 using FluentAssertions;
-using System.Globalization;
 using System.Text.RegularExpressions;
 
-namespace Giana.Api.Shared.Tests;
+namespace Giana.Api.Core.Tests;
 
-public class CalculationsTest
+public class CalculationsIncludeExcludeTest : CalculationsTestBase
 {
-  private static readonly IFormatProvider _fmt = new CultureInfo("en-US");
-  private readonly ICollection<GitLogRecord> _testRecords;
-
-  public CalculationsTest()
-  {
-    _testRecords = GitLogData().ToList();
-  }
-
   [Fact]
   public void IncludeAuthor_KnownAuthor_ReturnsAuthorsRecords()
     => _testRecords.IncludeAuthor("Joe").Should().OnlyContain(item => item.Author == "Joe");
@@ -97,27 +88,4 @@ public class CalculationsTest
   [Fact]
   public void ExcludeCommit_UnknownCommit_ReturnsAllRecords()
     => _testRecords.ExcludeCommit("xyz").Should().HaveCount(_testRecords.Count);
-
-  [Fact]
-  public void IncludeTimePeriod_BeginMinEndMax_ReturnsAllRecords()
-    => _testRecords.IncludeTimePeriod(DateTime.MinValue, DateTime.MaxValue).Should().HaveCount(_testRecords.Count);
-
-  [Fact]
-  public void IncludeTimePeriod_BeginMinEndWithinRecords_ReturnsAllUntilEnd()
-    => _testRecords.IncludeTimePeriod(DateTime.MinValue, DateTime.Parse("2024-12-21T11:00:00Z", _fmt))
-    .Should().Contain(item => item.Commit == "abc" || item.Commit == "bcd")
-    .And.NotContain(item => item.Commit == "cde");
-
-  private static IEnumerable<GitLogRecord> GitLogData()
-  {
-    yield return new GitLogRecord("Gina", "File0A.cs", "abc", "Joe", "First commit.", DateTime.Parse("2024-12-20T19:35:00Z", _fmt));
-    yield return new GitLogRecord("Gina", "Folder1/File1A.cs", "abc", "Joe", "First commit.", DateTime.Parse("2024-12-20T19:35:00Z", _fmt));
-    yield return new GitLogRecord("Gina", "Folder2/Folder21/File21A.cs", "abc", "Joe", "First commit.", DateTime.Parse("2024-12-20T19:35:00Z", _fmt));
-    yield return new GitLogRecord("Gina", "Folder2/Folder21/File21B.cs", "abc", "Joe", "First commit.", DateTime.Parse("2024-12-20T19:35:00Z", _fmt));
-    yield return new GitLogRecord("Gina", "File0A.cs", "bcd", "Anna", "Second commit.", DateTime.Parse("2024-12-21T18:00:00Z", _fmt));
-    yield return new GitLogRecord("Gina", "File0B.cs", "bcd", "Anna", "Second commit.", DateTime.Parse("2024-12-21T18:00:00Z", _fmt));
-    yield return new GitLogRecord("Gina", "File0A.cs", "cde", "Joe", "Third commit.", DateTime.Parse("2024-12-22T18:00:00Z", _fmt));
-    yield return new GitLogRecord("Gina", "File0B.cs", "cde", "Joe", "Third commit.", DateTime.Parse("2024-12-22T18:00:00Z", _fmt));
-    yield return new GitLogRecord("Gina", "Folder1/File1A.cs", "cde", "Joe", "Third commit.", DateTime.Parse("2024-12-22T18:00:00Z", _fmt));
-  }
 }

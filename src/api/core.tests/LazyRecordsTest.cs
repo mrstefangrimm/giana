@@ -7,14 +7,14 @@ using System.Collections.Immutable;
 #pragma warning disable S2933 // Fields that are only assigned in the constructor should be "readonly"
 #pragma warning disable CS8600 // Converting null literal or possible null value to non-nullable type.
 
-namespace Giana.Api.Shared.Tests;
+namespace Giana.Api.Core.Tests;
 
 public class LazyRecordsTest
 {
   private readonly Func<IEnumerable<TestRecord>> _nullValueFactory = null;
   private readonly IEnumerable<TestRecord> _nullRecords = null;
 
-  private readonly IEnumerable<TestRecord> _sharedRecords = new [] { new TestRecord("sId", "sData") };
+  private readonly IEnumerable<TestRecord> _sharedRecords = new[] { new TestRecord("sId", "sData") };
   private readonly ImmutableArray<TestRecord> _immutableRecords = ImmutableArray.Create(new TestRecord("iId", "iData"));
 
   [Fact]

@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 
-namespace Giana.Api.Shared;
+namespace Giana.Api.Core;
 
 public sealed class LazyRecords<RecordType>
 {

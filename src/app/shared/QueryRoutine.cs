@@ -1,5 +1,5 @@
 ﻿using Giana.Api.Analysis;
-using Giana.Api.Shared;
+using Giana.Api.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
