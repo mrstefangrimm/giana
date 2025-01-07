@@ -18,7 +18,8 @@ public interface IExcludeNameBuilder : IReductionBuilder
   IExcludeAuthorBuilder Author(string author);
   IExcludeMessageBuilder Message(Regex message);
 
-  IExcludeBuilder Exclude();
+  IIncludeBuilder Include();
+  IElementsRangeBuilder Elements();
 }
 
 public interface IExcludeCommitBuilder : IReductionBuilder
@@ -28,7 +29,7 @@ public interface IExcludeCommitBuilder : IReductionBuilder
   IExcludeAuthorBuilder Author(string commit);
   IExcludeMessageBuilder Message(Regex message);
 
-  IExcludeBuilder Exclude();
+  IIncludeBuilder Include();
   IElementsRangeBuilder Elements();
 }
 
@@ -39,7 +40,7 @@ public interface IExcludeAuthorBuilder : IReductionBuilder
   IExcludeCommitBuilder Commit(string commit);
   IExcludeMessageBuilder Message(Regex message);
 
-  IExcludeBuilder Exclude();
+  IIncludeBuilder Include();
   IElementsRangeBuilder Elements();
 }
 
@@ -50,7 +51,7 @@ public interface IExcludeMessageBuilder : IReductionBuilder
   IExcludeCommitBuilder Commit(string commit);
   IExcludeAuthorBuilder Author(string author);
 
-  IExcludeBuilder Exclude();
+  IIncludeBuilder Include();
   IElementsRangeBuilder Elements();
 }
 
