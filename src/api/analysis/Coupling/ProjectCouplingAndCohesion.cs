@@ -11,7 +11,7 @@ public static class ProjectCouplingAndCohesionActions
   {
     foreach (var item in records)
     {
-      writer.WriteLine($"{item.ProjectName}\t{item.CouplingCount}\t{item.CohesionCount}\t{item.Ratio:0.000}");
+      writer.WriteLine($"{item.ProjectName},{item.CouplingCount},{item.CohesionCount},{item.Ratio:0.000}");
     }
   }
 

@@ -11,7 +11,7 @@ public static class CommitRankingActions
   {
     foreach (var item in records)
     {
-      writer.WriteLine($"{item.Commit}\t{item.ChangedFiles}\t{item.Description}");
+      writer.WriteLine($"{item.Commit},{item.ChangedFiles},{item.Description}");
     }
   }
 

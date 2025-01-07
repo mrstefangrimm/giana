@@ -12,7 +12,7 @@ public static class AuthorRankingActions
   {
     foreach (var item in records)
     {
-      Console.WriteLine($"{item.Author}\t{item.TouchedFiles}");
+      Console.WriteLine($"{item.Author},{item.TouchedFiles}");
     }
   }
 

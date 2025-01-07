@@ -19,7 +19,7 @@ public static class Actions
 
       var records = gitRepo.Log(routine.Deadline);
 
-      records = records.Where(x => routine.TimeRanges.Any(tp => tp.Begin <= x.Date && x.Date <= tp.End)).ToImmutableList();
+      records = records.Where(x => routine.TimeRanges.Count == 0 || routine.TimeRanges.Any(tp => tp.Begin <= x.Date && x.Date <= tp.End)).ToImmutableList();
 
       foreach (var renameAuthor in routine.Renames)
       {
@@ -33,8 +33,9 @@ public static class Actions
 
       reducedRecords = reducedRecords.AddRange(records);
 
-      var reducedNamesFromCommits = reducedRecords.Select(x => x.Name).Distinct();
-      var reducedActiveNames = gitRepo.ActiveNames().Where(x => reducedNamesFromCommits. Contains(x));
+       // reducedNamesFromRecords can include historical items which are no longer active.
+      var reducedNamesFromRecords = reducedRecords.Select(x => x.Name).Distinct();
+      var reducedActiveNames = gitRepo.ActiveNames().Where(x => reducedNamesFromRecords. Contains(x));
       allActiveNames = allActiveNames.AddRange(reducedActiveNames);
     }
 

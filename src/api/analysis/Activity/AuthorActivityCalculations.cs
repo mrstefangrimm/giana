@@ -66,7 +66,7 @@ public static class AuthorActivityCalculations
   {
     var chart = new List<string>();
     // Add column headers
-    chart.Add(";" + string.Join("\t", yearAndWeeks));
+    chart.Add("," + string.Join(",", yearAndWeeks));
 
     for (int author = 0; author < authors.Count; author++)
     {
@@ -83,7 +83,7 @@ public static class AuthorActivityCalculations
           row = row.Add("0");
         }
       }
-      chart.Add($"{authors[author]}\t" + string.Join("\t", row));
+      chart.Add($"{authors[author]}," + string.Join(",", row));
     }
 
     return chart;

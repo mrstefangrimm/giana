@@ -11,7 +11,7 @@ public static class FileCouplingActions
   {
     foreach (var item in records)
     {
-      writer.WriteLine($"{item.Name1}\t{item.Name2}\t{item.CouplingCount}");
+      writer.WriteLine($"{item.Name1},{item.Name2},{item.CouplingCount}");
     }
   }
 
