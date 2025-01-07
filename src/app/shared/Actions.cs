@@ -1,6 +1,5 @@
-﻿using Giana.Api.Load;
-using Giana.Api.Core;
-using Giana.Api.Core.Fluent;
+﻿using Giana.Api.Core;
+using Giana.Api.Load;
 using System;
 using System.Collections.Immutable;
 using System.Linq;
@@ -9,69 +8,37 @@ namespace Giana.App.Shared;
 
 public static class Actions
 {
-  public static ImmutableList<GitLogRecord> Execute(Query query)
-  {
-    ImmutableList<GitLogRecord> reducedRecords = [];
-
-    foreach (var source in query.Sources)
-    {
-      using var gitRepo = GitRepository.Create(source, GitExePath());
-
-      var records = gitRepo.Log();
-
-      var renameBuilder = records.Rename();
-
-      foreach (var renameAuthor in query.Renames)
-      {
-        renameBuilder = renameBuilder.And(renameAuthor.To, renameAuthor.From);
-      }
-
-      var includeBuilder = renameBuilder.Include();
-
-      //foreach (var author in query.Includes.Authors)
-      //{
-      //  includeBuilder = includeBuilder.Author(author);
-      //}
-
-      reducedRecords = reducedRecords.AddRange(records);
-    }
-
-    //query.Analyzer(reducedRecords, query.OutputWriter);
-
-    return reducedRecords;
-  }
-
-  public static ImmutableList<GitLogRecord> Execute(QueryRoutine query)
+  public static ImmutableList<GitLogRecord> Execute(QueryRoutine routine)
   {
     ImmutableList<GitLogRecord> reducedRecords = [];
     ImmutableList<string> allActiveNames = [];
 
-    foreach (var source in query.Sources)
+    foreach (var source in routine.Sources)
     {
       using var gitRepo = GitRepository.Create(source, GitExePath());
 
-      var records = gitRepo.Log();
+      var records = gitRepo.Log(routine.Deadline);
 
-      foreach (var renameAuthor in query.Renames)
+      records = records.Where(x => routine.TimeRanges.Any(tp => tp.Begin <= x.Date && x.Date <= tp.End)).ToImmutableList();
+
+      foreach (var renameAuthor in routine.Renames)
       {
         records = renameAuthor.Invoke(records, renameAuthor.To, renameAuthor.From);
       }
 
-      foreach (var reduction in query.Reductions)
+      foreach (var reduction in routine.Reductions)
       {
         records = reduction.Invoke(records, reduction.Argument);
       }
 
       reducedRecords = reducedRecords.AddRange(records);
 
-      reducedRecords = query.Elements.Invoke(reducedRecords, query.Elements.startPosition, query.Elements.Count);
-
       var reducedNamesFromCommits = reducedRecords.Select(x => x.Name).Distinct();
       var reducedActiveNames = gitRepo.ActiveNames().Where(x => reducedNamesFromCommits. Contains(x));
       allActiveNames = allActiveNames.AddRange(reducedActiveNames);
     }
 
-    query.Analyze(new Api.Analysis.ExecutionContext(reducedRecords, allActiveNames, query.OutputFormat, query.OutputWriter, new System.Threading.CancellationToken()));
+    routine.Analyze(new Api.Analysis.ExecutionContext(reducedRecords, allActiveNames, routine.OutputFormat, routine.OutputWriter, new System.Threading.CancellationToken()));
 
     return reducedRecords;
   }

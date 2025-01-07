@@ -44,16 +44,9 @@ jsonReader.Close();
 
 var routine = Calculations.CreateRoutine(query);
 
-using MemoryStream ms = new MemoryStream();
-using StreamWriter sw = new StreamWriter(ms);
-routine.OutputWriter = sw;
+routine.OutputWriter = outputWriter;
 
 var gitLogRecords = Execute(routine);
 
-sw.Flush();
-ms.Position = 0;
-
-using var reader = new StreamReader(ms);
-outputWriter.WriteLine(reader.ReadToEnd());
-
 outputWriter.Flush();
+outputWriter.Dispose();

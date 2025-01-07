@@ -14,6 +14,13 @@ public static class Calculations
     var routine = new QueryRoutine();
 
     routine.Sources = [.. query.Sources];
+    routine.Deadline = query.Deadline;
+
+    routine.TimeRanges = new List<(Func<IEnumerable<GitLogRecord>, DateTime, DateTime, ImmutableList<GitLogRecord>> Invoke, DateTime Begin, DateTime End)>();
+    foreach (var timePeriod in query.TimeRanges)
+    {
+      routine.TimeRanges.Add((Api.Core.Calculations.WithTimeRange, timePeriod.Begin, timePeriod.End));
+    }
 
     routine.Renames = new List<(Func<IEnumerable<GitLogRecord>, string, string, ImmutableList<GitLogRecord>> Invoke, string To, string From)>();
     foreach (var authorRename in query.Renames)
@@ -59,11 +66,6 @@ public static class Calculations
     foreach (var msg in query.Excludes.Messages)
     {
       routine.Reductions.Add((Api.Core.Calculations.ExcludeMessage, new Regex(msg)));
-    }
-
-    if (query.Elements != null)
-    {
-      routine.Elements = (Api.Core.Calculations.WithElements, query.Elements.StartPosition, query.Elements.Count);
     }
 
     routine.Analyze = query.Analyzer.ToLower() switch

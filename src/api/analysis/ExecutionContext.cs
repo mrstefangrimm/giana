@@ -9,5 +9,5 @@ public record ExecutionContext(
   IEnumerable<GitLogRecord> LogRecords,
   IEnumerable<string> ActiveNames,
   string OutputFormat,
-  StreamWriter Output,
+  TextWriter Output,
   CancellationToken Cancellation);

@@ -38,9 +38,9 @@ public sealed class GitRepository : IDisposable
     return new GitRepository(localPathOrUri, false, repoName, gitExePath);
   }
 
-  public ImmutableList<GitLogRecord> Log()
+  public ImmutableList<GitLogRecord> Log(DateTime? deadline = null)
   {
-    return Actions.RequestGitHistory(_localPath, _repoName, _gitExePath);
+    return Actions.RequestGitHistory(_localPath, _repoName, _gitExePath, deadline);
   }
 
   public ImmutableList<string> ActiveNames()

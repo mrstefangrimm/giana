@@ -1,7 +1,13 @@
 {
-  "sources": [ "https://github.com/mrstefangrimm/Collares.git" ],
+  "sources": [ "https://github.com/dotnet/eShop.git" ],
   "analyzer": "author-ranking",
   "outputformat": "csv",
+  "timeranges": [
+    {
+      "begin": "2024-01-01T00:00:00Z",
+      "end": "2025-01-01T00:00:00Z"
+    }
+  ],
   "renames": [
     {
       "to": "Stefan Grimm",

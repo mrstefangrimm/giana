@@ -41,6 +41,13 @@
         "gitExePath": "C:\\Program Files\\Git\\bin\\git.exe"
       }
     },
+    "analyze author-ranking-dotnet": {
+      "commandName": "Project",
+      "commandLineArgs": "-q C:\\Temp\\queries\\author-ranking-dotnet.json",
+      "environmentVariables": {
+        "gitExePath": "C:\\Program Files\\Git\\bin\\git.exe"
+      }
+    },
     "analyze author-activity": {
       "commandName": "Project",
       "commandLineArgs": "-q C:\\Temp\\queries\\author-activity.json -o C:\\Temp\\queries\\author-activity.csv",

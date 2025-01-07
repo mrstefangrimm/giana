@@ -12,11 +12,9 @@ namespace Giana.Api.Load;
 
 public static class Actions
 {
-  public static ImmutableList<GitLogRecord> RequestGitHistory(string repositoryRoot, string repositoryName, string gitExe)
+  public static ImmutableList<GitLogRecord> RequestGitHistory(string repositoryRoot, string repositoryName, string gitExe, DateTime? deadline = null)
   {
     const string GIT_LOG_CMD_NEW = "log --pretty=format:\"%h^%an^%as^%s\" --name-only";
-    // TODO: Stop reading https://github.com/dotnet/runtime; it is taking too long.
-    DateTime begin = new DateTime(2010, 01, 01);
 
     List<GitLogRecord> changes = new();
 
@@ -113,7 +111,7 @@ public static class Actions
 
         } while (!string.IsNullOrEmpty(fileLine));
 
-        if (changes.Last().Date < begin)
+        if (deadline.HasValue && changes.Last().Date < deadline.Value)
         {
           break;
         }
