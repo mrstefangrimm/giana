@@ -14,7 +14,7 @@ public static class FileRankingCalculations
     var nameRanking = groupedByPath.Select(group =>
     {
       var record = group.First();
-      return new FileRanking(record.Name, group.Count());
+      return new FileRanking(record.RepoName, record.Name, group.Count());
     });
 
     return nameRanking.ToImmutableList().Sort((a, b) => b.ChangeCount - a.ChangeCount);

@@ -1,7 +1,9 @@
 ﻿using Giana.Api.Core;
 using System;
+using System.Collections;
 using System.Collections.Immutable;
 using System.IO;
+using System.Threading.Tasks;
 using File = System.IO.File;
 
 namespace Giana.Api.Load;
@@ -38,14 +40,29 @@ public sealed class GitRepository : IDisposable
     return new GitRepository(localPathOrUri, false, repoName, gitExePath);
   }
 
+  public static Task<GitRepository> CreateAsync(string localPathOrUri, string gitExePath)
+  {
+    return Task.Factory.StartNew(() => Create(localPathOrUri, gitExePath));
+  }
+
   public ImmutableList<GitLogRecord> Log(DateTime? deadline = null)
   {
     return Actions.RequestGitHistory(_localPath, _repoName, _gitExePath, deadline);
   }
 
+  public Task<ImmutableList<GitLogRecord>> LogAsync(DateTime? deadline = null)
+  {
+    return Task.Factory.StartNew(() => Log(deadline));
+  }
+
   public ImmutableList<string> ActiveNames()
   {
     return Actions.RequestActiveNamesFromMainBranch(_localPath, _gitExePath);
+  }
+
+  public Task<ImmutableList<string>> ActiveNamesAsync()
+  {
+    return Task.Factory.StartNew(ActiveNames);
   }
 
   private GitRepository(string path, bool isTempDir, string repoName, string gitExePath)

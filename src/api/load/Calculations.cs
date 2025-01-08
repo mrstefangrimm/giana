@@ -11,8 +11,6 @@ internal static class Calculations
     List<string> files = new();
     var regexes = ignore.Select(pattern => new Regex(pattern));
 
-    //return paths.Where(path => regexes.Any(regex => !regex.IsMatch(path)));
-
     foreach (var path in paths)
     {
       bool match = regexes.Any(regex => regex.IsMatch(path));

@@ -10,15 +10,19 @@ public static class FileCouplingCalculations
 {
   public static ImmutableList<FileCoupling> CreateFileCouplingList(this IEnumerable<GitLogRecord> logRecords, IEnumerable<string> activeNames)
   {
+    // logRecords can include historical items which are no longer active.
+    var reducedNamesFromRecords = logRecords.Select(x => x.Name).Distinct().ToList();
+    var usedNames = activeNames.Where(x => reducedNamesFromRecords.Contains(x)).ToList();
+
     var couplingCounts = new Dictionary<string, Dictionary<string, int>>();
 
     // initialized twice as big as needed
-    foreach (var name in activeNames)
+    foreach (var nameCol in usedNames)
     {
-      couplingCounts[name] = new Dictionary<string, int>();
-      foreach (var name2 in activeNames)
+      couplingCounts[nameCol] = new Dictionary<string, int>();
+      foreach (var nameRow in usedNames)
       {
-        couplingCounts[name][name2] = 0;
+        couplingCounts[nameCol][nameRow] = 0;
       }
     }
 
@@ -39,11 +43,14 @@ public static class FileCouplingCalculations
       }
     }
 
-    List<FileCoupling> fileCouplings = new List<FileCoupling>();
+    var fileCouplings = new List<FileCoupling>();
     foreach (var counts in couplingCounts)
     {
       foreach (var coupling in counts.Value.Where(x => x.Value > 0))
       {
+        // Remove the cells with the same name in both axes
+        if (counts.Key == coupling.Key) continue;
+
         fileCouplings.Add(new FileCoupling(Name1: counts.Key, Name2: coupling.Key, CouplingCount: coupling.Value));
       }
     }

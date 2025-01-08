@@ -9,9 +9,13 @@ public static class ProjectCouplingAndCohesionRankingCalculations
 {
   public static ImmutableList<ProjectCouplingAndCohesion> CreateProjectCouplingList(this IEnumerable<GitLogRecord> logRecords, IEnumerable<string> activeNames)
   {
-    var fileCouplings = FileCouplingCalculations.CreateFileCouplingList(logRecords, activeNames);
+    // logRecords can include historical items which are no longer active.
+    var reducedNamesFromRecords = logRecords.Select(x => x.Name).Distinct().ToList();
+    var usedNames = activeNames.Where(x => reducedNamesFromRecords.Contains(x)).ToList();
 
-    var projectFileNames = activeNames.Where(x => x.EndsWith(".csproj"));
+    var fileCouplings = FileCouplingCalculations.CreateFileCouplingList(logRecords, usedNames);
+
+    var projectFileNames = usedNames.Where(x => x.EndsWith(".csproj"));
 
     var projectCouplingRecords = new List<ProjectCouplingAndCohesion>();
     foreach (var projectFileName in projectFileNames)

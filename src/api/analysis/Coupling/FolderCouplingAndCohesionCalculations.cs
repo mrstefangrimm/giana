@@ -7,12 +7,12 @@ namespace Giana.Api.Analysis.Coupling;
 
 public static class FolderCouplingAndCohesionRankingCalculations
 {
-  private static void Do(int depth, string root, IEnumerable<string> activeNames, List<string> elementsWithLeaves)
+  private static void FillElementsList(int depth, string root, IEnumerable<string> activeNames, List<string> elementsWithLeaves)
   {
     var distinctElements = activeNames.Where(x => x.Split('/').Count() > depth).Select(x => x.Split('/')[depth]).Distinct().ToList();
     if (distinctElements.Count == 1)
     {
-      Do(depth + 1, $"{root}{distinctElements[0]}/", activeNames, elementsWithLeaves);
+      FillElementsList(depth + 1, $"{root}{distinctElements[0]}/", activeNames, elementsWithLeaves);
     }
     else
     {
@@ -29,7 +29,7 @@ public static class FolderCouplingAndCohesionRankingCalculations
         }
         else if (cnt > 1)
         {
-          Do(depth + 1, $"{name}/", activeNames, elementsWithLeaves);
+          FillElementsList(depth + 1, $"{name}/", activeNames, elementsWithLeaves);
         }
       }
     }
@@ -37,10 +37,14 @@ public static class FolderCouplingAndCohesionRankingCalculations
 
   public static ImmutableList<FolderCouplingAndCohesion> CreateFolderCouplingList(this IEnumerable<GitLogRecord> logRecords, IEnumerable<string> activeNames)
   {
-    List<string> elementsWithLeaves = new List<string>();
-    Do(0, "", activeNames, elementsWithLeaves);
+    // logRecords can include historical items which are no longer active.
+    var reducedNamesFromRecords = logRecords.Select(x => x.Name).Distinct().ToList();
+    var usedNames = activeNames.Where(x => reducedNamesFromRecords.Contains(x)).ToList();
 
-    var fileCouplings = FileCouplingCalculations.CreateFileCouplingList(logRecords, activeNames);
+    List<string> elementsWithLeaves = new List<string>();
+    FillElementsList(0, "", usedNames, elementsWithLeaves);
+
+    var fileCouplings = FileCouplingCalculations.CreateFileCouplingList(logRecords, usedNames);
 
     var projectCouplingRecords = new List<FolderCouplingAndCohesion>();
     foreach (var path in elementsWithLeaves)

@@ -3,7 +3,7 @@ using System.IO;
 
 namespace Giana.Api.Analysis.Ranking;
 
-public record CommitRanking(string Commit, string Description, int ChangedFiles);
+public record CommitRanking(string Repository, string Commit, string Description, int ChangedFiles);
 
 public static class CommitRankingActions
 {
@@ -11,7 +11,7 @@ public static class CommitRankingActions
   {
     foreach (var item in records)
     {
-      writer.WriteLine($"{item.Commit},{item.ChangedFiles},{item.Description}");
+      writer.WriteLine($"{item.Repository},{item.Commit},{item.ChangedFiles},{item.Description}");
     }
   }
 

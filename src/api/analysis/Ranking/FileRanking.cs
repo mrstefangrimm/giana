@@ -4,7 +4,7 @@ using System.IO;
 
 namespace Giana.Api.Analysis.Ranking;
 
-public record FileRanking(string Path, int ChangeCount);
+public record FileRanking(string Repository, string Path, int ChangeCount);
 
 public static class FileRankingActions
 {
@@ -12,7 +12,7 @@ public static class FileRankingActions
   {
     foreach (var item in records)
     {
-      writer.WriteLine($"{item.Path}\t{item.ChangeCount}");
+      writer.WriteLine($"{item.Repository},{item.Path},{item.ChangeCount}");
     }
   }
 
