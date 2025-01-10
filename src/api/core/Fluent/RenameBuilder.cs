@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Immutable;
 
 namespace Giana.Api.Core.Fluent;
 
@@ -14,7 +14,7 @@ public interface IRenameBuilder : IReductionBuilder
 
 internal class RenameBuilder : ReductionBuilder, IRenameBuilder
 {
-  internal RenameBuilder(IEnumerable<GitLogRecord> records)
+  internal RenameBuilder(IImmutableList<GitLogRecord> records)
   {
     _query = Reduction.CreateEmpty(records);
   }

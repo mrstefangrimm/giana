@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 
 namespace Giana.Api.Analysis.Ranking;
@@ -8,8 +8,9 @@ public record AuthorRanking(string Author, int TouchedFiles);
 
 public static class AuthorRankingActions
 {
-  public static void WriteAsCsv(this ICollection<AuthorRanking> records, TextWriter writer)
+  public static void WriteAsCsv(this IImmutableList<AuthorRanking> records, TextWriter writer)
   {
+    records.Add(new AuthorRanking("", 0));
     foreach (var item in records)
     {
       Console.WriteLine($"{item.Author},{item.TouchedFiles}");

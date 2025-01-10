@@ -1,6 +1,5 @@
 ﻿using Giana.Api.Core;
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -8,7 +7,7 @@ namespace Giana.Api.Analysis.Ranking;
 
 public static class FileRankingCalculations
 {
-  public static ImmutableList<FileRanking> CreateFileRankingSorted(this IEnumerable<GitLogRecord> records)
+  public static IImmutableList<FileRanking> CreateFileRankingSorted(this IImmutableList<GitLogRecord> records)
   {
     var groupedByPath = records.GroupBy(x => x.Name);
     var nameRanking = groupedByPath.Select(group =>

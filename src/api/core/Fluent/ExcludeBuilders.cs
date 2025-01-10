@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 
 namespace Giana.Api.Core.Fluent;
@@ -26,7 +26,7 @@ public interface IExcludeCommitBuilder : IReductionBuilder
 {
   IExcludeCommitBuilder And(string commit);
   IExcludeNameBuilder Name(Regex name);
-  IExcludeAuthorBuilder Author(string commit);
+  IExcludeAuthorBuilder Author(string author);
   IExcludeMessageBuilder Message(Regex message);
 
   IIncludeBuilder Include();
@@ -57,7 +57,7 @@ public interface IExcludeMessageBuilder : IReductionBuilder
 
 internal class ExcludeBuilder : ReductionBuilder, IExcludeBuilder
 {
-  internal ExcludeBuilder(IEnumerable<GitLogRecord> records)
+  internal ExcludeBuilder(IImmutableList<GitLogRecord> records)
   {
     _query = Reduction.CreateEmpty(records);
   }

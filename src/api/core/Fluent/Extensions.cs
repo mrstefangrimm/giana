@@ -1,10 +1,10 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Immutable;
 
 namespace Giana.Api.Core.Fluent;
 
 public static class Extensions
 {
-  public static ITimeRangeBuilder TimeRange(this IEnumerable<GitLogRecord> records)
+  public static ITimeRangeBuilder TimeRange(this IImmutableList<GitLogRecord> records)
   {
     return new TimeRangeBuilder(records);
   }
@@ -14,7 +14,7 @@ public static class Extensions
     return new TimeRangeBuilder(lazyRecords);
   }
 
-  public static IRenameBuilder Rename(this IEnumerable<GitLogRecord> records)
+  public static IRenameBuilder Rename(this IImmutableList<GitLogRecord> records)
   {
     return new RenameBuilder(records);
   }
@@ -24,7 +24,7 @@ public static class Extensions
     return new RenameBuilder(lazyRecords);
   }
 
-  public static IIncludeBuilder Include(this IEnumerable<GitLogRecord> records)
+  public static IIncludeBuilder Include(this IImmutableList<GitLogRecord> records)
   {
     return new IncludeBuilder(records);
   }
@@ -34,7 +34,7 @@ public static class Extensions
     return new IncludeBuilder(lazyRecords);
   }
 
-  public static IExcludeBuilder Exclude(this IEnumerable<GitLogRecord> records)
+  public static IExcludeBuilder Exclude(this IImmutableList<GitLogRecord> records)
   {
     return new ExcludeBuilder(records);
   }
@@ -44,7 +44,7 @@ public static class Extensions
     return new ExcludeBuilder(lazyRecords);
   }
 
-  public static IElementsRangeBuilder Elements(this IEnumerable<GitLogRecord> records)
+  public static IElementsRangeBuilder Elements(this IImmutableList<GitLogRecord> records)
   {
     return new ElementsRangeBuilder(records);
   }

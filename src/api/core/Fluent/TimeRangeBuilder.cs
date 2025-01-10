@@ -1,5 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Giana.Api.Core.Fluent;
 
@@ -16,7 +16,7 @@ public interface ITimeRangeBuilder : IReductionBuilder
 
 internal class TimeRangeBuilder : ReductionBuilder, ITimeRangeBuilder
 {
-  internal TimeRangeBuilder(IEnumerable<GitLogRecord> records)
+  internal TimeRangeBuilder(IImmutableList<GitLogRecord> records)
   {
     _query = Reduction.CreateEmpty(records);
   }

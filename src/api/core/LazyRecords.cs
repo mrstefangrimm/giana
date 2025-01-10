@@ -1,18 +1,18 @@
 ﻿using System;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 
 namespace Giana.Api.Core;
 
 public sealed class LazyRecords<RecordType>
 {
-  private readonly Func<IEnumerable<RecordType>> _valueFactory;
+  private readonly Func<IImmutableList<RecordType>> _valueFactory;
 
-  public LazyRecords(Func<IEnumerable<RecordType>> valueFactory)
+  public LazyRecords(Func<IImmutableList<RecordType>> valueFactory)
   {
     _valueFactory = valueFactory ?? throw new ArgumentNullException(nameof(valueFactory));
   }
 
-  public LazyRecords(IEnumerable<RecordType> resolvedRecords)
+  public LazyRecords(IImmutableList<RecordType> resolvedRecords)
   {
     if (resolvedRecords == null) throw new ArgumentNullException(nameof(resolvedRecords));
     _valueFactory = () => resolvedRecords;
@@ -24,5 +24,5 @@ public sealed class LazyRecords<RecordType>
     _valueFactory = other._valueFactory;
   }
 
-  public IEnumerable<RecordType> Value => _valueFactory();
+  public IImmutableList<RecordType> Value => _valueFactory();
 }

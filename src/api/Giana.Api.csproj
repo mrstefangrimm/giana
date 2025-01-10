@@ -10,7 +10,7 @@
     <Description>C# API for Git Analysis (giana)</Description>
     <PackageProjectUrl>https://github.com/mrstefangrimm/giana</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mrstefangrimm/giana</RepositoryUrl>
-    <Version>0.0.1</Version>
+    <Version>0.0.3</Version>
   </PropertyGroup>
 
   <ItemGroup>

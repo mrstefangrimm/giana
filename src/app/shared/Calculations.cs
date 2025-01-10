@@ -16,19 +16,19 @@ public static class Calculations
     routine.Sources = [.. query.Sources];
     routine.Deadline = query.Deadline;
 
-    routine.TimeRanges = new List<(Func<IEnumerable<GitLogRecord>, DateTime, DateTime, ImmutableList<GitLogRecord>> Invoke, DateTime Begin, DateTime End)>();
+    routine.TimeRanges = new List<(Func<IImmutableList<GitLogRecord>, DateTime, DateTime, IImmutableList<GitLogRecord>> Invoke, DateTime Begin, DateTime End)>();
     foreach (var timePeriod in query.TimeRanges)
     {
       routine.TimeRanges.Add((Api.Core.Calculations.WithTimeRange, timePeriod.Begin, timePeriod.End));
     }
 
-    routine.Renames = new List<(Func<IEnumerable<GitLogRecord>, string, string, ImmutableList<GitLogRecord>> Invoke, string To, string From)>();
+    routine.Renames = new List<(Func<IImmutableList<GitLogRecord>, string, string, IImmutableList<GitLogRecord>> Invoke, string To, string From)>();
     foreach (var authorRename in query.Renames)
     {
       routine.Renames.Add((Api.Core.Calculations.RenameAuthor, authorRename.To, authorRename.From));
     }
 
-    routine.Reductions = new List<(Func<IEnumerable<GitLogRecord>, Regex, ImmutableList<GitLogRecord>> Invoke, Regex Argument)>();
+    routine.Reductions = new List<(Func<IImmutableList<GitLogRecord>, Regex, IImmutableList<GitLogRecord>> Invoke, Regex Argument)>();
 
     if (query.Includes.Names.Any())
     {

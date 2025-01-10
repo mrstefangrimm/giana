@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Immutable;
 
 namespace Giana.Api.Core.Fluent;
 
@@ -9,7 +9,7 @@ public interface IElementsRangeBuilder : IReductionBuilder
 
 internal class ElementsRangeBuilder : ReductionBuilder, IElementsRangeBuilder
 {
-  internal ElementsRangeBuilder(IEnumerable<GitLogRecord> records)
+  internal ElementsRangeBuilder(IImmutableList<GitLogRecord> records)
   {
     _query = Reduction.CreateEmpty(records);
   }

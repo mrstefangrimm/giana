@@ -1,6 +1,5 @@
 ﻿using Giana.Api.Core;
 using System;
-using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 
@@ -8,7 +7,7 @@ namespace Giana.Api.Analysis.Ranking;
 
 public static class AuthorRankingCalculations
 {
-  public static ImmutableList<AuthorRanking> CreateAuthorRankingSorted(this IEnumerable<GitLogRecord> records)
+  public static IImmutableList<AuthorRanking> CreateAuthorRankingSorted(this IImmutableList<GitLogRecord> records)
   {
     //var authorRanking = from item in records.AsParallel()
     //                    group item by item.Author into grp

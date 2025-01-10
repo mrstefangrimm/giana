@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Immutable;
 using System.IO;
 
 namespace Giana.Api.Analysis.Coupling;
@@ -7,7 +7,7 @@ public record ProjectCouplingAndCohesion(string ProjectName, int CouplingCount, 
 
 public static class ProjectCouplingAndCohesionActions
 {
-  public static void WriteAsCsv(this IEnumerable<ProjectCouplingAndCohesion> records, TextWriter writer)
+  public static void WriteAsCsv(this IImmutableList<ProjectCouplingAndCohesion> records, TextWriter writer)
   {
     foreach (var item in records)
     {

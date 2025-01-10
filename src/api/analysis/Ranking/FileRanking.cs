@@ -1,5 +1,4 @@
-﻿using Giana.Api.Core;
-using System.Collections.Generic;
+﻿using System.Collections.Immutable;
 using System.IO;
 
 namespace Giana.Api.Analysis.Ranking;
@@ -8,7 +7,7 @@ public record FileRanking(string Repository, string Path, int ChangeCount);
 
 public static class FileRankingActions
 {
-  public static void WriteAsCsv(this ICollection<FileRanking> records, TextWriter writer)
+  public static void WriteAsCsv(this IImmutableList<FileRanking> records, TextWriter writer)
   {
     foreach (var item in records)
     {

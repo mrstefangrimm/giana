@@ -9,7 +9,7 @@ namespace Giana.Api.Analysis.Activity;
 
 public static class AuthorActivityCalculations
 {
-  public static IEnumerable<string> CreateActivityChartAsCsv(IEnumerable<GitLogRecord> records)
+  public static IImmutableList<string> CreateActivityChartAsCsv(IImmutableList<GitLogRecord> records)
   {
     var authorFileTouches = CreateAuthorActivity(records);
 
@@ -17,14 +17,14 @@ public static class AuthorActivityCalculations
     var firstCommitDate = sortedRecords.First().Date;
     var lastCommitDate = sortedRecords.Last().Date;
 
-    var listOfWeeks = CreateListOfWeeks(records, firstCommitDate, lastCommitDate);
+    var listOfWeeks = CreateListOfWeeks(firstCommitDate, lastCommitDate);
 
     var authors = sortedRecords.OrderBy(rec => rec.Author).Select(rec => rec.Author).Distinct();
 
-    return CreateChartDataGrid(authors.ToList(), listOfWeeks, authorFileTouches);
+    return CreateChartDataGrid(authors.ToImmutableList(), listOfWeeks, authorFileTouches);
   }
 
-  private static ImmutableList<AuthorActivity> CreateAuthorActivity(IEnumerable<GitLogRecord> records)
+  private static IImmutableList<AuthorActivity> CreateAuthorActivity(IImmutableList<GitLogRecord> records)
   {
     var commitsWithWeeks = records.Select(item => new CommitOfAuthor(
       Author: item.Author,
@@ -48,7 +48,7 @@ public static class AuthorActivityCalculations
     return authorFileTouches.ToImmutableList();
   }
 
-  private static ImmutableList<string> CreateListOfWeeks(IEnumerable<GitLogRecord> records, DateTime begin, DateTime end)
+  private static IImmutableList<string> CreateListOfWeeks(DateTime begin, DateTime end)
   {
     var listOfWeeks = new List<string>();
 
@@ -62,7 +62,7 @@ public static class AuthorActivityCalculations
     return listOfWeeks.Distinct().ToImmutableList();
   }
 
-  private static IEnumerable<string> CreateChartDataGrid(IReadOnlyList<string> authors, IReadOnlyList<string> yearAndWeeks, IEnumerable<AuthorActivity> fileTouches)
+  private static IImmutableList<string> CreateChartDataGrid(IImmutableList<string> authors, IImmutableList<string> yearAndWeeks, IImmutableList<AuthorActivity> fileTouches)
   {
     var chart = new List<string>();
     // Add column headers
@@ -86,7 +86,7 @@ public static class AuthorActivityCalculations
       chart.Add($"{authors[author]}," + string.Join(",", row));
     }
 
-    return chart;
+    return chart.ToImmutableList();
   }
 
   private static int GetIso8601WeekOfYear(DateTime time)
@@ -104,7 +104,7 @@ public static class AuthorActivityCalculations
     return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
   }
 
-  private record CommitOfAuthor(string Author, int Year, int WeekOfYear)
+  private sealed record CommitOfAuthor(string Author, int Year, int WeekOfYear)
   {
     public string YearAndWeek => $"{Year}-{WeekOfYear:00}";
   }

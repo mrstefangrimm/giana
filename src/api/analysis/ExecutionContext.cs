@@ -1,13 +1,13 @@
 ﻿using Giana.Api.Core;
-using System.Collections.Generic;
+using System.Collections.Immutable;
 using System.IO;
 using System.Threading;
 
 namespace Giana.Api.Analysis;
 
 public record ExecutionContext(
-  IEnumerable<GitLogRecord> LogRecords,
-  IEnumerable<string> ActiveNames,
+  IImmutableList<GitLogRecord> LogRecords,
+  IImmutableList<string> ActiveNames,
   string OutputFormat,
   TextWriter Output,
   CancellationToken Cancellation);

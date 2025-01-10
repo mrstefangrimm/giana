@@ -20,7 +20,7 @@ internal record Reduction(
   ICollection<(DateTime Begin, DateTime End)> TimePeriods,
   ICollection<(int StartPosition, int Count)> Elements)
 {
-  public static Reduction CreateEmpty(IEnumerable<GitLogRecord> records)
+  public static Reduction CreateEmpty(IImmutableList<GitLogRecord> records)
   {
     return new Reduction(new LazyRecords<GitLogRecord>(records), new List<Regex>(), new List<string>(), new List<string>(), new List<Regex>(), new List<Regex>(), new List<string>(), new List<string>(), new List<Regex>(), new List<(string, string)>(), new List<(DateTime, DateTime)>(), new List<(int, int)>());
   }

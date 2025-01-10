@@ -1,15 +1,18 @@
-﻿using System.Globalization;
+﻿using System;
+using System.Collections.Generic;
+using System.Collections.Immutable;
+using System.Globalization;
 
 namespace Giana.Api.Core.Tests;
 
 public class CalculationsTestBase
 {
   protected static readonly IFormatProvider _fmt = new CultureInfo("en-US");
-  protected readonly ICollection<GitLogRecord> _testRecords;
+  protected readonly IImmutableList<GitLogRecord> _testRecords;
 
   protected CalculationsTestBase()
   {
-    _testRecords = GitLogData().ToList();
+    _testRecords = GitLogData().ToImmutableList();
   }
 
   protected static IEnumerable<GitLogRecord> GitLogData()

@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Immutable;
 using System.IO;
 
 namespace Giana.Api.Analysis.Activity;
@@ -7,7 +7,7 @@ public record AuthorActivity(string Author, string YearAndWeek, int TouchedFiles
 
 public static class AuthorActivityActions
 {
-  public static void WriteChartAsCsv(this IEnumerable<string> chart, TextWriter writer)
+  public static void WriteChartAsCsv(this IImmutableList<string> chart, TextWriter writer)
   {
     foreach (var row in chart)
     {

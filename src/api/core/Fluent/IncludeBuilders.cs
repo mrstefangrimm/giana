@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Immutable;
 using System.Text.RegularExpressions;
 
 namespace Giana.Api.Core.Fluent;
@@ -57,7 +57,7 @@ public interface IIncludeMessageBuilder : IReductionBuilder
 
 internal class IncludeBuilder : ReductionBuilder, IIncludeBuilder
 {
-  internal IncludeBuilder(IEnumerable<GitLogRecord> records)
+  internal IncludeBuilder(IImmutableList<GitLogRecord> records)
   {
     _query = Reduction.CreateEmpty(records);
   }

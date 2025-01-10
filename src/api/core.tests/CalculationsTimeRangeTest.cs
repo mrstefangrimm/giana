@@ -1,4 +1,5 @@
 using FluentAssertions;
+using System;
 
 namespace Giana.Api.Core.Tests;
 

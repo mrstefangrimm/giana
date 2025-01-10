@@ -7,11 +7,11 @@ namespace Giana.Api.Analysis.Coupling;
 
 public static class ProjectCouplingAndCohesionRankingCalculations
 {
-  public static ImmutableList<ProjectCouplingAndCohesion> CreateProjectCouplingList(this IEnumerable<GitLogRecord> logRecords, IEnumerable<string> activeNames)
+  public static IImmutableList<ProjectCouplingAndCohesion> CreateProjectCouplingList(this IImmutableList<GitLogRecord> logRecords, IImmutableList<string> activeNames)
   {
     // logRecords can include historical items which are no longer active.
-    var reducedNamesFromRecords = logRecords.Select(x => x.Name).Distinct().ToList();
-    var usedNames = activeNames.Where(x => reducedNamesFromRecords.Contains(x)).ToList();
+    var reducedNamesFromRecords = logRecords.Select(x => x.Name).Distinct().ToImmutableList();
+    var usedNames = activeNames.Where(x => reducedNamesFromRecords.Contains(x)).ToImmutableList();
 
     var fileCouplings = FileCouplingCalculations.CreateFileCouplingList(logRecords, usedNames);
 
@@ -20,7 +20,7 @@ public static class ProjectCouplingAndCohesionRankingCalculations
     var projectCouplingRecords = new List<ProjectCouplingAndCohesion>();
     foreach (var projectFileName in projectFileNames)
     {
-      string projectPath = Calculations.GetPath(projectFileName);
+      string projectPath = Calculations.ExtractPath(projectFileName);
 
       var recordsOfThisProject = fileCouplings.Where(rec => rec.Name1.StartsWith(projectPath) || rec.Name2.StartsWith(projectPath)).ToList();
 

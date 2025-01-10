@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Immutable;
 using System.IO;
 
 namespace Giana.Api.Analysis.Coupling;
@@ -7,7 +7,7 @@ public record FileCoupling(string Name1, string Name2, int CouplingCount);
 
 public static class FileCouplingActions
 {
-  public static void WriteAsCsv(this IEnumerable<FileCoupling> records, TextWriter writer)
+  public static void WriteAsCsv(this IImmutableList<FileCoupling> records, TextWriter writer)
   {
     foreach (var item in records)
     {

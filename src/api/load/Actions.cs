@@ -12,7 +12,7 @@ namespace Giana.Api.Load;
 
 public static class Actions
 {
-  public static ImmutableList<GitLogRecord> RequestGitHistory(string repositoryRoot, string repositoryName, string gitExe, DateTime? deadline = null)
+  public static ImmutableList<GitLogRecord> RequestGitLog(string repositoryRoot, string repositoryName, string gitExePath, DateTime? deadline = null)
   {
     const string GIT_LOG_CMD_NEW = "log --pretty=format:\"%h^%an^%as^%s\" --name-only";
 
@@ -22,7 +22,7 @@ public static class Actions
     gitInfo.CreateNoWindow = true;
     gitInfo.RedirectStandardError = true;
     gitInfo.RedirectStandardOutput = true;
-    gitInfo.FileName = gitExe;
+    gitInfo.FileName = gitExePath;
     gitInfo.StandardOutputEncoding = Encoding.UTF8;
 
     Process gitProcess = new Process();
@@ -171,7 +171,7 @@ public static class Actions
 
   }
 
-  internal static string RequestMainBranchName(string repositoryRoot, string gitExe)
+  internal static string RequestMainBranchName(string repositoryRoot, string gitExePath)
   {
     const string GIT_BRANCH_CMD = "branch";
 
@@ -179,7 +179,7 @@ public static class Actions
     gitInfo.CreateNoWindow = true;
     gitInfo.RedirectStandardError = true;
     gitInfo.RedirectStandardOutput = true;
-    gitInfo.FileName = gitExe;
+    gitInfo.FileName = gitExePath;
     gitInfo.StandardOutputEncoding = Encoding.UTF8;
 
     Process gitProcess = new Process();
@@ -210,7 +210,7 @@ public static class Actions
     return string.Empty;
   }
 
-  public static string RequestRepositoryName(string repositoryRoot, string gitExe)
+  public static string RequestRepositoryName(string repositoryRoot, string gitExePath)
   {
     const string GIT_REMOTE_CMD = "remote -v";
 
@@ -218,7 +218,7 @@ public static class Actions
     gitInfo.CreateNoWindow = true;
     gitInfo.RedirectStandardError = true;
     gitInfo.RedirectStandardOutput = true;
-    gitInfo.FileName = gitExe;
+    gitInfo.FileName = gitExePath;
     gitInfo.StandardOutputEncoding = Encoding.UTF8;
 
     Process gitProcess = new Process();
@@ -261,7 +261,7 @@ public static class Actions
     return string.Empty;
   }
 
-  public static string CreateCloneFromUri(string uri, string gitExe)
+  public static string CreateCloneFromUri(string uri, string gitExePath)
   {
     //var tempPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.CommonDocuments), "Folder1");// Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
     var tempPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
@@ -273,7 +273,7 @@ public static class Actions
     gitInfo.CreateNoWindow = true;
     gitInfo.RedirectStandardError = true;
     gitInfo.RedirectStandardOutput = true;
-    gitInfo.FileName = gitExe;
+    gitInfo.FileName = gitExePath;
     gitInfo.StandardOutputEncoding = Encoding.UTF8;
 
     Process gitProcess = new Process();

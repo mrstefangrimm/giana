@@ -1,6 +1,5 @@
 ﻿using Giana.Api.Core;
 using System;
-using System.Collections;
 using System.Collections.Immutable;
 using System.IO;
 using System.Threading.Tasks;
@@ -45,22 +44,22 @@ public sealed class GitRepository : IDisposable
     return Task.Factory.StartNew(() => Create(localPathOrUri, gitExePath));
   }
 
-  public ImmutableList<GitLogRecord> Log(DateTime? deadline = null)
+  public IImmutableList<GitLogRecord> Log(DateTime? deadline = null)
   {
-    return Actions.RequestGitHistory(_localPath, _repoName, _gitExePath, deadline);
+    return Actions.RequestGitLog(_localPath, _repoName, _gitExePath, deadline);
   }
 
-  public Task<ImmutableList<GitLogRecord>> LogAsync(DateTime? deadline = null)
+  public Task<IImmutableList<GitLogRecord>> LogAsync(DateTime? deadline = null)
   {
     return Task.Factory.StartNew(() => Log(deadline));
   }
 
-  public ImmutableList<string> ActiveNames()
+  public IImmutableList<string> ActiveNames()
   {
     return Actions.RequestActiveNamesFromMainBranch(_localPath, _gitExePath);
   }
 
-  public Task<ImmutableList<string>> ActiveNamesAsync()
+  public Task<IImmutableList<string>> ActiveNamesAsync()
   {
     return Task.Factory.StartNew(ActiveNames);
   }
