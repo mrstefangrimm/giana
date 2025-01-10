@@ -9,9 +9,9 @@ namespace Giana.App.Shared;
 
 public static class Calculations
 {
-  public static QueryRoutine CreateRoutine(this Query query)
+  public static Routine CreateRoutine(this Query query)
   {
-    var routine = new QueryRoutine();
+    var routine = new Routine();
 
     routine.Sources = [.. query.Sources];
     routine.Deadline = query.Deadline;

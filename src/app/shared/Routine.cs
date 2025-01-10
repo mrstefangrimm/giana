@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace Giana.App.Shared;
 
-public class QueryRoutine
+public class Routine
 {
   public string OutputFormat { get; set; }
   public TextWriter OutputWriter { get; set; }

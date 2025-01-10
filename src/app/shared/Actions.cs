@@ -8,7 +8,7 @@ namespace Giana.App.Shared;
 
 public static class Actions
 {
-  public static ImmutableList<GitLogRecord> Execute(QueryRoutine routine)
+  public static ImmutableList<GitLogRecord> Execute(Routine routine)
   {
     ImmutableList<GitLogRecord> reducedRecords = [];
     ImmutableList<string> allActiveNames = [];
