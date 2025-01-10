@@ -1,0 +1,9 @@
+<Project>
+   <!--https://www.heise.de/blog/Neu-in-NET-8-0-37-Zusammenfassung-aller-Build-Artefakte-in-ein-Verzeichnis-9840689.html-->
+  <!-- See https://aka.ms/dotnet/msbuild/customize for more details on customizing your build -->
+  <PropertyGroup>
+
+    <ArtifactsPath>$(MSBuildThisFileDirectory)artifacts</ArtifactsPath>
+
+  </PropertyGroup>
+</Project>
