@@ -41,10 +41,10 @@ public class ApiCalculationsConcurrencyTest
   public void ExcludeMessage_RunFor100sec_Successful()
   {
     var mutableData = new ConcurrentBag<GitLogRecord>();
-    var excludeRegex = new Regex("[M|m]se.*wi.*no.*");
+    var excludeRegex = new Regex("[M|m]ess.*wi.*no.*");
 
     var writer = StartWriterTask(mutableData);
-    var reader = StartReaderTask(() => Calculations.ExcludeName(mutableData.ToImmutableList(), excludeRegex));
+    var reader = StartReaderTask(() => Calculations.ExcludeMessage(mutableData.ToImmutableList(), excludeRegex));
 
     WaitAndAssert(writer, reader);
   }
