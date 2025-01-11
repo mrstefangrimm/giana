@@ -10,7 +10,7 @@ on:
     branches: [ "main" ]
 
 env:
-  SOLUTION_FILE_PATH: src\Giana.Src.sln
+  SOLUTION_FILE_PATH: src/Giana.Src.sln
   
 jobs:
   build:
