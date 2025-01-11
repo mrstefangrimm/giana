@@ -9,7 +9,7 @@
     "Container (Dockerfile)": {
       "commandName": "Docker",
       "environmentVariables": {
-        "GitExePath": "C:\\Program Files\\Git\\bin\\git.exe"
+        "GitExePath": "/usr/bin/git"
       }
     },
     "WSL": {
@@ -19,69 +19,6 @@
         "GitExePath": "/usr/bin/git"
       },
       "distributionName": ""
-    },
-    "analyze commit-ranking": {
-      "commandName": "Project",
-      "commandLineArgs": "-q C:\\Temp\\queries\\commit-ranking.json",
-      "environmentVariables": {
-        "GitExePath": "C:\\Program Files\\Git\\bin\\git.exe"
-      }
-    },
-    "analyze file-ranking": {
-      "commandName": "Project",
-      "commandLineArgs": "-q C:\\Temp\\queries\\file-ranking.json",
-      "environmentVariables": {
-        "GitExePath": "C:\\Program Files\\Git\\bin\\git.exe"
-      }
-    },
-    "analyze author-ranking": {
-      "commandName": "Project",
-      "commandLineArgs": "-q C:\\Temp\\queries\\author-ranking.json",
-      "environmentVariables": {
-        "GitExePath": "C:\\Program Files\\Git\\bin\\git.exe"
-      }
-    },
-    "analyze author-ranking-dotnet": {
-      "commandName": "Project",
-      "commandLineArgs": "-q C:\\Temp\\queries\\author-ranking-dotnet.json",
-      "environmentVariables": {
-        "GitExePath": "C:\\Program Files\\Git\\bin\\git.exe"
-      }
-    },
-    "analyze author-activity": {
-      "commandName": "Project",
-      "commandLineArgs": "-q C:\\Temp\\queries\\author-activity.json -o C:\\Temp\\queries\\author-activity.csv",
-      "environmentVariables": {
-        "GitExePath": "C:\\Program Files\\Git\\bin\\git.exe"
-      }
-    },
-    "analyze file-coupling": {
-      "commandName": "Project",
-      "commandLineArgs": "-q C:\\Temp\\queries\\file-coupling.json -o C:\\Temp\\queries\\file-coupling.csv",
-      "environmentVariables": {
-        "GitExePath": "C:\\Program Files\\Git\\bin\\git.exe"
-      }
-    },
-    "analyze parc file-coupling": {
-      "commandName": "Project",
-      "commandLineArgs": "-q C:\\Temp\\queries\\parc-file-coupling.json",
-      "environmentVariables": {
-        "GitExePath": "C:\\Program Files\\Git\\bin\\git.exe"
-      }
-    },
-    "analyze project-coupling-and-cohesion": {
-      "commandName": "Project",
-      "commandLineArgs": "-q C:\\Temp\\queries\\project-coupling-and-cohesion.json -o C:\\Temp\\queries\\project-coupling-and-cohesion.csv",
-      "environmentVariables": {
-        "GitExePath": "C:\\Program Files\\Git\\bin\\git.exe"
-      }
-    },
-    "analyze folder-coupling-and-cohesion": {
-      "commandName": "Project",
-      "commandLineArgs": "-q C:\\Temp\\queries\\folder-coupling-and-cohesion.json -o C:\\Temp\\queries\\folder-coupling-and-cohesion.csv",
-      "environmentVariables": {
-        "GitExePath": "C:\\Program Files\\Git\\bin\\git.exe"
-      }
     },
     "Giana.App.Cmd help": {
       "commandName": "Project",

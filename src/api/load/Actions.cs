@@ -15,7 +15,9 @@ public static class Actions
   {
     const string GitLogCmd = "log --pretty=format:\"%h^%an^%as^%s\" --name-only";
 
-    using var gitProcess = CreateAndStartGitProcess(repositoryRoot, gitExePath, GitLogCmd);
+    (Process gitProcess, Action defering) = CreateAndStartGitProcess(repositoryRoot, gitExePath, GitLogCmd);
+    using var defer = new Defer(defering);
+    CheckStdErrOutput(gitProcess);
 
     var records = new List<GitLogRecord>();
 
@@ -66,7 +68,9 @@ public static class Actions
 
     string gitCmd = $"ls-tree -r {mainBranch} --name-only";
 
-    using var gitProcess = CreateAndStartGitProcess(repositoryRoot, gitExePath, gitCmd);
+    (Process gitProcess, Action defering) = CreateAndStartGitProcess(repositoryRoot, gitExePath, gitCmd);
+    using var defer = new Defer(defering);
+    CheckStdErrOutput(gitProcess);
 
     var records = new List<string>();
 
@@ -83,7 +87,9 @@ public static class Actions
   {
     const string GitBranchCmd = "branch";
 
-    using var gitProcess = CreateAndStartGitProcess(repositoryRoot, gitExePath, GitBranchCmd);
+    (Process gitProcess, Action defering) = CreateAndStartGitProcess(repositoryRoot, gitExePath, GitBranchCmd);
+    using var defer = new Defer(defering);
+    CheckStdErrOutput(gitProcess);
 
     while (!gitProcess.StandardOutput.EndOfStream)
     {
@@ -102,7 +108,9 @@ public static class Actions
   {
     const string GitRemoteCmd = "remote -v";
 
-    using var gitProcess = CreateAndStartGitProcess(repositoryRoot, gitExePath, GitRemoteCmd);
+    (Process gitProcess, Action defering) = CreateAndStartGitProcess(repositoryRoot, gitExePath, GitRemoteCmd);
+    using var defer = new Defer(defering);
+    CheckStdErrOutput(gitProcess);
 
     while (!gitProcess.StandardOutput.EndOfStream)
     {
@@ -110,7 +118,7 @@ public static class Actions
 
       // Supported formats:
       // https://tfs-app.company.com/A/B/_git/{RepoName}
-      // https://github.com/dotnet/runtime.git (fetch) [blob:none]
+      // https://github.com/mrstefangrimm/giana.git (fetch) [blob:none]
       var split1 = line.Split("git/");
       if (split1.Length == 2)
       {
@@ -136,12 +144,15 @@ public static class Actions
 
     string gitCloneCmd = $"clone --filter=blob:none --no-checkout --single-branch {uri} {tempPath}";
 
-    using var gitProcess = CreateAndStartGitProcess(tempPath, gitExePath, gitCloneCmd);
+    var cloneProcess = CreateAndStartGitProcess(tempPath, gitExePath, gitCloneCmd);
+    // Clone writes to the stderr, CheckStdErrOutput is therefore not called.
+
+    using var defer = new Defer(cloneProcess.Defering);
 
     return tempPath;
   }
 
-  private static Process CreateAndStartGitProcess(string woringDir, string gitExePath, string gitCmd)
+  private static (Process Git, Action Defering) CreateAndStartGitProcess(string woringDir, string gitExePath, string gitCmd)
   {
     var gitProcess = new Process();
 
@@ -154,19 +165,23 @@ public static class Actions
     gitProcess.StartInfo.RedirectStandardOutput = true;
     gitProcess.StartInfo.StandardOutputEncoding = Encoding.UTF8;
 
+    var defer = () =>
+    {
+      gitProcess.WaitForExit();
+      gitProcess.Close();
+    };
+
     gitProcess.Start();
 
-    CheckStdErrOutput(gitProcess);
-
-    return gitProcess;
+    return (gitProcess, defer);
   }
 
   private static void CheckStdErrOutput(Process gitProcess)
   {
     // Read error. Async is used because ReadToEnd() blocks when no error.
     var stderrTask = gitProcess.StandardError.ReadToEndAsync();
-    bool hasWaitedTooLong = stderrTask.Wait(1000);
-    var err = !hasWaitedTooLong ? string.Empty : stderrTask.Result;
+    bool errorWithin1sec = stderrTask.Wait(1000);
+    var err = errorWithin1sec ? stderrTask.Result : string.Empty;
     if (!string.IsNullOrEmpty(err))
     {
       throw new InvalidOperationException(err);

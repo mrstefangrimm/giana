@@ -17,6 +17,14 @@
     <Compile Remove="core.tests\**" />
     <EmbeddedResource Remove="core.tests\**" />
     <None Remove="core.tests\**" />
+
+    <Compile Remove="analysis.tests\**" />
+    <EmbeddedResource Remove="analysis.tests\**" />
+    <None Remove="analysis.tests\**" />
+
+    <Compile Remove="load.tests\**" />
+    <EmbeddedResource Remove="load.tests\**" />
+    <None Remove="load.tests\**" />
   </ItemGroup>
 
   <ItemGroup>

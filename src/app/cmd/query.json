@@ -1,13 +1,8 @@
 {
-  "sources": [ "https://github.com/dotnet/eShop.git" ],
+  "sources": [ "https://github.com/mrstefangrimm/giana.git" ],
   "analyzer": "author-ranking",
   "outputformat": "csv",
-  "timeranges": [
-    {
-      "begin": "2024-01-01T00:00:00Z",
-      "end": "2025-01-01T00:00:00Z"
-    }
-  ],
+  "timeranges": [],
   "renames": [
     {
       "to": "Stefan Grimm",

@@ -19,6 +19,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api", "api\Giana.Api.
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Build", "Build", "{2419EC0E-E322-448A-A044-23E28DB239D9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api.Load.Tests", "api\load.tests\Giana.Api.Load.Tests.csproj", "{748889EB-1B30-497B-8B7E-6F945E1261A0}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api.Analysis.Tests", "api\analysis.tests\Giana.Api.Analysis.Tests.csproj", "{22D37F04-A371-4C8F-8AC6-8B364CB9D192}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -53,6 +57,14 @@ Global
 		{1A9A5D1E-E90B-4FDC-846C-2693471D9933}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1A9A5D1E-E90B-4FDC-846C-2693471D9933}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{1A9A5D1E-E90B-4FDC-846C-2693471D9933}.Release|Any CPU.Build.0 = Release|Any CPU
+		{748889EB-1B30-497B-8B7E-6F945E1261A0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{748889EB-1B30-497B-8B7E-6F945E1261A0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{748889EB-1B30-497B-8B7E-6F945E1261A0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{748889EB-1B30-497B-8B7E-6F945E1261A0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{22D37F04-A371-4C8F-8AC6-8B364CB9D192}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{22D37F04-A371-4C8F-8AC6-8B364CB9D192}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{22D37F04-A371-4C8F-8AC6-8B364CB9D192}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{22D37F04-A371-4C8F-8AC6-8B364CB9D192}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
