@@ -107,13 +107,6 @@ public static class Calculations
 
   public static IImmutableList<GitLogRecord> WithTimeRange(this IImmutableList<GitLogRecord> records, DateTime begin, DateTime end)
   {
-    // TODO:
-    //var query = from item in records.AsParallel()
-    //            where timePeriod.Begin <= item.Date && item.Date <= timePeriod.End
-    //            select item;
-
-    //return query.ToImmutableList();
-
     return records.Where(item => begin <= item.Date && item.Date <= end).ToImmutableList();
   }
 

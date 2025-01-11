@@ -1,30 +1,12 @@
-﻿using System.Collections.Generic;
+﻿using System.Collections.Immutable;
 using System.Linq;
-using System.Text.RegularExpressions;
 
 namespace Giana.Api.Load;
 
 internal static class Calculations
 {
-  internal static IEnumerable<string> ObsoleteApplyIgnore(IEnumerable<string> paths, IEnumerable<string> ignore)
+  internal static IImmutableList<string> ReduceFilepathToGitPath(int lenRepositoryPath, IImmutableList<string> absolutePaths)
   {
-    List<string> files = new();
-    var regexes = ignore.Select(pattern => new Regex(pattern));
-
-    foreach (var path in paths)
-    {
-      bool match = regexes.Any(regex => regex.IsMatch(path));
-      if (!match)
-      {
-        files.Add(path);
-      }
-    }
-
-    return files;
-  }
-
-  internal static IEnumerable<string> ReduceFilepathToGitPath(int lenRepositoryPath, IEnumerable<string> absolutePaths)
-  {
-    return absolutePaths.Select(absPath => absPath.Remove(0, lenRepositoryPath + 1));
+    return absolutePaths.Select(absPath => absPath.Remove(0, lenRepositoryPath + 1)).ToImmutableList();
   }
 }
