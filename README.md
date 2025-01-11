@@ -13,7 +13,7 @@ giana is written in C# and includes:
 
 Giana analyzers calculate coupling and cohesion between files. It quickly becomes clear where the software design needs to be improved. Filters allow you to analyze specific areas of your source code.
 
-### Example when and how to use
+### Example when and how to use giana
 
 Imagine a repository where you defined an `IConfig` interface for various supported devices:
 
@@ -24,11 +24,37 @@ Devices\Keyboard\KeyboardConfig.cs
 Devices\Speaker\SpeakerConfig.cs
 ```
 
-An analysis after some time might look like this.
+After some time you do an file-ranking and a file-coupling analysis.
 
-**file-ranking**
-A file-ranking analysis across the entire repository shows this result:
+#### 1. file-ranking analysis across the entire repository.
 
+Command line:
+`>  .\Giana.App.Cmd.bat -q file-ranking.json`
+
+Query file file-ranking.json:
+```json
+{
+  "sources": [ "https://github.com/imagine/this-repository.git" ],
+  "analyzer": "file-ranking",
+  "outputformat": "csv",
+  "timeranges": [],
+  "renames": [],
+  "includes": {
+    "names": [],
+    "commits": [],
+    "authors": [],
+    "messages": []
+  },
+  "excludes": {
+    "names": [],
+    "commits": [],
+    "authors": [],
+    "messages": []
+  }
+}
+```
+
+Result:
 | Name | Changes |
 | --- | --- |
 |Devices\Keyboard\KeyboardConfig.cs|153|
@@ -38,9 +64,35 @@ A file-ranking analysis across the entire repository shows this result:
 |*...*|*...*|
   > The device configuration files were the most frequently changed in the repository.
 
-**file-coupling**
-A file-coupling analysis which includes `Shared\Config\*` and `Devices\*` shows this result:
+#### 2. file-coupling analysis which includes files in Shared\Config\\* and Devices\\*
 
+Command line:
+`>  .\Giana.App.Cmd.bat -q file-coupling.json`
+
+Query file file-ranking.json:
+```json
+{
+  "sources": [ "https://github.com/imagine/this-repository.git" ],
+  "analyzer": "file-coupling",
+  "outputformat": "csv",
+  "timeranges": [],
+  "renames": [],
+  "includes": {
+    "names": [ "Shared/Config/*", "Devices/*" ],
+    "commits": [],
+    "authors": [],
+    "messages": []
+  },
+  "excludes": {
+    "names": [],
+    "commits": [],
+    "authors": [],
+    "messages": []
+  }
+}
+```
+
+Result:
 | Name1 | Name2 | Changes |
 | --- | --- | --- |
 |Devices\Speaker\SpeakerConfig.cs|Devices\Mouse\MouseConfig.cs|108|
@@ -51,7 +103,6 @@ A file-coupling analysis which includes `Shared\Config\*` and `Devices\*` shows 
 |Shared\Config\IConfig.cs|Devices\Keyboard\KeyboardConfig.cs|82|
 |*...*|*...*|*...*|
   > The implementations have a strong coupling with each other and with the interface.
-
 
 
 This simple analysis reveals a weak point: the three device implementations and the interface are highly coupled and have a high volatility.
