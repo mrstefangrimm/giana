@@ -13,7 +13,7 @@ giana is written in C# and includes:
 
 Giana analyzers calculate coupling and cohesion between files. It quickly becomes clear where the software design needs to be improved. Filters allow you to analyze specific areas of your source code.
 
-### Example when and how to use
+### Example when and how to use giana
 
 Imagine a repository where you defined an `IConfig` interface for various supported devices:
 
