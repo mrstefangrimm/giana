@@ -8,14 +8,14 @@ namespace Giana.App.Shared;
 
 public static class Actions
 {
-  public static ImmutableList<GitLogRecord> Execute(Routine routine)
+  public static ImmutableList<GitLogRecord> Execute(Routine routine, Func<string> getGitExePath)
   {
     ImmutableList<GitLogRecord> reducedRecords = [];
     ImmutableList<string> allActiveNames = [];
 
     foreach (var source in routine.Sources)
     {
-      using var gitRepo = GitRepository.Create(source, GitExePath());
+      using var gitRepo = GitRepository.Create(source, getGitExePath());
 
       var records = gitRepo.Log(routine.Deadline);
 
@@ -42,10 +42,5 @@ public static class Actions
     routine.Analyze(new Api.Analysis.ExecutionContext(reducedRecords, allActiveNames, routine.OutputFormat, routine.OutputWriter, new System.Threading.CancellationToken()));
 
     return reducedRecords;
-  }
-
-  private static string GitExePath()
-  {
-    return Environment.GetEnvironmentVariable("gitExePath");
   }
 }
