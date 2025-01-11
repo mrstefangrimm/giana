@@ -1,0 +1,24 @@
+{
+  "sources": [ "https://github.com/mrstefangrimm/giana.git" ],
+  "analyzer": "author-ranking",
+  "outputformat": "csv",
+  "timeranges": [],
+  "renames": [
+    {
+      "to": "Stefan Grimm",
+      "from": "mrstefangrimm"
+    }
+  ],
+  "includes": {
+    "names": [],
+    "commits": [],
+    "authors": [],
+    "messages": []
+  },
+  "excludes": {
+    "names": [],
+    "commits": [],
+    "authors": [],
+    "messages": []
+  }
+}

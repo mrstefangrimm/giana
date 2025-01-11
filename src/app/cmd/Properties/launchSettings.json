@@ -1,0 +1,28 @@
+{
+  "profiles": {
+    "Giana.App.Cmd default": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "GitExePath": "C:\\Program Files\\Git\\bin\\git.exe"
+      }
+    },
+    "Container (Dockerfile)": {
+      "commandName": "Docker",
+      "environmentVariables": {
+        "GitExePath": "/usr/bin/git"
+      }
+    },
+    "WSL": {
+      "commandName": "WSL2",
+      "commandLineArgs": "Giana.App.Cmd.dll",
+      "environmentVariables": {
+        "GitExePath": "/usr/bin/git"
+      },
+      "distributionName": ""
+    },
+    "Giana.App.Cmd help": {
+      "commandName": "Project",
+      "commandLineArgs": "-h"
+    }
+  }
+}
