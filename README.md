@@ -1,3 +1,5 @@
+[![.NET](https://github.com/mrstefangrimm/giana/actions/workflows/ci.yml/badge.svg)](https://github.com/mrstefangrimm/giana/actions/workflows/ci.yml)
+
 # giana
 
 giana stands of GIt ANAlysis. Giana uses `git log` to extract and process the data.
