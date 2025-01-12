@@ -58,7 +58,7 @@ if (idxOutputFile > 0 && cmdLineArgs.Count > idxOutputFile + 1)
 {
   try
   {
-    var outputStream = File.Open(cmdLineArgs[idxOutputFile + 1], FileMode.OpenOrCreate);
+    var outputStream = File.Open(cmdLineArgs[idxOutputFile + 1], FileMode.Create);
     outputWriter = new StreamWriter(outputStream);
   }
   catch
