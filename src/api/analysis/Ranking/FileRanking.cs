@@ -3,15 +3,17 @@ using System.IO;
 
 namespace Giana.Api.Analysis.Ranking;
 
-public record FileRanking(string Repository, string Path, int ChangeCount);
+public record FileRanking(string Repository, string Name, int ChangeCount);
 
 public static class FileRankingActions
 {
   public static void WriteAsCsv(this IImmutableList<FileRanking> records, TextWriter writer)
   {
+    writer.WriteLine("Repository,FileName,ChangeCount");
+
     foreach (var item in records)
     {
-      writer.WriteLine($"{item.Repository},{item.Path},{item.ChangeCount}");
+      writer.WriteLine($"{item.Repository},{item.Name},{item.ChangeCount}");
     }
   }
 

@@ -20,7 +20,7 @@ public static class AuthorRankingCalculations
       return new AuthorRanking(record.Author, group.Count());
     });
 
-    return authorRanking.ToImmutableList().Sort((a, b) => b.TouchedFiles - a.TouchedFiles);
+    return authorRanking.ToImmutableList().Sort((a, b) => b.FileTouches - a.FileTouches);
   }
 }
 

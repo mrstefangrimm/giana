@@ -4,16 +4,17 @@ using System.IO;
 
 namespace Giana.Api.Analysis.Ranking;
 
-public record AuthorRanking(string Author, int TouchedFiles);
+public record AuthorRanking(string Author, int FileTouches);
 
 public static class AuthorRankingActions
 {
   public static void WriteAsCsv(this IImmutableList<AuthorRanking> records, TextWriter writer)
   {
-    records.Add(new AuthorRanking("", 0));
+    writer.WriteLine("Author,FileTouches");
+
     foreach (var item in records)
     {
-      Console.WriteLine($"{item.Author},{item.TouchedFiles}");
+      writer.WriteLine($"{item.Author},{item.FileTouches}");
     }
   }
 

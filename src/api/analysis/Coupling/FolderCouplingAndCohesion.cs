@@ -3,15 +3,17 @@ using System.IO;
 
 namespace Giana.Api.Analysis.Coupling;
 
-public record FolderCouplingAndCohesion(string ProjectName, int CouplingCount, int CohesionCount, double Ratio);
+public record FolderCouplingAndCohesion(string FolderName, int CouplingCount, int CohesionCount, double Ratio);
 
 public static class FolderCouplingAndCohesionActions
 {
   public static void WriteAsCsv(this IImmutableList<FolderCouplingAndCohesion> records, TextWriter writer)
   {
+    writer.WriteLine("FolderName,CohesionCount,CouplingCount,Ratio Cohesion/Coupling");
+
     foreach (var item in records)
     {
-      writer.WriteLine($"{item.ProjectName},{item.CouplingCount},{item.CohesionCount},{item.Ratio:0.000}");
+      writer.WriteLine($"{item.FolderName},{item.CohesionCount},{item.CouplingCount},{item.Ratio:0.000}");
     }
   }
 

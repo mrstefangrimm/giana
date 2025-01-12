@@ -3,15 +3,17 @@ using System.IO;
 
 namespace Giana.Api.Analysis.Ranking;
 
-public record CommitRanking(string Repository, string Commit, string Description, int ChangedFiles);
+public record CommitRanking(string Repository, string Commit, string Message, int CommittedFiles);
 
 public static class CommitRankingActions
 {
   public static void WriteAsCsv(this IImmutableList<CommitRanking> records, TextWriter writer)
   {
+    writer.WriteLine("Repository,Commit,CommitedFiles,Commit Message");
+
     foreach (var item in records)
     {
-      writer.WriteLine($"{item.Repository},{item.Commit},{item.ChangedFiles},{item.Description}");
+      writer.WriteLine($"{item.Repository},{item.Commit},{item.CommittedFiles},{item.Message}");
     }
   }
 

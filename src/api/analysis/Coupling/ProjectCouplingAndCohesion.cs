@@ -9,9 +9,11 @@ public static class ProjectCouplingAndCohesionActions
 {
   public static void WriteAsCsv(this IImmutableList<ProjectCouplingAndCohesion> records, TextWriter writer)
   {
+    writer.WriteLine("ProjectName,CohesionCount,CouplingCount,Ratio Cohesion/Coupling");
+
     foreach (var item in records)
     {
-      writer.WriteLine($"{item.ProjectName},{item.CouplingCount},{item.CohesionCount},{item.Ratio:0.000}");
+      writer.WriteLine($"{item.ProjectName},{item.CohesionCount},{item.CouplingCount},{item.Ratio:0.000}");
     }
   }
 

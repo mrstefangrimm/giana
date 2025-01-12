@@ -16,6 +16,6 @@ public static class CommitRankingCalculations
       return new CommitRanking(commit.RepoName, commit.Commit, commit.Message, group.Count());
     });
 
-    return commitRanking.ToImmutableList().Sort((a, b) => b.ChangedFiles - a.ChangedFiles);
+    return commitRanking.ToImmutableList().Sort((a, b) => b.CommittedFiles - a.CommittedFiles);
   }
 }
