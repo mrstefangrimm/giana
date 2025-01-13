@@ -1,11 +1,13 @@
 ﻿using System;
 using System.Collections.Immutable;
+using System.Threading.Tasks;
 
 namespace Giana.Api.Core;
 
 public sealed class LazyRecords<RecordType>
 {
   private readonly Func<IImmutableList<RecordType>> _valueFactory;
+  private IImmutableList<RecordType> _value;
 
   public LazyRecords(Func<IImmutableList<RecordType>> valueFactory)
   {
@@ -24,5 +26,22 @@ public sealed class LazyRecords<RecordType>
     _valueFactory = other._valueFactory;
   }
 
-  public IImmutableList<RecordType> Value => _valueFactory();
+  public bool Reset()
+  {
+    bool changed = _value != null;
+    _value = null;
+
+    return changed;
+  }
+
+  public IImmutableList<RecordType> Value
+  {
+    get
+    {
+      _value = _value ?? _valueFactory();
+      return _value;
+    }
+  }
+
+  public Task<IImmutableList<RecordType>> ValueAsync => Task.Factory.StartNew(() => Value);
 }

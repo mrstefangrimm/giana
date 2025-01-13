@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
 using System.Text.RegularExpressions;
+using System.Threading.Tasks;
 
 namespace Giana.Api.Core.Fluent;
 
@@ -34,6 +35,7 @@ internal record Reduction(
 public interface IReductionBuilder
 {
   IImmutableList<GitLogRecord> Build();
+  Task<IImmutableList<GitLogRecord>> BuildAsync();
   LazyRecords<GitLogRecord> BuildLazy();
 }
 
@@ -83,6 +85,11 @@ internal class ReductionBuilder : IReductionBuilder
     }
 
     return includedAndExcluded;
+  }
+
+  public Task<IImmutableList<GitLogRecord>> BuildAsync()
+  {
+    return Task.Factory.StartNew(Build);
   }
 
   public LazyRecords<GitLogRecord> BuildLazy()

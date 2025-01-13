@@ -16,8 +16,7 @@ public class LazyRecordsTest
   private readonly Func<IImmutableList<TestRecord>> _nullValueFactory = null;
   private readonly IImmutableList<TestRecord> _nullRecords = null;
 
-  private readonly IEnumerable<TestRecord> _sharedRecords = new[] { new TestRecord("sId", "sData") };
-  private readonly ImmutableArray<TestRecord> _immutableRecords = ImmutableArray.Create(new TestRecord("iId", "iData"));
+  private readonly ImmutableArray<TestRecord> _immutableRecords = [new TestRecord("iId", "iData")];
 
   [Fact]
   public void Ctor_InitWithNullFactory_ThrowsArgumentNullException()
@@ -40,19 +39,47 @@ public class LazyRecordsTest
     act.Should().Throw<ArgumentNullException>();
   }
 
-
-  //[Fact]
-  //public void Value_InitWithSharedLazyRecords_ReferenceSameCollection()
-  //{
-  //  var lazyRecords = new LazyRecords<TestRecord>(_sharedRecords);
-  //  lazyRecords.Value.Should().BeSameAs(_sharedRecords);
-  //}
-
   [Fact]
-  public void Value_InitWithImmutableLazyRecords_NotReferenceSameCollection()
+  public void Value_InitWithImmutableLazyRecords_NotReferencesSameCollection()
   {
     var lazyRecords = new LazyRecords<TestRecord>(_immutableRecords);
     lazyRecords.Value.Should().NotBeSameAs(_immutableRecords);
+  }
+
+  [Fact]
+  public void Value_CalledTwice_NotReferencesSameCollection()
+  {
+    var lazyRecords = new LazyRecords<TestRecord>(_immutableRecords);
+    var value1 = lazyRecords.Value;
+    var value2 = lazyRecords.Value;
+
+    value2.Should().BeSameAs(value1);
+  }
+
+  [Fact]
+  public void Reset_ValueNeverCalled_ReturnsFalse()
+  {
+    var lazyRecords = new LazyRecords<TestRecord>(_immutableRecords);
+    lazyRecords.Reset().Should().BeFalse();
+  }
+
+  [Fact]
+  public void Reset_ValueCalled_ReturnsTrue()
+  {
+    var lazyRecords = new LazyRecords<TestRecord>(_immutableRecords);
+    _ = lazyRecords.Value;
+    lazyRecords.Reset().Should().BeTrue();
+  }
+
+  [Fact]
+  public void Value_CalledTwiceWithResetInBetween_NotReferencesSameCollection()
+  {
+    var lazyRecords = new LazyRecords<TestRecord>(_immutableRecords);
+    var value1 = lazyRecords.Value;
+    lazyRecords.Reset();
+    var value2 = lazyRecords.Value;
+
+    value2.Should().BeSameAs(value1);
   }
 
   private record TestRecord(string Id, string Data);

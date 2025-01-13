@@ -54,6 +54,11 @@ public sealed class GitRepository : IDisposable
     return Task.Factory.StartNew(() => Log(deadline));
   }
 
+  public LazyRecords<GitLogRecord> LogLazy(DateTime? deadline = null)
+  {
+    return new LazyRecords<GitLogRecord>(() => Log(deadline));
+  }
+
   public IImmutableList<string> ActiveNames()
   {
     return Actions.RequestActiveNamesFromMainBranch(_localPath, _gitExePath);
