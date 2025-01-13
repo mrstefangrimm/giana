@@ -33,60 +33,61 @@ internal record Reduction(
 
 public interface IReductionBuilder
 {
-  LazyRecords<GitLogRecord> Build();
+  IImmutableList<GitLogRecord> Build();
+  LazyRecords<GitLogRecord> BuildLazy();
 }
 
 internal class ReductionBuilder : IReductionBuilder
 {
   protected Reduction _query;
 
-  public LazyRecords<GitLogRecord> Build()
+  public IImmutableList<GitLogRecord> Build()
   {
-    ImmutableList<GitLogRecord> Invoke()
+    ImmutableList<GitLogRecord> reducedList = _query.LazyRecords.Value
+      .Where(item => _query.TimePeriods.Count == 0 || _query.TimePeriods.Any(tp => tp.Begin <= item.Date && item.Date <= tp.End)).ToImmutableList();
+
+    foreach (var renameItem in _query.RenameAuthors)
     {
-      ImmutableList<GitLogRecord> reducedList = _query.LazyRecords.Value
-        .Where(item => _query.TimePeriods.Count == 0 || _query.TimePeriods.Any(tp => tp.Begin <= item.Date && item.Date <= tp.End)).ToImmutableList();
-
-      foreach (var renameItem in _query.RenameAuthors)
-      {
-        reducedList = reducedList.Select(rec => new GitLogRecord(
-          Author: rec.Author == renameItem.From ? renameItem.To : rec.Author,
-          RepoName: rec.RepoName,
-          Commit: rec.Commit,
-          Date: rec.Date,
-          Message: rec.Message,
-          Name: rec.Name)).ToImmutableList();
-      }
-
-      var includedNames = reducedList.Where(item =>
-        _query.IncludeNames.Count == 0 || _query.IncludeNames.Any(regex => regex.IsMatch(item.Name)));
-
-      var includedNamesAndCommits = includedNames.Where(item =>
-        _query.IncludeCommits.Count == 0 || _query.IncludeCommits.Contains(item.Commit));
-
-      var includedNamesAndCommitsAndAuthors = includedNamesAndCommits.Where(item =>
-        _query.IncludeAuthors.Count == 0 || _query.IncludeAuthors.Contains(item.Author));
-
-      var includedNamesAndCommitsAndAuthorsAndMessages = includedNamesAndCommitsAndAuthors.Where(item =>
-        _query.IncludeMessages.Count == 0 || _query.IncludeMessages.Any(regex => regex.IsMatch(item.Message))).ToArray();
-
-      var excluded = includedNamesAndCommitsAndAuthorsAndMessages.Where(item =>
-      _query.ExcludeNames.Any(regex => regex.IsMatch(item.Name)) ||
-        _query.ExcludeCommits.Contains(item.Commit) ||
-        _query.ExcludeAuthors.Contains(item.Author) ||
-        _query.ExcludeMessages.Any(regex => regex.IsMatch(item.Message)));
-
-      var includedAndExcluded = includedNamesAndCommitsAndAuthorsAndMessages.Except(excluded).ToImmutableList();
-
-      if (_query.Elements.Any())
-      {
-        return includedAndExcluded.Skip(_query.Elements.First().StartPosition).Take(_query.Elements.First().Count).ToImmutableList();
-      }
-
-      return includedAndExcluded;
+      reducedList = reducedList.Select(rec => new GitLogRecord(
+        Author: rec.Author == renameItem.From ? renameItem.To : rec.Author,
+        RepoName: rec.RepoName,
+        Commit: rec.Commit,
+        Date: rec.Date,
+        Message: rec.Message,
+        Name: rec.Name)).ToImmutableList();
     }
 
-    return new LazyRecords<GitLogRecord>(Invoke);
+    var includedNames = reducedList.Where(item =>
+      _query.IncludeNames.Count == 0 || _query.IncludeNames.Any(regex => regex.IsMatch(item.Name)));
+
+    var includedNamesAndCommits = includedNames.Where(item =>
+      _query.IncludeCommits.Count == 0 || _query.IncludeCommits.Contains(item.Commit));
+
+    var includedNamesAndCommitsAndAuthors = includedNamesAndCommits.Where(item =>
+      _query.IncludeAuthors.Count == 0 || _query.IncludeAuthors.Contains(item.Author));
+
+    var includedNamesAndCommitsAndAuthorsAndMessages = includedNamesAndCommitsAndAuthors.Where(item =>
+      _query.IncludeMessages.Count == 0 || _query.IncludeMessages.Any(regex => regex.IsMatch(item.Message))).ToArray();
+
+    var excluded = includedNamesAndCommitsAndAuthorsAndMessages.Where(item =>
+    _query.ExcludeNames.Any(regex => regex.IsMatch(item.Name)) ||
+      _query.ExcludeCommits.Contains(item.Commit) ||
+      _query.ExcludeAuthors.Contains(item.Author) ||
+      _query.ExcludeMessages.Any(regex => regex.IsMatch(item.Message)));
+
+    var includedAndExcluded = includedNamesAndCommitsAndAuthorsAndMessages.Except(excluded).ToImmutableList();
+
+    if (_query.Elements.Any())
+    {
+      return includedAndExcluded.Skip(_query.Elements.First().StartPosition).Take(_query.Elements.First().Count).ToImmutableList();
+    }
+
+    return includedAndExcluded;
+  }
+
+  public LazyRecords<GitLogRecord> BuildLazy()
+  {
+    return new LazyRecords<GitLogRecord>(Build);
   }
 
   public IRenameBuilder Rename()

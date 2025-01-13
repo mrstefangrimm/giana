@@ -11,7 +11,7 @@ public class FluentCombinedTest : FluentTestBase
     => _testRecords
     .TimeRange().In(DateTime.Parse("2024-12-20T19:35:00Z", _fmt), DateTime.Parse("2024-12-21T18:00:00Z", _fmt))
     .Elements().In(4, 2)
-    .Build().Value
+    .Build()
     .Should().Contain(x => x.Message == "Second commit.")
     .And.NotContain(x => x.Message != "Second commit.");
 
@@ -22,7 +22,7 @@ public class FluentCombinedTest : FluentTestBase
     .In(DateTime.Parse("2024-12-20T19:35:00Z", _fmt), DateTime.Parse("2024-12-21T18:00:00Z", _fmt))
     .Rename().Author("John", "Joe")
     .Exclude().Author("John")
-    .Build().Value
+    .Build()
     .Should().Contain(x => x.Message == "Second commit.")
     .And.NotContain(x => x.Message != "Second commit.");
 
@@ -31,7 +31,7 @@ public class FluentCombinedTest : FluentTestBase
     => _testRecords
     .Include().Commit("bcd")
     .Elements().In(0, 1)
-    .Build().Value
+    .Build()
     .Should().HaveCount(1)
     .And.Contain(x => x.Name == "File0A.cs");
 }

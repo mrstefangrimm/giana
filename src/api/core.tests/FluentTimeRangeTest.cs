@@ -11,7 +11,7 @@ public class FluentTimeRangeTest : FluentTestBase
     => _testRecords
     .TimeRange()
     .In(DateTime.MinValue, DateTime.MaxValue)
-    .Build().Value
+    .Build()
     .Should().HaveCount(_testRecords.Count);
 
   [Fact]
@@ -19,7 +19,7 @@ public class FluentTimeRangeTest : FluentTestBase
     => _testRecords
     .TimeRange()
     .In(DateTime.MinValue, DateTime.Parse("2024-12-21T11:00:00Z", _fmt))
-    .Build().Value
+    .Build()
     .Should().Contain(item => item.Commit == "abc" || item.Commit == "bcd")
     .And.NotContain(item => item.Commit == "cde");
 
@@ -29,7 +29,7 @@ public class FluentTimeRangeTest : FluentTestBase
     .TimeRange()
     .In(DateTime.MinValue, DateTime.Parse("2024-12-20T19:35:00Z", _fmt))
     .And(DateTime.Parse("2024-12-22T18:00:00Z", _fmt), DateTime.MaxValue)
-    .Build().Value
+    .Build()
     .Should().Contain(item => item.Commit == "abc" || item.Commit == "cde")
     .And.NotContain(item => item.Commit == "bcd");
 }

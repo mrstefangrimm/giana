@@ -11,7 +11,7 @@ public class FluentIncludeExcludeTest : FluentTestBase
   => _testRecords
   .Include()
   .Name(new Regex(".*File.*A.cs"))
-  .Build().Value
+  .Build()
   .Should().Contain(item => item.Name == "File0A.cs" || item.Name == "Folder1/File1A.cs" || item.Name == "Folder2/Folder21/File21A.cs");
 
   [Fact]
@@ -19,7 +19,7 @@ public class FluentIncludeExcludeTest : FluentTestBase
     => _testRecords
     .Include()
     .Name(new Regex(".*Dir.*"))
-    .Build().Value
+    .Build()
     .Should().BeEmpty();
 
   [Fact]
@@ -27,7 +27,7 @@ public class FluentIncludeExcludeTest : FluentTestBase
     => _testRecords
     .Exclude()
     .Name(new Regex("Folder.*"))
-    .Build().Value
+    .Build()
     .Should().Contain(item => item.Name.StartsWith("File"));
 
   [Fact]
@@ -35,7 +35,7 @@ public class FluentIncludeExcludeTest : FluentTestBase
     => _testRecords
     .Exclude()
     .Name(new Regex(".*Dir.*"))
-    .Build().Value
+    .Build()
     .Should().HaveCount(_testRecords.Count);
 
   [Fact]
@@ -43,7 +43,7 @@ public class FluentIncludeExcludeTest : FluentTestBase
   => _testRecords
   .Include()
   .Commit("bcd")
-  .Build().Value
+  .Build()
   .Should().OnlyContain(item => item.Commit == "bcd");
 
   [Fact]
@@ -51,7 +51,7 @@ public class FluentIncludeExcludeTest : FluentTestBase
     => _testRecords
     .Include()
     .Commit("xyz")
-    .Build().Value
+    .Build()
     .Should().BeEmpty();
 
   [Fact]
@@ -59,7 +59,7 @@ public class FluentIncludeExcludeTest : FluentTestBase
     => _testRecords
     .Exclude()
     .Commit("abc")
-    .Build().Value
+    .Build()
     .Should().NotContain(item => item.Commit == "abc")
     .And.Contain(item => item.Commit == "bcd" || item.Commit == "cde");
 
@@ -68,7 +68,7 @@ public class FluentIncludeExcludeTest : FluentTestBase
     => _testRecords
     .Exclude()
     .Commit("xyz")
-    .Build().Value
+    .Build()
     .Should().HaveCount(_testRecords.Count);
 
   [Fact]
@@ -76,7 +76,7 @@ public class FluentIncludeExcludeTest : FluentTestBase
     => _testRecords
     .Include()
     .Author("Joe")
-    .Build().Value
+    .Build()
     .Should().OnlyContain(item => item.Author == "Joe");
 
   [Fact]
@@ -84,7 +84,7 @@ public class FluentIncludeExcludeTest : FluentTestBase
     => _testRecords
     .Include()
     .Author("Jim")
-    .Build().Value
+    .Build()
     .Should().BeEmpty();
 
   [Fact]
@@ -92,7 +92,7 @@ public class FluentIncludeExcludeTest : FluentTestBase
     => _testRecords
     .Exclude()
     .Author("Anna")
-    .Build().Value
+    .Build()
     .Should().NotContain(item => item.Author == "Anna")
     .And.Contain(item => item.Author == "Joe");
 
@@ -101,7 +101,7 @@ public class FluentIncludeExcludeTest : FluentTestBase
     => _testRecords
     .Exclude()
     .Author("Jim")
-    .Build().Value
+    .Build()
     .Should().HaveCount(_testRecords.Count);
 
   [Fact]
@@ -109,7 +109,7 @@ public class FluentIncludeExcludeTest : FluentTestBase
   => _testRecords
     .Include()
     .Message(new Regex("^(First|Third).*"))
-    .Build().Value
+    .Build()
     .Should().Contain(item => item.Commit == "abc" || item.Commit == "cde")
     .And.NotContain(item => item.Commit == "bcd");
 
@@ -118,7 +118,7 @@ public class FluentIncludeExcludeTest : FluentTestBase
     => _testRecords
     .Include()
     .Message(new Regex("^Forth.*"))
-    .Build().Value
+    .Build()
     .Should().BeEmpty();
 
   [Fact]
@@ -126,7 +126,7 @@ public class FluentIncludeExcludeTest : FluentTestBase
     => _testRecords
     .Exclude()
     .Message(new Regex("^(Second|Third).*"))
-    .Build().Value
+    .Build()
     .Should().Contain(item => item.Commit == "abc")
     .And.NotContain(item => item.Commit == "bcd" || item.Commit == "cde");
 
@@ -135,6 +135,6 @@ public class FluentIncludeExcludeTest : FluentTestBase
     => _testRecords
     .Exclude()
     .Message(new Regex("^Forth.*"))
-    .Build().Value
+    .Build()
     .Should().HaveCount(_testRecords.Count);
 }

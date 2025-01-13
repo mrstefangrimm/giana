@@ -11,7 +11,7 @@ namespace Giana.Api.Load;
 
 public static class Actions
 {
-  public static ImmutableList<GitLogRecord> RequestGitLog(string repositoryRoot, string repositoryName, string gitExePath, DateTime? deadline = null)
+  public static IImmutableList<GitLogRecord> RequestGitLog(string repositoryRoot, string repositoryName, string gitExePath, DateTime? deadline = null)
   {
     const string GitLogCmd = "log --pretty=format:\"%h^%an^%as^%s\" --name-only";
 
@@ -62,7 +62,7 @@ public static class Actions
     return records.ToImmutableList();
   }
 
-  public static ImmutableList<string> RequestActiveNamesFromMainBranch(string repositoryRoot, string gitExePath)
+  public static IImmutableList<string> RequestActiveNamesFromMainBranch(string repositoryRoot, string gitExePath)
   {
     string mainBranch = RequestMainBranchName(repositoryRoot, gitExePath);
 

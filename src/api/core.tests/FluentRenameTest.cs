@@ -10,7 +10,7 @@ public class FluentRenameTest : FluentTestBase
     => _testRecords
     .Rename()
     .Author("Anna", "Joe")
-    .Build().Value
+    .Build()
     .Should().NotContain(item => item.Author == "Joe").And.OnlyContain(item => item.Author == "Anna");
 
   [Fact]
@@ -18,7 +18,7 @@ public class FluentRenameTest : FluentTestBase
     => _testRecords
     .Rename()
     .Author("Jim", "Joe")
-    .Build().Value
+    .Build()
     .Should().NotContain(item => item.Author == "Joe").And.Contain(item => item.Author == "Jim").And.Contain(item => item.Author == "Anna");
 
   [Fact]
@@ -26,6 +26,6 @@ public class FluentRenameTest : FluentTestBase
     => _testRecords
     .Rename()
     .Author("Anna", "Jim")
-    .Build().Value
+    .Build()
     .Should().Contain(item => item.Author == "Anna").And.Contain(item => item.Author == "Joe");
 }

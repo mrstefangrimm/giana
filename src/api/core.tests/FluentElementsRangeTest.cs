@@ -10,7 +10,7 @@ public class FluentElementsRangeTest : FluentTestBase
     => _testRecords
     .Elements()
     .In(0, 9)
-    .Build().Value
+    .Build()
     .Should().HaveCount(_testRecords.Count);
 
   [Fact]
@@ -18,7 +18,7 @@ public class FluentElementsRangeTest : FluentTestBase
     => _testRecords
     .Elements()
     .In(4, 2)
-    .Build().Value
+    .Build()
     .Should().Contain(item => item.Message == "Second commit.")
     .And.NotContain(item => item.Message != "Second commit.");
 }
