@@ -6,11 +6,15 @@
     <Nullable>disable</Nullable>
 
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
-    <PackageReadmeFile>README.md</PackageReadmeFile>
+    <PackageReadmeFile>Readme.md</PackageReadmeFile>
+    <PackageReleaseNotes>ReleaseNotes.md</PackageReleaseNotes>
     <Description>C# API for Git Analysis (giana)</Description>
     <PackageProjectUrl>https://github.com/mrstefangrimm/giana</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mrstefangrimm/giana</RepositoryUrl>
     <Version>0.0.3</Version>
+    <Authors>Stefan Grimm</Authors>
+    <PackageTags>C# library, git analysis, coupling, cohesion</PackageTags>
+    <Copyright>Copyright © Stefan Grimm 2025</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
@@ -32,7 +36,11 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
-    <None Include="..\..\README.md">
+    <None Include="Readme.md">
+      <Pack>True</Pack>
+      <PackagePath></PackagePath>
+    </None>
+    <None Include="ReleaseNotes.md">
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
