@@ -8,12 +8,14 @@ const string gitRepository = "https://github.com/dotnet/wpf.git";
 
 var repo = await GitRepository.CreateAsync(gitRepository, gitExePath);
 
-var records = await repo.LogAsync();
+var lazyRecords = repo.LogLazy();
 
-records = await records
+lazyRecords = lazyRecords
   .TimeRange().In(DateTime.Now.AddMonths(-6), DateTime.Now)
   .Rename().Author("Thomas Goulet", "ThomasGoulet73")
-  .BuildAsync();
+  .BuildLazy();
+
+var records = await lazyRecords.ValueAsync;
 
 var authorRanking = AuthorRankingCalculations.CreateAuthorRankingSorted(records);
 AuthorRankingActions.WriteAsCsv(authorRanking, Console.Out);
