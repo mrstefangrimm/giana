@@ -46,10 +46,10 @@ var repo = await GitRepository.CreateAsync(gitRepository, gitExePath);
 
 var records = await repo.LogAsync();
 
-records = records
+records = await records
   .TimeRange().In(DateTime.Now.AddMonths(-6), DateTime.Now)
   .Rename().Author("Thomas Goulet", "ThomasGoulet73")
-  .Build();
+  .BuildAsync();
 
 var authorRanking = AuthorRankingCalculations.CreateAuthorRankingSorted(records);
 AuthorRankingActions.WriteAsCsv(authorRanking, Console.Out);
