@@ -16,13 +16,13 @@ public sealed class LazyRecords<RecordType>
 
   public LazyRecords(IImmutableList<RecordType> resolvedRecords)
   {
-    if (resolvedRecords == null) throw new ArgumentNullException(nameof(resolvedRecords));
+    ArgumentNullException.ThrowIfNull(resolvedRecords);
     _valueFactory = () => resolvedRecords;
   }
 
   public LazyRecords(LazyRecords<RecordType> other)
   {
-    if (other == null) throw new ArgumentNullException(nameof(other));
+    ArgumentNullException.ThrowIfNull(other);
     _valueFactory = other._valueFactory;
   }
 

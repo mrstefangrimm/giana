@@ -36,21 +36,7 @@ Query file file-ranking.json:
 {
   "sources": [ "https://github.com/imagine/this-repository.git" ],
   "analyzer": "file-ranking",
-  "outputformat": "csv",
-  "timeranges": [],
-  "renames": [],
-  "includes": {
-    "names": [],
-    "commits": [],
-    "authors": [],
-    "messages": []
-  },
-  "excludes": {
-    "names": [],
-    "commits": [],
-    "authors": [],
-    "messages": []
-  }
+  "outputformat": "csv"
 }
 ```
 
@@ -75,19 +61,8 @@ Query file file-ranking.json:
   "sources": [ "https://github.com/imagine/this-repository.git" ],
   "analyzer": "file-coupling",
   "outputformat": "csv",
-  "timeranges": [],
-  "renames": [],
   "includes": {
-    "names": [ "Shared/Config/*", "Devices/*" ],
-    "commits": [],
-    "authors": [],
-    "messages": []
-  },
-  "excludes": {
-    "names": [],
-    "commits": [],
-    "authors": [],
-    "messages": []
+    "names": [ "Shared/Config/*", "Devices/*" ]
   }
 }
 ```
