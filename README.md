@@ -87,4 +87,4 @@ Was this shared interface a good choice? If a forth device implementation was ad
 
  - Giana.API Nuget: https://www.nuget.org/packages/Giana.Api
  - Source code: https://github.com/mrstefangrimm/giana
- - Command-line tool: Currently you have to get the source code and build it yourself
+ - Command-line tool: See github [giana releases](https://github.com/mrstefangrimm/giana/releases)
