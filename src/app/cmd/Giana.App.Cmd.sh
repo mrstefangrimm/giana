@@ -1,3 +1,5 @@
+# Unix line endings
+
 echo off
 
 export GitExePath=/usr/bin/git
