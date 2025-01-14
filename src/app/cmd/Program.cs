@@ -1,8 +1,10 @@
-﻿using Giana.App.Shared;
-using Newtonsoft.Json;
+﻿using Giana.Api.Load;
+using Giana.App.Shared;
 using System;
+using System.Diagnostics;
 using System.IO;
 using System.Linq;
+using System.Threading;
 using static Giana.App.Shared.Actions;
 
 const string GitExePathEnvName = "GitExePath";
@@ -20,6 +22,9 @@ if (idxHelp > 0)
   return;
 }
 
+var stopwatch = new Stopwatch();
+stopwatch.Restart();
+
 string gitExePath = Environment.GetEnvironmentVariable(GitExePathEnvName);
 if (string.IsNullOrEmpty(gitExePath))
 {
@@ -35,6 +40,15 @@ if (!File.Exists(gitExePath))
 
 string queryFilename = null;
 TextWriter outputWriter = null;
+
+using var defer = new Defer(() =>
+{
+  if (outputWriter != null)
+  {
+    outputWriter.Flush();
+    outputWriter.Dispose();
+  }
+});
 
 int idxQueryFile = Math.Max(cmdLineArgs.IndexOf("-q"), cmdLineArgs.IndexOf("--query-file"));
 if (idxQueryFile > 0 && cmdLineArgs.Count > idxQueryFile + 1)
@@ -72,7 +86,6 @@ else
   outputWriter = Console.Out;
 }
 
-
 if (!File.Exists(queryFilename))
 {
   throw new FileNotFoundException(queryFilename);
@@ -86,7 +99,6 @@ var routine = Calculations.CreateRoutine(query);
 
 routine.OutputWriter = outputWriter;
 
-var gitLogRecords = Execute(routine, () => gitExePath);
+await ExecuteAsync(routine, () => gitExePath, CancellationToken.None);
 
-outputWriter.Flush();
-outputWriter.Dispose();
+Console.WriteLine($"Time spent: {stopwatch.Elapsed.Seconds} sec");

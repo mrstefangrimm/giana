@@ -14,7 +14,7 @@ public class Routine
   public TextWriter OutputWriter { get; set; }
 
   public ICollection<string> Sources { get; set; }
-  public DateTime Deadline { get; set; }
+  public DateTime? CommitsFrom { get; set; }
 
   public ICollection<(Func<IImmutableList<GitLogRecord>, DateTime, DateTime, IImmutableList<GitLogRecord>> Invoke, DateTime Begin, DateTime End)> TimeRanges { get; set; }
   public ICollection<(Func<IImmutableList<GitLogRecord>, string, string, IImmutableList<GitLogRecord>> Invoke, string To, string From)> Renames { get; set; }

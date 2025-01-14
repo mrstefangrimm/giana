@@ -11,7 +11,7 @@ namespace Giana.Api.Load;
 
 public static class Actions
 {
-  public static IImmutableList<GitLogRecord> RequestGitLog(string repositoryRoot, string repositoryName, string gitExePath, DateTime? deadline = null)
+  public static IImmutableList<GitLogRecord> RequestGitLog(string repositoryRoot, string repositoryName, string gitExePath, DateTime? commitsFrom = null)
   {
     const string GitLogCmd = "log --pretty=format:\"%h^%an^%as^%s\" --name-only";
 
@@ -53,8 +53,10 @@ public static class Actions
 
       } while (!string.IsNullOrEmpty(fileLine));
 
-      if (deadline.HasValue && records.Last().Date < deadline.Value)
+      if (commitsFrom.HasValue && records.Last().Date < commitsFrom.Value)
       {
+        gitProcess.StandardOutput.Close();
+        gitProcess.StandardError.Close();
         break;
       }
     }
@@ -167,7 +169,7 @@ public static class Actions
 
     var defer = () =>
     {
-      gitProcess.WaitForExit();
+      gitProcess.WaitForExit(1000);
       gitProcess.Close();
     };
 

@@ -44,19 +44,19 @@ public sealed class GitRepository : IDisposable
     return Task.Factory.StartNew(() => Create(localPathOrUri, gitExePath));
   }
 
-  public IImmutableList<GitLogRecord> Log(DateTime? deadline = null)
+  public IImmutableList<GitLogRecord> Log(DateTime? commitsFrom = null)
   {
-    return Actions.RequestGitLog(_localPath, _repoName, _gitExePath, deadline);
+    return Actions.RequestGitLog(_localPath, _repoName, _gitExePath, commitsFrom);
   }
 
-  public Task<IImmutableList<GitLogRecord>> LogAsync(DateTime? deadline = null)
+  public Task<IImmutableList<GitLogRecord>> LogAsync(DateTime? commitsFrom = null)
   {
-    return Task.Factory.StartNew(() => Log(deadline));
+    return Task.Factory.StartNew(() => Log(commitsFrom));
   }
 
-  public LazyRecords<GitLogRecord> LogLazy(DateTime? deadline = null)
+  public LazyRecords<GitLogRecord> LogLazy(DateTime? commitsFrom = null)
   {
-    return new LazyRecords<GitLogRecord>(() => Log(deadline));
+    return new LazyRecords<GitLogRecord>(() => Log(commitsFrom));
   }
 
   public IImmutableList<string> ActiveNames()
