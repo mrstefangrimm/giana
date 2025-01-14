@@ -93,7 +93,7 @@ if (!File.Exists(queryFilename))
 }
 
 using StreamReader jsonReader = new StreamReader(queryFilename);
-var query = JsonConvert.DeserializeObject<Query>(jsonReader.ReadToEnd());
+var query = JsonConvert.DeserializeObject<Query>(await jsonReader.ReadToEndAsync());
 jsonReader.Close();
 
 var routine = Calculations.CreateRoutine(query);
@@ -102,4 +102,5 @@ routine.OutputWriter = outputWriter;
 
 await ExecuteAsync(routine, () => gitExePath, CancellationToken.None);
 
+Console.WriteLine();
 Console.WriteLine($"Time spent: {stopwatch.Elapsed.Seconds} sec");
