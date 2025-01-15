@@ -7,11 +7,11 @@
 
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
-    <PackageReleaseNotes>beta. Remember, anything can happen in beta.</PackageReleaseNotes>
+    <PackageReleaseNotes>pre-release. Fixes bug in 0.0.4.</PackageReleaseNotes>
     <Description>C# API for Git Analysis (giana)</Description>
     <PackageProjectUrl>https://github.com/mrstefangrimm/giana</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mrstefangrimm/giana</RepositoryUrl>
-    <Version>0.0.4</Version>
+    <Version>0.0.5</Version>
     <Authors>Stefan Grimm</Authors>
     <PackageTags>C# library, git analysis, coupling, cohesion</PackageTags>
     <Copyright>Copyright © Stefan Grimm 2025</Copyright>

@@ -169,7 +169,7 @@ public static class Actions
 
     var defer = () =>
     {
-      gitProcess.WaitForExit(1000);
+      gitProcess.WaitForExit();
       gitProcess.Close();
     };
 
