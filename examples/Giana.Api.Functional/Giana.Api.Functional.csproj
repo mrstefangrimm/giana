@@ -6,7 +6,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Giana.Api" Version="0.0.4" />
+    <PackageReference Include="Giana.Api" Version="0.0.5" />
   </ItemGroup>
 
 </Project>
