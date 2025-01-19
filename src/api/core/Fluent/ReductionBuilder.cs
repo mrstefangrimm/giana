@@ -87,9 +87,9 @@ internal class ReductionBuilder : IReductionBuilder
     return includedAndExcluded;
   }
 
-  public Task<IImmutableList<GitLogRecord>> BuildAsync()
+  public async Task<IImmutableList<GitLogRecord>> BuildAsync()
   {
-    return Task.Factory.StartNew(Build);
+    return await Task.Run(Build);
   }
 
   public LazyRecords<GitLogRecord> BuildLazy()

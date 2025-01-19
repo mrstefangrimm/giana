@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 
 namespace Giana.App.Shared;
@@ -81,5 +82,10 @@ public static class Calculations
     };
 
     return routine;
+  }
+
+  public static string Name([CallerMemberName] string callingMethod = "")
+  {
+    return callingMethod;
   }
 }

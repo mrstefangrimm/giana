@@ -37,7 +37,7 @@ public class ApiCalculationsConcurrencyTest
     WaitAndAssert(writer, reader);
   }
 
-    [Fact]
+  [Fact]
   public void ExcludeMessage_RunFor100sec_Successful()
   {
     var mutableData = new ConcurrentBag<GitLogRecord>();

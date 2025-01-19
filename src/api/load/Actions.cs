@@ -6,12 +6,29 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 
 namespace Giana.Api.Load;
 
 public static class Actions
 {
   public static IImmutableList<GitLogRecord> RequestGitLog(string repositoryRoot, string repositoryName, string gitExePath, DateTime? commitsFrom = null)
+  {
+    return GitLog(repositoryRoot, repositoryName, gitExePath, CancellationToken.None, commitsFrom);
+  }
+
+  public static async Task<IImmutableList<GitLogRecord>> RequestGitLogAsync(string repositoryRoot, string repositoryName, string gitExePath, DateTime? commitsFrom = null)
+  {
+    return await Task.Run(() => GitLog(repositoryRoot, repositoryName, gitExePath, CancellationToken.None, commitsFrom));
+  }
+
+  public static async Task<IImmutableList<GitLogRecord>> RequestGitLogAsync(string repositoryRoot, string repositoryName, string gitExePath, CancellationToken cancellationToken, DateTime? commitsFrom = null)
+  {
+    return await Task.Run(() => GitLog(repositoryRoot, repositoryName, gitExePath, cancellationToken, commitsFrom), cancellationToken);
+  }
+
+  private static IImmutableList<GitLogRecord> GitLog(string repositoryRoot, string repositoryName, string gitExePath, CancellationToken cancellationToken, DateTime? commitsFrom)
   {
     const string GitLogCmd = "log --pretty=format:\"%h^%an^%as^%s\" --name-only";
 
@@ -49,14 +66,15 @@ public static class Actions
 
         records.Add(change);
 
+        cancellationToken.ThrowIfCancellationRequested(CloseOutputStreams(gitProcess));
+
         fileLine = gitProcess.StandardOutput.ReadLine();
 
       } while (!string.IsNullOrEmpty(fileLine));
 
       if (commitsFrom.HasValue && records.Last().Date < commitsFrom.Value)
       {
-        gitProcess.StandardOutput.Close();
-        gitProcess.StandardError.Close();
+        CloseOutputStreams(gitProcess)();
         break;
       }
     }
@@ -66,7 +84,22 @@ public static class Actions
 
   public static IImmutableList<string> RequestActiveNamesFromMainBranch(string repositoryRoot, string gitExePath)
   {
-    string mainBranch = RequestMainBranchName(repositoryRoot, gitExePath);
+    return ActiveNamesFromMainBranch(repositoryRoot, gitExePath, CancellationToken.None);
+  }
+
+  public static async Task<IImmutableList<string>> RequestActiveNamesFromMainBranchAsync(string repositoryRoot, string gitExePath)
+  {
+    return await Task.Run(() => ActiveNamesFromMainBranch(repositoryRoot, gitExePath, CancellationToken.None));
+  }
+
+  public static async Task<IImmutableList<string>> RequestActiveNamesFromMainBranchAsync(string repositoryRoot, string gitExePath, CancellationToken cancellationToken)
+  {
+    return await Task.Run(() => ActiveNamesFromMainBranch(repositoryRoot, gitExePath, cancellationToken));
+  }
+
+  private static IImmutableList<string> ActiveNamesFromMainBranch(string repositoryRoot, string gitExePath, CancellationToken cancellationToken)
+  {
+    string mainBranch = RequestMainBranchName(repositoryRoot, gitExePath, cancellationToken);
 
     string gitCmd = $"ls-tree -r {mainBranch} --name-only";
 
@@ -78,6 +111,8 @@ public static class Actions
 
     while (!gitProcess.StandardOutput.EndOfStream)
     {
+      cancellationToken.ThrowIfCancellationRequested(CloseOutputStreams(gitProcess));
+
       var commitLine = gitProcess.StandardOutput.ReadLine();
       records.Add(commitLine);
     }
@@ -85,7 +120,7 @@ public static class Actions
     return records.ToImmutableList();
   }
 
-  internal static string RequestMainBranchName(string repositoryRoot, string gitExePath)
+  private static string RequestMainBranchName(string repositoryRoot, string gitExePath, CancellationToken cancellationToken)
   {
     const string GitBranchCmd = "branch";
 
@@ -95,6 +130,8 @@ public static class Actions
 
     while (!gitProcess.StandardOutput.EndOfStream)
     {
+      cancellationToken.ThrowIfCancellationRequested(CloseOutputStreams(gitProcess));
+
       var line = gitProcess.StandardOutput.ReadLine();
 
       if (line.StartsWith("* "))
@@ -108,6 +145,21 @@ public static class Actions
 
   public static string RequestRepositoryName(string repositoryRoot, string gitExePath)
   {
+    return RepositoryName(repositoryRoot, gitExePath, CancellationToken.None);
+  }
+
+  public static async Task<string> RequestRepositoryNameAsync(string repositoryRoot, string gitExePath)
+  {
+    return await Task.Run(() => RepositoryName(repositoryRoot, gitExePath, CancellationToken.None));
+  }
+
+  public static async Task<string> RequestRepositoryNameAsync(string repositoryRoot, string gitExePath, CancellationToken cancellationToken)
+  {
+    return await Task.Run(() => RepositoryName(repositoryRoot, gitExePath, cancellationToken));
+  }
+
+  private static string RepositoryName(string repositoryRoot, string gitExePath, CancellationToken cancellationToken)
+  {
     const string GitRemoteCmd = "remote -v";
 
     (Process gitProcess, Action defering) = CreateAndStartGitProcess(repositoryRoot, gitExePath, GitRemoteCmd);
@@ -116,6 +168,8 @@ public static class Actions
 
     while (!gitProcess.StandardOutput.EndOfStream)
     {
+      cancellationToken.ThrowIfCancellationRequested(CloseOutputStreams(gitProcess));
+
       var line = gitProcess.StandardOutput.ReadLine();
 
       // Supported formats:
@@ -140,6 +194,16 @@ public static class Actions
   }
 
   public static string CreateCloneFromUri(string uri, string gitExePath)
+  {
+    return CloneFromUri(uri, gitExePath);
+  }
+
+  public static async Task<string> CreateCloneFromUriAsync(string uri, string gitExePath)
+  {
+    return await Task.Run(() => CloneFromUri(uri, gitExePath));
+  }
+
+  private static string CloneFromUri(string uri, string gitExePath)
   {
     var tempPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
     Directory.CreateDirectory(tempPath);
@@ -188,5 +252,14 @@ public static class Actions
     {
       throw new InvalidOperationException(err);
     }
+  }
+
+  private static Action CloseOutputStreams(Process gitProcess)
+  {
+    return () =>
+    {
+      gitProcess.StandardOutput.Close();
+      gitProcess.StandardError.Close();
+    };
   }
 }

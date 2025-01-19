@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Immutable;
 using System.IO;
+using System.Threading;
 using System.Threading.Tasks;
 using File = System.IO.File;
 
@@ -39,9 +40,24 @@ public sealed class GitRepository : IDisposable
     return new GitRepository(localPathOrUri, false, repoName, gitExePath);
   }
 
-  public static Task<GitRepository> CreateAsync(string localPathOrUri, string gitExePath)
+  public static async Task<GitRepository> CreateAsync(string localPathOrUri, string gitExePath)
   {
-    return Task.Factory.StartNew(() => Create(localPathOrUri, gitExePath));
+    if (localPathOrUri.StartsWith("https"))
+    {
+      var tempDir = await Actions.CreateCloneFromUriAsync(localPathOrUri, gitExePath);
+      var repoNameFromTemp = await Actions.RequestRepositoryNameAsync(tempDir, gitExePath);
+
+      return new GitRepository(tempDir, true, repoNameFromTemp, gitExePath);
+    }
+
+    var repoName = await Actions.RequestRepositoryNameAsync(localPathOrUri, gitExePath);
+
+    return new GitRepository(localPathOrUri, false, repoName, gitExePath);
+  }
+
+  public static async Task<GitRepository> CreateAsync(string localPathOrUri, string gitExePath, CancellationToken cancellationToken)
+  {
+    return await Task.Run(() => Create(localPathOrUri, gitExePath), cancellationToken);
   }
 
   public IImmutableList<GitLogRecord> Log(DateTime? commitsFrom = null)
@@ -49,9 +65,14 @@ public sealed class GitRepository : IDisposable
     return Actions.RequestGitLog(_localPath, _repoName, _gitExePath, commitsFrom);
   }
 
-  public Task<IImmutableList<GitLogRecord>> LogAsync(DateTime? commitsFrom = null)
+  public async Task<IImmutableList<GitLogRecord>> LogAsync(DateTime? commitsFrom = null)
   {
-    return Task.Factory.StartNew(() => Log(commitsFrom));
+    return await Actions.RequestGitLogAsync(_localPath, _repoName, _gitExePath, CancellationToken.None, commitsFrom);
+  }
+
+  public async Task<IImmutableList<GitLogRecord>> LogAsync(CancellationToken cancellationToken, DateTime? commitsFrom = null)
+  {
+    return await Actions.RequestGitLogAsync(_localPath, _repoName, _gitExePath, cancellationToken, commitsFrom);
   }
 
   public LazyRecords<GitLogRecord> LogLazy(DateTime? commitsFrom = null)
@@ -64,9 +85,14 @@ public sealed class GitRepository : IDisposable
     return Actions.RequestActiveNamesFromMainBranch(_localPath, _gitExePath);
   }
 
-  public Task<IImmutableList<string>> ActiveNamesAsync()
+  public async Task<IImmutableList<string>> ActiveNamesAsync()
   {
-    return Task.Factory.StartNew(ActiveNames);
+    return await Actions.RequestActiveNamesFromMainBranchAsync(_localPath, _gitExePath);
+  }
+
+  public async Task<IImmutableList<string>> ActiveNamesAsync(CancellationToken cancellationToken)
+  {
+    return await Actions.RequestActiveNamesFromMainBranchAsync(_localPath, _gitExePath, cancellationToken);
   }
 
   private GitRepository(string path, bool isTempDir, string repoName, string gitExePath)

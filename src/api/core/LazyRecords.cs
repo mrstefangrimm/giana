@@ -43,5 +43,5 @@ public sealed class LazyRecords<RecordType>
     }
   }
 
-  public Task<IImmutableList<RecordType>> ValueAsync => Task.Factory.StartNew(() => Value);
+  public Task<IImmutableList<RecordType>> ValueAsync => Task.Run(() => Value);
 }

@@ -5,7 +5,6 @@ using System;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Threading;
 using static Giana.App.Shared.Actions;
 
 const string GitExePathEnvName = "GitExePath";
@@ -23,8 +22,7 @@ if (idxHelp > 0)
   return;
 }
 
-var stopwatch = new Stopwatch();
-stopwatch.Restart();
+var beforeExecution  = DateTime.Now;
 
 string gitExePath = Environment.GetEnvironmentVariable(GitExePathEnvName);
 if (string.IsNullOrEmpty(gitExePath))
@@ -100,7 +98,9 @@ var routine = Calculations.CreateRoutine(query);
 
 routine.OutputWriter = outputWriter;
 
-await ExecuteAsync(routine, () => gitExePath, CancellationToken.None);
+await ExecuteAsync(routine, () => gitExePath, 100000);
+
+var afterExecution  = DateTime.Now;
 
 Console.WriteLine();
-Console.WriteLine($"Time spent: {stopwatch.Elapsed.Seconds} sec");
+Console.WriteLine($"Time spent: {(afterExecution - beforeExecution).TotalSeconds} sec.");
