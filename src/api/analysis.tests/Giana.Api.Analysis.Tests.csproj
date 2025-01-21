@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\analysis\Giana.Api.Analysis.csproj" />
+    <ProjectReference Include="..\core\Giana.Api.Core.csproj" />
   </ItemGroup>
 
   <ItemGroup>
