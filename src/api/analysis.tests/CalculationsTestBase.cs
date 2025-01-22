@@ -29,6 +29,9 @@ public class CalculationsTestBase
     yield return new GitLogRecord("Gina", "File0A.cs", "cde", "Joe", "Third commit.", DateTime.Parse("2024-12-22T18:00:00Z", _fmt));
     yield return new GitLogRecord("Gina", "File0B.cs", "cde", "Joe", "Third commit.", DateTime.Parse("2024-12-22T18:00:00Z", _fmt));
     yield return new GitLogRecord("Gina", "Folder1/File1A.cs", "cde", "Joe", "Third commit.", DateTime.Parse("2025-02-01T10:00:00Z", _fmt));
+    // yield return new GitLogRecord("Gina", "Properties/launchSettings.json", "cde", "Joe", "Third commit.", DateTime.Parse("2025-02-01T10:00:00Z", _fmt));
+    // yield return new GitLogRecord("Gina", "Folder1/Folder1.csproj", "cde", "Joe", "Third commit.", DateTime.Parse("2025-02-01T10:00:00Z", _fmt));
+    // yield return new GitLogRecord("Gina", "Folder2/Folder21/Folder21.csproj", "cde", "Joe", "Third commit.", DateTime.Parse("2025-02-01T10:00:00Z", _fmt));
   }
 
 }

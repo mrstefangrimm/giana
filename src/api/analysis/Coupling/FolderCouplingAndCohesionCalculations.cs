@@ -18,23 +18,23 @@ public static class FolderCouplingAndCohesionRankingCalculations
 
     var fileCouplings = FileCouplingCalculations.CreateFileCouplingList(logRecords, usedNames);
 
-    var projectCouplingRecords = new List<FolderCouplingAndCohesion>();
+    var folderCouplingRecords = new List<FolderCouplingAndCohesion>();
     foreach (var path in elementsWithLeaves)
     {
-      var recordsOfThisProject = fileCouplings.Where(rec => rec.Name1.StartsWith(path) || rec.Name2.StartsWith(path)).ToList();
+      var recordsOfThisFolder = fileCouplings.Where(rec => rec.Name1.StartsWith(path) || rec.Name2.StartsWith(path)).ToList();
 
-      var intraProjectCommits = recordsOfThisProject.Where(rec => rec.Name1.StartsWith(path) && rec.Name2.StartsWith(path)).ToList();
-      var interProjectCommits = recordsOfThisProject.Except(intraProjectCommits).ToList();
+      var intraFolderCommits = recordsOfThisFolder.Where(rec => rec.Name1.StartsWith(path) && rec.Name2.StartsWith(path)).ToList();
+      var interFolderCommits = recordsOfThisFolder.Except(intraFolderCommits).ToList();
 
-      int couplingCount = interProjectCommits.Sum(rec => rec.CouplingCount);
-      int cohesionCount = intraProjectCommits.Sum(rec => rec.CouplingCount);
+      int couplingCount = interFolderCommits.Sum(rec => rec.CouplingCount);
+      int cohesionCount = intraFolderCommits.Sum(rec => rec.CouplingCount);
 
       double ratio = couplingCount > 0 ? cohesionCount * 1.0 / couplingCount : double.NaN;
 
-      projectCouplingRecords.Add(new FolderCouplingAndCohesion(path, couplingCount, cohesionCount, ratio));
+      folderCouplingRecords.Add(new FolderCouplingAndCohesion(path, couplingCount, cohesionCount, ratio));
     }
 
-    return projectCouplingRecords.ToImmutableList();
+    return folderCouplingRecords.ToImmutableList();
   }
 
   private static void FillElementsList(int depth, string root, IImmutableList<string> activeNames, List<string> elementsWithLeaves)
@@ -49,16 +49,27 @@ public static class FolderCouplingAndCohesionRankingCalculations
       foreach (var element in distinctElements)
       {
         var name = $"{root}{element}";
-        int cnt = activeNames.Where(x => x.StartsWith(name)).ToList().Count;
+        int cnt = activeNames.Count(x => x.StartsWith(name));
         if (cnt == 1)
         {
-          if (!elementsWithLeaves.Contains(root))
+          // leaf
+          bool isLeaf = activeNames.Any(x => x.EndsWith(name));
+          if (isLeaf)
           {
-            elementsWithLeaves.Add(root);
+            if (!elementsWithLeaves.Contains(root))
+            {
+              elementsWithLeaves.Add(root);
+            }
+          }
+          else
+          {
+            // folder
+            FillElementsList(depth + 1, $"{name}/", activeNames, elementsWithLeaves);
           }
         }
-        else if (cnt > 1)
+        else
         {
+          // folder
           FillElementsList(depth + 1, $"{name}/", activeNames, elementsWithLeaves);
         }
       }
