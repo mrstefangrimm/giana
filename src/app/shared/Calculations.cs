@@ -12,6 +12,9 @@ public static class Calculations
 {
   public static Routine CreateRoutine(this Query query)
   {
+    ArgumentNullException.ThrowIfNull(query.Sources);
+    ArgumentNullException.ThrowIfNull(query.Analyzer);
+
     var routine = new Routine();
 
     routine.Sources = [.. query.Sources];
