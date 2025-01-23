@@ -14,7 +14,7 @@ public class RoutineTest : AppSharedTestBase
     query.Analyzer = "file-ranking";
 
     using var writer = new StringWriter();
-    var context = new ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
+    var context = new Api.Analysis.ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
 
     var routine = query.CreateRoutine();
     routine.Analyze(context);
@@ -31,7 +31,7 @@ public class RoutineTest : AppSharedTestBase
     query.Analyzer = "commit-ranking";
 
     using var writer = new StringWriter();
-    var context = new ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
+    var context = new Api.Analysis.ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
 
     var routine = query.CreateRoutine();
     routine.Analyze(context);
@@ -48,7 +48,7 @@ public class RoutineTest : AppSharedTestBase
     query.Analyzer = "author-ranking";
 
     using var writer = new StringWriter();
-    var context = new ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
+    var context = new Api.Analysis.ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
 
     var routine = query.CreateRoutine();
     routine.Analyze(context);
@@ -65,7 +65,7 @@ public class RoutineTest : AppSharedTestBase
     query.Analyzer = "file-coupling";
 
     using var writer = new StringWriter();
-    var context = new ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
+    var context = new Api.Analysis.ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
 
     var routine = query.CreateRoutine();
     routine.Analyze(context);
@@ -82,7 +82,7 @@ public class RoutineTest : AppSharedTestBase
     query.Analyzer = "folder-coupling-and-cohesion";
 
     using var writer = new StringWriter();
-    var context = new ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
+    var context = new Api.Analysis.ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
 
     var routine = query.CreateRoutine();
     routine.Analyze(context);
@@ -99,7 +99,7 @@ public class RoutineTest : AppSharedTestBase
     query.Analyzer = "project-coupling-and-cohesion";
 
     using var writer = new StringWriter();
-    var context = new ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
+    var context = new Api.Analysis.ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
 
     var routine = query.CreateRoutine();
     routine.Analyze(context);
@@ -116,7 +116,7 @@ public class RoutineTest : AppSharedTestBase
     query.Analyzer = "author-activity";
 
     using var writer = new StringWriter();
-    var context = new ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
+    var context = new Api.Analysis.ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
 
     var routine = query.CreateRoutine();
     routine.Analyze(context);
