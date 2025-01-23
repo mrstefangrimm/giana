@@ -10,10 +10,10 @@ public class FileCouplingCalculationsTest : CalculationsTestBase
   public void CreateFileCouplingList_WithTestRecords_CouplingCountIsCorrect()
   {
     var result = _testRecords.CreateFileCouplingList(_activeNames);
-    Assert.Null(result.FirstOrDefault(x => x.Name1 == "File0B.cs" || x.Name2 == "File0B.cs")); // File0B.cs is not in _activeNames.
+    Assert.Null(result.FirstOrDefault(x => x.Name1 == "Contribute.md" || x.Name2 == "Contribute.md")); // Contribute.md is not in _activeNames.
     Assert.Null(result.FirstOrDefault(x => x.Name1 == x.Name2));
-    TestCouplingCount(result, "File0A.cs", "Folder1/File1A.cs", 2);
-    TestCouplingCount(result, "File0A.cs", "Folder2/Folder21/File21A.cs", 1);
+    TestCouplingCount(result, "Readme.md", "Folder1/File1A.cs", 2);
+    TestCouplingCount(result, "Readme.md", "Folder2/Folder21/File21A.cs", 1);
   }
 
   private static void TestCouplingCount(IImmutableList<FileCoupling> result, string name1, string name2, int count)

@@ -11,24 +11,11 @@ public class AuthorActivityCalculationsTest : CalculationsTestBase
     var lines = _testRecords.CreateActivityChartAsCsv();
     Assert.Equal("2024-51", lines.First().Split(',').Second());
     Assert.Equal("2025-05", lines.First().Split(',').Last());
-    Assert.Equal("Anna", lines.ToArray().Second().Split(',').First());
-    Assert.Equal("2", lines.ToArray().Second().Split(',').Second());
-    Assert.Equal("0", lines.ToArray().Second().Split(',').Last());
-    Assert.Equal("Joe", lines.ToArray().Third().Split(',').First());
-    Assert.Equal("6", lines.ToArray().Third().Split(',').Second());
-    Assert.Equal("1", lines.ToArray().Third().Split(',').Last());
-  }
-}
-
-static class Extensions
-{
-  public static string Second(this string[] source)
-  {
-    return source[1];
-  }
-
-  public static string Third(this string[] source)
-  {
-    return source[2];
+    Assert.Equal("Anna", lines.Second().Split(',').First());
+    Assert.Equal("3", lines.Second().Split(',').Second());
+    Assert.Equal("0", lines.Second().Split(',').Last());
+    Assert.Equal("Joe", lines.Third().Split(',').First());
+    Assert.Equal("6", lines.Third().Split(',').Second());
+    Assert.Equal("3", lines.Third().Split(',').Last());
   }
 }
