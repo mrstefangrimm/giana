@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api.Analysis.Tests", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.App.Shared.Tests", "app\shared.tests\Giana.App.Shared.Tests.csproj", "{30C714E8-AA80-406D-A285-5D92E5E574EE}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.App", "app\Giana.App.csproj", "{823C461A-01FD-4DE4-8E49-1C891E649F83}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -71,11 +73,16 @@ Global
 		{30C714E8-AA80-406D-A285-5D92E5E574EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{30C714E8-AA80-406D-A285-5D92E5E574EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{30C714E8-AA80-406D-A285-5D92E5E574EE}.Release|Any CPU.Build.0 = Release|Any CPU
+		{823C461A-01FD-4DE4-8E49-1C891E649F83}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{823C461A-01FD-4DE4-8E49-1C891E649F83}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{823C461A-01FD-4DE4-8E49-1C891E649F83}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{823C461A-01FD-4DE4-8E49-1C891E649F83}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{1A9A5D1E-E90B-4FDC-846C-2693471D9933} = {2419EC0E-E322-448A-A044-23E28DB239D9}
+		{823C461A-01FD-4DE4-8E49-1C891E649F83} = {2419EC0E-E322-448A-A044-23E28DB239D9}
 	EndGlobalSection
 EndGlobal

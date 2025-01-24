@@ -7,28 +7,24 @@
 
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
-    <PackageReleaseNotes>pre-release. Fixes bug in 0.0.4.</PackageReleaseNotes>
-    <Description>C# API for Git Analysis (giana)</Description>
+    <PackageReleaseNotes>pre-release.</PackageReleaseNotes>
+    <Description>C# Application API for Git Analysis (giana)</Description>
     <PackageProjectUrl>https://github.com/mrstefangrimm/giana</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mrstefangrimm/giana</RepositoryUrl>
-    <Version>0.0.6</Version>
+    <Version>0.0.1</Version>
     <Authors>Stefan Grimm</Authors>
     <PackageTags>C# library, git analysis, coupling, cohesion</PackageTags>
     <Copyright>Copyright © Stefan Grimm 2025</Copyright>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="core.tests\**" />
-    <EmbeddedResource Remove="core.tests\**" />
-    <None Remove="core.tests\**" />
+    <Compile Remove="cmd\**" />
+    <EmbeddedResource Remove="cmd\**" />
+    <None Remove="cmd\**" />
 
-    <Compile Remove="analysis.tests\**" />
-    <EmbeddedResource Remove="analysis.tests\**" />
-    <None Remove="analysis.tests\**" />
-
-    <Compile Remove="load.tests\**" />
-    <EmbeddedResource Remove="load.tests\**" />
-    <None Remove="load.tests\**" />
+    <Compile Remove="shared.tests\**" />
+    <EmbeddedResource Remove="shared.tests\**" />
+    <None Remove="shared.tests\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -40,6 +36,10 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Giana.Api" Version="0.0.6" />
   </ItemGroup>
 
 </Project>

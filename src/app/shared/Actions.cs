@@ -22,12 +22,12 @@ public static class Actions
 
     try
     {
-      await Parallel.ForEachAsync(routine.Sources, async (source, CancellationToken) =>
+      await Parallel.ForEachAsync(routine.Sources, cancellationSource.Token, async (source, cancellationToken) =>
       {
-        using var gitRepo = await GitRepository.CreateAsync(source, getGitExePath(), cancellationSource.Token);
-        cancellationSource.Token.ThrowIfCancellationRequested();
+        using var gitRepo = await GitRepository.CreateAsync(source, getGitExePath(), cancellationToken);
+        cancellationToken.ThrowIfCancellationRequested();
 
-        var records = await gitRepo.LogAsync(cancellationSource.Token, routine.CommitsFrom);
+        var records = await gitRepo.LogAsync(cancellationToken, routine.CommitsFrom);
 
         records = records.Where(x => routine.TimeRanges.Count == 0 || routine.TimeRanges.Any(tp => tp.Begin <= x.Date && x.Date <= tp.End)).ToImmutableList();
 
@@ -48,7 +48,7 @@ public static class Actions
 
         // reducedNamesFromRecords can include historical items which are no longer active.
         var reducedNamesFromRecords = reducedRecords.Select(x => x.Name).Distinct();
-        var reducedActiveNames = (await gitRepo.ActiveNamesAsync(cancellationSource.Token)).Where(x => reducedNamesFromRecords.Contains(x));
+        var reducedActiveNames = (await gitRepo.ActiveNamesAsync(cancellationToken)).Where(x => reducedNamesFromRecords.Contains(x));
         lock (_lock)
         {
           allActiveNames = allActiveNames.AddRange(reducedActiveNames);
