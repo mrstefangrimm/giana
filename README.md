@@ -13,7 +13,7 @@ giana is written in C# and includes:
 
 Giana analyzers calculate coupling and cohesion between files. It quickly becomes clear where the software design needs to be improved. Filters allow you to analyze specific areas of your source code.
 
-### Example when and how to use giana
+### When to use giana, a real-life scenario 
 
 Imagine a repository where you defined an `IConfig` interface for various supported devices:
 
@@ -82,6 +82,17 @@ Result:
 
 This simple analysis reveals a weak point: the three device implementations and the interface are highly coupled and have a high volatility.
 Was this shared interface a good choice? If a forth device implementation was added, things would get even worse.
+
+## How to use giana
+
+### C# API
+
+[See API readme](https://github.com/mrstefangrimm/giana/blob/main/src/api/Readme.md)
+
+### Commandline tool
+
+[See Giana.App.Cmd readme](https://github.com/mrstefangrimm/giana/blob/main/src/app/cmd/Readme.md)
+
 
 ## Where to get giana
 

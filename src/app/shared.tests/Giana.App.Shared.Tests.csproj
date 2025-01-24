@@ -22,8 +22,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\analysis\Giana.Api.Analysis.csproj" />
-    <ProjectReference Include="..\core\Giana.Api.Core.csproj" />
+    <ProjectReference Include="..\shared\Giana.App.Shared.csproj" />
   </ItemGroup>
 
   <ItemGroup>

@@ -9,7 +9,7 @@ namespace Giana.Api.Analysis.Activity;
 
 public static class AuthorActivityCalculations
 {
-  public static IImmutableList<string> CreateActivityChartAsCsv(IImmutableList<GitLogRecord> records)
+  public static IImmutableList<string> CreateActivityChartAsCsv(this IImmutableList<GitLogRecord> records)
   {
     var authorFileTouches = CreateAuthorActivity(records);
 
