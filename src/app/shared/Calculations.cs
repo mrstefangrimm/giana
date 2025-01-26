@@ -20,6 +20,8 @@ public static class Calculations
 
     var routine = new Routine();
 
+    routine.OutputWriter = outputWriter;
+
     routine.Sources = [.. query.Sources];
     routine.CommitsFrom = query.CommitsFrom;
 
