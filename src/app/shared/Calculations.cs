@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
@@ -10,10 +11,12 @@ namespace Giana.App.Shared;
 
 public static class Calculations
 {
-  public static Routine CreateRoutine(this Query query)
+  public static Routine CreateRoutine(this Query query, TextWriter outputWriter)
   {
     ArgumentNullException.ThrowIfNull(query.Sources);
     ArgumentNullException.ThrowIfNull(query.Analyzer);
+    ArgumentNullException.ThrowIfNull(query.OutputFormat);
+    ArgumentNullException.ThrowIfNull(outputWriter);
 
     var routine = new Routine();
 
