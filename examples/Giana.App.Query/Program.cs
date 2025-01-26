@@ -8,11 +8,10 @@ var query = new Query
 {
   Sources = [gitRepository],
   Analyzer = "author-ranking",
-  OutputFormat = "csv",  
+  OutputFormat = "csv",
   Renames = [new Author() { To = "Thomas Goulet", From = "ThomasGoulet73" }]
 };
 
-var routine = query.CreateRoutine();
-routine.OutputWriter = Console.Out;
+var routine = query.CreateRoutine(Console.Out);
 
 await Actions.ExecuteAsync(routine, () => gitExePath, 60000);
