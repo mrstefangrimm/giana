@@ -5,7 +5,7 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
 
-    <Version>0.0.1</Version>
+    <Version>0.0.2</Version>
     <PackageReleaseNotes>pre-release.</PackageReleaseNotes>
 
     <Authors>Stefan Grimm</Authors>
@@ -14,7 +14,7 @@
     <Description>C# Application API for Git Analysis (giana)</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
-    <PackageProjectUrl>https://github.com/mrstefangrimm/giana/src/app</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/mrstefangrimm/giana</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mrstefangrimm/giana</RepositoryUrl>
     <PackageTags>C# library, git analysis, coupling, cohesion</PackageTags>
   </PropertyGroup>
