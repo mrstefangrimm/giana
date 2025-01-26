@@ -94,9 +94,7 @@ using StreamReader jsonReader = new StreamReader(queryFilename);
 var query = JsonConvert.DeserializeObject<Query>(await jsonReader.ReadToEndAsync());
 jsonReader.Close();
 
-var routine = Calculations.CreateRoutine(query);
-
-routine.OutputWriter = outputWriter;
+var routine = Calculations.CreateRoutine(query, outputWriter);
 
 await ExecuteAsync(routine, () => gitExePath, 100000);
 

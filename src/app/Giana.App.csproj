@@ -5,32 +5,28 @@
     <ImplicitUsings>disable</ImplicitUsings>
     <Nullable>disable</Nullable>
 
-    <Version>0.0.6</Version>
-    <PackageReleaseNotes>pre-release. Remember, anything can happen in a pre-release.</PackageReleaseNotes>
+    <Version>0.0.1</Version>
+    <PackageReleaseNotes>pre-release.</PackageReleaseNotes>
 
     <Authors>Stefan Grimm</Authors>
     <Copyright>Copyright © Stefan Grimm 2025</Copyright>
 
-    <Description>C# API for Git Analysis (giana)</Description>
+    <Description>C# Application API for Git Analysis (giana)</Description>
     <PackageLicenseFile>LICENSE</PackageLicenseFile>
     <PackageReadmeFile>Readme.md</PackageReadmeFile>
-    <PackageProjectUrl>https://github.com/mrstefangrimm/giana/src/api</PackageProjectUrl>
+    <PackageProjectUrl>https://github.com/mrstefangrimm/giana/src/app</PackageProjectUrl>
     <RepositoryUrl>https://github.com/mrstefangrimm/giana</RepositoryUrl>
     <PackageTags>C# library, git analysis, coupling, cohesion</PackageTags>
   </PropertyGroup>
 
   <ItemGroup>
-    <Compile Remove="core.tests\**" />
-    <EmbeddedResource Remove="core.tests\**" />
-    <None Remove="core.tests\**" />
+    <Compile Remove="cmd\**" />
+    <EmbeddedResource Remove="cmd\**" />
+    <None Remove="cmd\**" />
 
-    <Compile Remove="analysis.tests\**" />
-    <EmbeddedResource Remove="analysis.tests\**" />
-    <None Remove="analysis.tests\**" />
-
-    <Compile Remove="load.tests\**" />
-    <EmbeddedResource Remove="load.tests\**" />
-    <None Remove="load.tests\**" />
+    <Compile Remove="shared.tests\**" />
+    <EmbeddedResource Remove="shared.tests\**" />
+    <None Remove="shared.tests\**" />
   </ItemGroup>
 
   <ItemGroup>
@@ -42,6 +38,10 @@
       <Pack>True</Pack>
       <PackagePath></PackagePath>
     </None>
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Giana.Api" Version="0.0.6" />
   </ItemGroup>
 
 </Project>

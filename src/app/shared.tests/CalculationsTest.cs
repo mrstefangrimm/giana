@@ -19,14 +19,18 @@ public class CalculationsTest : AppSharedTestBase
   {
     var query = new Query();
 
-    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine());
+    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine(Console.Out));
 
     query.Sources = ["https://test"];
-    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine());
+    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine(Console.Out));
 
     query.Analyzer = "file-ranking";
+    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine(Console.Out));
 
-    Assert.NotNull(query.CreateRoutine());
+    query.OutputFormat = "csv";
+    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine(null));
+
+    Assert.NotNull(query.CreateRoutine(Console.Out));
   }
 
   [Fact]
@@ -35,6 +39,7 @@ public class CalculationsTest : AppSharedTestBase
     var query = new Query();
     query.Sources = ["https://test"];
     query.Analyzer = "file-ranking";
+    query.OutputFormat = "csv";
     query.TimeRanges = [
       new TimePeriod()
       {
@@ -45,7 +50,7 @@ public class CalculationsTest : AppSharedTestBase
         Begin = DateTime.Parse("2025-02-01T00:00:00Z", _fmt), End =  DateTime.Parse("2025-02-10T10:00:00Z", _fmt)
       }];
 
-    var routine = query.CreateRoutine();
+    var routine = query.CreateRoutine(Console.Out);
 
     var result = _testRecords.Where(x => routine.TimeRanges.Any(tp => tp.Begin <= x.Date && x.Date <= tp.End)).ToArray();
 
@@ -62,9 +67,10 @@ public class CalculationsTest : AppSharedTestBase
     var query = new Query();
     query.Sources = ["https://test"];
     query.Analyzer = "file-ranking";
+    query.OutputFormat = "csv";
     query.CommitsFrom = DateTime.Parse("2024-12-21T10:00:00Z", _fmt);
 
-    var routine = query.CreateRoutine();
+    var routine = query.CreateRoutine(Console.Out);
 
     var result = _testRecords.Where(x => x.Date > routine.CommitsFrom).ToArray();
 
