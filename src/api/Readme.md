@@ -18,21 +18,26 @@ var authorRanking = AuthorRankingCalculations.CreateAuthorRankingSorted(records)
 AuthorRankingActions.WriteAsCsv(authorRanking, Console.Out);
 ```
 
-Output, 13. Jan 2025
+Output, 26. Jan 2025
 ```
 Author,FileTouches
 Jeremy Kuhne,3994
 Harshit,927
-h3xds1nz,593
-dotnet-maestro[bot],498
-Thomas Goulet,349
-Himanshi Goyal,159
-Dipesh Kumar,157
-Rishabh Chauhan,92
-Ashish Kumar Singh,60
+h3xds1nz,664
+dotnet-maestro[bot],474
+Thomas Goulet,343
+Hugh Bellamy,147
+Himanshi Goyal,141
+Dipesh Kumar,113
 Adam Sitnik,59
-Hugh Bellamy,51
-Sia Gupta,40
+Sia Gupta,48
+Ashish Kumar Singh,45
+Pankaj Chaurasia,12
+Anjali,12
+Eric StJohn,12
+Kuldeep,8
+Mitch Razga,5
+Loni Tra,5
 ...
 ```
 
@@ -55,20 +60,25 @@ var authorRanking = AuthorRankingCalculations.CreateAuthorRankingSorted(records)
 AuthorRankingActions.WriteAsCsv(authorRanking, Console.Out);
 ```
 
-Output, 13. Jan 2025
+Output, 26. Jan 2025
 ```
 Author,FileTouches
 Jeremy Kuhne,3994
 Harshit,927
-h3xds1nz,593
-dotnet-maestro[bot],498
-Thomas Goulet,349
-Himanshi Goyal,159
-Dipesh Kumar,157
-Rishabh Chauhan,92
-Ashish Kumar Singh,60
+h3xds1nz,664
+dotnet-maestro[bot],474
+Thomas Goulet,343
+Hugh Bellamy,147
+Himanshi Goyal,141
+Dipesh Kumar,113
 Adam Sitnik,59
-Hugh Bellamy,51
-Sia Gupta,40
+Sia Gupta,48
+Ashish Kumar Singh,45
+Pankaj Chaurasia,12
+Anjali,12
+Eric StJohn,12
+Kuldeep,8
+Mitch Razga,5
+Loni Tra,5
 ...
 ```
