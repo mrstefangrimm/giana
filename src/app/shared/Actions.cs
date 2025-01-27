@@ -13,9 +13,9 @@ public static class Actions
 {
   private static readonly object _lock = new object();
 
-  public static async Task ExecuteAsync(Routine routine, Func<string> getGitExePath, int millisecondsTimeout)
+  public static async Task ExecuteAsync(Routine routine, Func<string> getGitExePath, TimeSpan timeout)
   {
-    using var cancellationSource = new CancellationTokenSource(millisecondsTimeout);
+    using var cancellationSource = new CancellationTokenSource(timeout.Milliseconds);
 
     ImmutableList<GitLogRecord> reducedRecords = [];
     ImmutableList<string> allActiveNames = [];
@@ -59,7 +59,7 @@ public static class Actions
     }
     catch (OperationCanceledException)
     {
-      Console.WriteLine($"`{Name()}` timeout of {millisecondsTimeout} ms reached. Ended without results.");
+      Console.WriteLine($"`{Name()}` timeout of {timeout.Microseconds} ms reached. Ended without results.");
     }
   }
 }

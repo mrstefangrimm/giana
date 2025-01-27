@@ -96,7 +96,7 @@ jsonReader.Close();
 
 var routine = Calculations.CreateRoutine(query, outputWriter);
 
-await ExecuteAsync(routine, () => gitExePath, 100000);
+await ExecuteAsync(routine, () => gitExePath, TimeSpan.FromSeconds(100));
 
 var afterExecution  = DateTime.Now;
 
