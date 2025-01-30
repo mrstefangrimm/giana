@@ -30,6 +30,7 @@ public static class Calculations
     var routine = new Routine();
 
     routine.Sources = [.. query.Sources];
+    routine.OutputFormat = query.OutputFormat;
     routine.CommitsFrom = query.CommitsFrom;
 
     routine.TimeRanges = new List<(Func<IImmutableList<GitLogRecord>, DateTime, DateTime, IImmutableList<GitLogRecord>> Invoke, DateTime Begin, DateTime End)>();

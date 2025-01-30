@@ -15,7 +15,7 @@ public class CalculationsTest : AppSharedTestBase
   }
 
   [Fact]
-  public void CreateRoutine_WhenSourcesOrAnalyzerIsNull_ArgumentNullExceptionIsThrown()
+  public void CreateRoutine_WhenSourcesOrAnalyzerOrOutputFormatIsNull_ArgumentNullExceptionIsThrown()
   {
     var query = new Query();
 
