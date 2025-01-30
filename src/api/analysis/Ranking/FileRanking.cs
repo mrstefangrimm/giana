@@ -5,6 +5,7 @@ namespace Giana.Api.Analysis.Ranking;
 
 public record FileRanking(string Repository, string Name, int ChangeCount);
 
+[Analyzer("file-ranking")]
 public static class FileRankingActions
 {
   public static void WriteAsCsv(this IImmutableList<FileRanking> records, TextWriter writer)
@@ -17,6 +18,7 @@ public static class FileRankingActions
     }
   }
 
+  [AnalyzerExecute(["csv"])]
   public static void Execute(ExecutionContext context)
   {
     var ranking = FileRankingCalculations.CreateFileRankingSorted(context.LogRecords);

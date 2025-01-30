@@ -80,4 +80,43 @@ public class CalculationsTest : AppSharedTestBase
       .And
       .NotContain(x => x.Commit == "abc");
   }
+
+  [Fact]
+  public void CreateRoutine_WithCustomAnalyzerNull_ArgumentNullExceptionIsThrown()
+  {
+    var query = new Query
+    {
+      Sources = ["https://test"],
+      Analyzer = "test-analysis",
+      OutputFormat = "csv"
+    };
+
+    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine(Console.Out, null));
+  }
+
+  [Fact]
+  public void CreateRoutine_WithUnknownCustomAnalyzer_InvalidOperationExceptionIsThrown()
+  {
+    var query = new Query
+    {
+      Sources = ["https://test"],
+      Analyzer = "I-want-this-analysis",
+      OutputFormat = "csv"
+    };
+
+    Assert.Throws<InvalidOperationException>(() => query.CreateRoutine(Console.Out, _testAnalyzers));
+  }
+
+  [Fact]
+  public void CreateRoutine_WithUnknownOutputFormat_InvalidOperationExceptionIsThrown()
+  {
+    var query = new Query
+    {
+      Sources = ["https://test"],
+      Analyzer = "test-analysis",
+      OutputFormat = "yml"
+    };
+
+    Assert.Throws<InvalidOperationException>(() => query.CreateRoutine(Console.Out, _testAnalyzers));
+  }
 }

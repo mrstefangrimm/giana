@@ -1,5 +1,4 @@
-﻿using Giana.Api.Analysis;
-using System;
+﻿using System;
 using System.IO;
 using System.Threading;
 
@@ -131,5 +130,59 @@ public class RoutineTest : AppSharedTestBase
 
     var result = writer.ToString();
     Assert.StartsWith(",2024-51,2024-52,2024-01,2025-01,2025-02,2025-03,2025-04,2025-05", result);
+  }
+
+  [Fact]
+  public void Analyze_WhenFormatCsv_ThenOutputCsv()
+  {
+    var query = new Query();
+    query.Sources = ["https://test"];
+    query.Analyzer = "test-analysis";
+    query.OutputFormat = "csv";
+
+    using var writer = new StringWriter();
+    var context = new Api.Analysis.ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
+
+    var routine = query.CreateRoutine(Console.Out, _testAnalyzers);
+    routine.Analyze(context);
+
+    var result = writer.ToString();
+    Assert.StartsWith("Property1,Property2", result);
+  }
+
+  [Fact]
+  public void Analyze_WhenFormatJson_ThenOutputJson()
+  {
+    var query = new Query();
+    query.Sources = ["https://test"];
+    query.Analyzer = "test-analysis";
+    query.OutputFormat = "csv";
+
+    using var writer = new StringWriter();
+    var context = new Api.Analysis.ExecutionContext(_testRecords, _activeNames, "json", writer, CancellationToken.None);
+
+    var routine = query.CreateRoutine(Console.Out, _testAnalyzers);
+    routine.Analyze(context);
+
+    var result = writer.ToString();
+    Assert.StartsWith("{ Property1: p1", result);
+  }
+
+  [Fact]
+  public void Analyze_WhenFormatHtml_ThenOutputHtml()
+  {
+    var query = new Query();
+    query.Sources = ["https://test"];
+    query.Analyzer = "test-analysis";
+    query.OutputFormat = "csv";
+
+    using var writer = new StringWriter();
+    var context = new Api.Analysis.ExecutionContext(_testRecords, _activeNames, "html", writer, CancellationToken.None);
+
+    var routine = query.CreateRoutine(Console.Out, _testAnalyzers);
+    routine.Analyze(context);
+
+    var result = writer.ToString();
+    Assert.StartsWith("<html><Property1>p1", result);
   }
 }

@@ -1,4 +1,5 @@
-﻿using Giana.Api.Core;
+﻿using Giana.Api.Analysis;
+using Giana.Api.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -11,10 +12,12 @@ public class AppSharedTestBase
   protected static readonly IFormatProvider _fmt = new CultureInfo("en-US");
   protected readonly IImmutableList<GitLogRecord> _testRecords;
   protected readonly IImmutableList<string> _activeNames;
+  protected readonly IImmutableDictionary<string, (string[], Action<ExecutionContext>)> _testAnalyzers;
 
   protected AppSharedTestBase()
   {
     _testRecords = GitLogData().ToImmutableList();
+    _testAnalyzers = GetTestAnalyzers().ToImmutableDictionary();
     _activeNames = new List<string>(
       [
       "Readme.md",
@@ -47,7 +50,7 @@ public class AppSharedTestBase
   ///    Folder1/File1A.cs
   /// </summary>
   /// <returns></returns>
-  protected static IEnumerable<GitLogRecord> GitLogData()
+  private static IEnumerable<GitLogRecord> GitLogData()
   {
     yield return new GitLogRecord("Gina", "Readme.md", "abc", "Joe", "First commit.", DateTime.Parse("2024-12-20T19:35:00Z", _fmt));
     yield return new GitLogRecord("Gina", "Folder1/Folder1.csproj", "abc", "Joe", "First commit.", DateTime.Parse("2024-12-20T19:35:00Z", _fmt));
@@ -65,4 +68,9 @@ public class AppSharedTestBase
     yield return new GitLogRecord("Gina", "Folder1/File1A.cs", "cde", "Joe", "Third commit.", DateTime.Parse("2025-02-01T10:00:00Z", _fmt));
   }
 
+  private static IDictionary<string, (string[], Action<ExecutionContext>)> GetTestAnalyzers()
+  {
+    return new Dictionary<string, (string[], Action<ExecutionContext>)>()
+    { { "test-analysis", (["csv"], TestAnalyzerActions.Execute)} };
+  }
 }
