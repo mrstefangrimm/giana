@@ -1,10 +1,12 @@
-﻿using Giana.Api.Core;
+﻿using Giana.Api.Analysis;
+using Giana.Api.Core;
 using Giana.Api.Load;
 using System;
+using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
-using System.Threading;
+using System.Reflection;
 using System.Threading.Tasks;
 using static Giana.App.Shared.Calculations;
 
@@ -16,7 +18,7 @@ public static class Actions
 
   public static async Task ExecuteAsync(this Routine routine, string gitExePath, TextWriter outputWriter, TimeSpan timeout)
   {
-    using var cancellationSource = new CancellationTokenSource(timeout);
+    using var cancellationSource = new System.Threading.CancellationTokenSource(timeout);
 
     ImmutableList<GitLogRecord> reducedRecords = [];
     ImmutableList<string> allActiveNames = [];
@@ -62,5 +64,27 @@ public static class Actions
     {
       Console.WriteLine($"`{Name()}` timeout of {(int)timeout.TotalMilliseconds} ms reached. Ended without results.");
     }
+  }
+
+  public static IImmutableDictionary<string, (string[], Action<ExecutionContext>)> WithCustomAnalyzers(this IImmutableDictionary<string, (string[], Action<ExecutionContext>)> analyzers, string assemblyString)
+  {
+    var assembly = Assembly.Load(assemblyString);
+
+    var analzerExecutors = new Dictionary<string, (string[], Action<ExecutionContext>)>();
+    var customAnalyzerTypes = assembly.GetTypes().Where(t => t.GetCustomAttribute(typeof(AnalyzerAttribute)) != null);
+
+    foreach (var analyzer in customAnalyzerTypes)
+    {
+      var executeMethod = analyzer.GetMethods(BindingFlags.Public | BindingFlags.Static).First(m => m.GetCustomAttribute(typeof(AnalyzerExecuteAttribute)) != null);
+      var outputFormats = executeMethod.GetCustomAttribute<AnalyzerExecuteAttribute>().AnalyzerExecute;
+
+      var reflectionExecutor = new Action<ExecutionContext>(context =>
+      {
+        executeMethod.Invoke(analyzer, [context]);
+      });
+      analzerExecutors.Add(analyzer.GetCustomAttribute<AnalyzerAttribute>().Analyzer, (outputFormats, reflectionExecutor));
+    }
+
+    return analyzers.AddRange(analzerExecutors.ToImmutableDictionary());
   }
 }

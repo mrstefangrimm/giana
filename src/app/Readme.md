@@ -2,7 +2,7 @@
 
 
 ```csharp
-const string gitExePath = @"C:\Git2\bin\git.exe";
+const string gitExePath = @"C:\Program Files\Git\bin\git.exe";
 const string gitRepository = "https://github.com/dotnet/wpf.git";
 
 var query = new Query
@@ -14,9 +14,9 @@ var query = new Query
   TimeRanges = [new TimePeriod() { Begin = DateTime.Now.AddMonths(-6), End = DateTime.Now }]
 };
 
-var routine = query.CreateRoutine(Console.Out);
+var routine = query.CreateRoutine();
 
-await Actions.ExecuteAsync(routine, () => gitExePath, 60000);
+await routine.ExecuteAsync(gitExePath, Console.Out, TimeSpan.FromSeconds(60));
 ```
 
 Output, 26. Jan 2025
