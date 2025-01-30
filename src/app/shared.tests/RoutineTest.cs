@@ -17,7 +17,7 @@ public class RoutineTest : AppSharedTestBase
     using var writer = new StringWriter();
     var context = new Api.Analysis.ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
 
-    var routine = query.CreateRoutine(Console.Out);
+    var routine = query.CreateRoutine();
     routine.Analyze(context);
 
     var result = writer.ToString();
@@ -35,7 +35,7 @@ public class RoutineTest : AppSharedTestBase
     using var writer = new StringWriter();
     var context = new Api.Analysis.ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
 
-    var routine = query.CreateRoutine(Console.Out);
+    var routine = query.CreateRoutine();
     routine.Analyze(context);
 
     var result = writer.ToString();
@@ -53,7 +53,7 @@ public class RoutineTest : AppSharedTestBase
     using var writer = new StringWriter();
     var context = new Api.Analysis.ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
 
-    var routine = query.CreateRoutine(Console.Out);
+    var routine = query.CreateRoutine();
     routine.Analyze(context);
 
     var result = writer.ToString();
@@ -71,7 +71,7 @@ public class RoutineTest : AppSharedTestBase
     using var writer = new StringWriter();
     var context = new Api.Analysis.ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
 
-    var routine = query.CreateRoutine(Console.Out);
+    var routine = query.CreateRoutine();
     routine.Analyze(context);
 
     var result = writer.ToString();
@@ -89,7 +89,7 @@ public class RoutineTest : AppSharedTestBase
     using var writer = new StringWriter();
     var context = new Api.Analysis.ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
 
-    var routine = query.CreateRoutine(Console.Out);
+    var routine = query.CreateRoutine();
     routine.Analyze(context);
 
     var result = writer.ToString();
@@ -107,7 +107,7 @@ public class RoutineTest : AppSharedTestBase
     using var writer = new StringWriter();
     var context = new Api.Analysis.ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
 
-    var routine = query.CreateRoutine(Console.Out);
+    var routine = query.CreateRoutine();
     routine.Analyze(context);
 
     var result = writer.ToString();
@@ -125,7 +125,7 @@ public class RoutineTest : AppSharedTestBase
     using var writer = new StringWriter();
     var context = new Api.Analysis.ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
 
-    var routine = query.CreateRoutine(Console.Out);
+    var routine = query.CreateRoutine();
     routine.Analyze(context);
 
     var result = writer.ToString();
@@ -143,7 +143,7 @@ public class RoutineTest : AppSharedTestBase
     using var writer = new StringWriter();
     var context = new Api.Analysis.ExecutionContext(_testRecords, _activeNames, "csv", writer, CancellationToken.None);
 
-    var routine = query.CreateRoutine(Console.Out, _testAnalyzers);
+    var routine = query.CreateRoutine(_testAnalyzers);
     routine.Analyze(context);
 
     var result = writer.ToString();
@@ -161,7 +161,7 @@ public class RoutineTest : AppSharedTestBase
     using var writer = new StringWriter();
     var context = new Api.Analysis.ExecutionContext(_testRecords, _activeNames, "json", writer, CancellationToken.None);
 
-    var routine = query.CreateRoutine(Console.Out, _testAnalyzers);
+    var routine = query.CreateRoutine(_testAnalyzers);
     routine.Analyze(context);
 
     var result = writer.ToString();
@@ -179,7 +179,7 @@ public class RoutineTest : AppSharedTestBase
     using var writer = new StringWriter();
     var context = new Api.Analysis.ExecutionContext(_testRecords, _activeNames, "html", writer, CancellationToken.None);
 
-    var routine = query.CreateRoutine(Console.Out, _testAnalyzers);
+    var routine = query.CreateRoutine(_testAnalyzers);
     routine.Analyze(context);
 
     var result = writer.ToString();

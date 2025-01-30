@@ -12,17 +12,16 @@ namespace Giana.App.Shared;
 
 public static class Calculations
 {
-  public static Routine CreateRoutine(this Query query, TextWriter outputWriter)
+  public static Routine CreateRoutine(this Query query)
   {
-    return CreateRoutine(query, outputWriter, GetDefaultAnalyzers());
+    return CreateRoutine(query, GetDefaultAnalyzers());
   }
 
-  public static Routine CreateRoutine(this Query query, TextWriter outputWriter, IImmutableDictionary<string, (string[] Formats, Action<ExecutionContext> Execute)> analyzers)
+  public static Routine CreateRoutine(this Query query, IImmutableDictionary<string, (string[] Formats, Action<ExecutionContext> Execute)> analyzers)
   {
     ArgumentNullException.ThrowIfNull(query.Sources);
     ArgumentNullException.ThrowIfNull(query.Analyzer);
     ArgumentNullException.ThrowIfNull(query.OutputFormat);
-    ArgumentNullException.ThrowIfNull(outputWriter);
     ArgumentNullException.ThrowIfNull(analyzers);
 
     var analyzer = analyzers.First(e => e.Key.Equals(query.Analyzer, StringComparison.InvariantCultureIgnoreCase));

@@ -19,18 +19,16 @@ public class CalculationsTest : AppSharedTestBase
   {
     var query = new Query();
 
-    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine(Console.Out));
+    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine());
 
     query.Sources = ["https://test"];
-    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine(Console.Out));
+    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine());
 
     query.Analyzer = "file-ranking";
-    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine(Console.Out));
+    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine());
 
     query.OutputFormat = "csv";
-    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine(null));
-
-    Assert.NotNull(query.CreateRoutine(Console.Out));
+    Assert.NotNull(query.CreateRoutine());
   }
 
   [Fact]
@@ -50,7 +48,7 @@ public class CalculationsTest : AppSharedTestBase
         Begin = DateTime.Parse("2025-02-01T00:00:00Z", _fmt), End =  DateTime.Parse("2025-02-10T10:00:00Z", _fmt)
       }];
 
-    var routine = query.CreateRoutine(Console.Out);
+    var routine = query.CreateRoutine();
 
     var result = _testRecords.Where(x => routine.TimeRanges.Any(tp => tp.Begin <= x.Date && x.Date <= tp.End)).ToArray();
 
@@ -70,7 +68,7 @@ public class CalculationsTest : AppSharedTestBase
     query.OutputFormat = "csv";
     query.CommitsFrom = DateTime.Parse("2024-12-21T10:00:00Z", _fmt);
 
-    var routine = query.CreateRoutine(Console.Out);
+    var routine = query.CreateRoutine();
 
     var result = _testRecords.Where(x => x.Date > routine.CommitsFrom).ToArray();
 
@@ -91,7 +89,7 @@ public class CalculationsTest : AppSharedTestBase
       OutputFormat = "csv"
     };
 
-    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine(Console.Out, null));
+    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine(null));
   }
 
   [Fact]
@@ -104,7 +102,7 @@ public class CalculationsTest : AppSharedTestBase
       OutputFormat = "csv"
     };
 
-    Assert.Throws<InvalidOperationException>(() => query.CreateRoutine(Console.Out, _testAnalyzers));
+    Assert.Throws<InvalidOperationException>(() => query.CreateRoutine(_testAnalyzers));
   }
 
   [Fact]
@@ -117,6 +115,6 @@ public class CalculationsTest : AppSharedTestBase
       OutputFormat = "yml"
     };
 
-    Assert.Throws<InvalidOperationException>(() => query.CreateRoutine(Console.Out, _testAnalyzers));
+    Assert.Throws<InvalidOperationException>(() => query.CreateRoutine(_testAnalyzers));
   }
 }

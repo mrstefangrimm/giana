@@ -118,7 +118,7 @@ foreach (var analyzer in analyzers)
   }
 }
 
-var routine = Calculations.CreateRoutine(query, outputWriter, analzerExecutors.ToImmutableDictionary());
+var routine = Calculations.CreateRoutine(query, analzerExecutors.ToImmutableDictionary());
 
 await routine.ExecuteAsync(gitExePath, outputWriter, TimeSpan.FromSeconds(100));
 
