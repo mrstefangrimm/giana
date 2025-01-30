@@ -1,13 +1,9 @@
-﻿using Giana.Api.Analysis;
-using Giana.Api.Load;
+﻿using Giana.Api.Load;
 using Giana.App.Shared;
 using Newtonsoft.Json;
 using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using static Giana.App.Shared.Actions;
 
 const string GitExePathEnvName = "GitExePath";
@@ -97,28 +93,7 @@ using StreamReader jsonReader = new StreamReader(queryFilename);
 var query = JsonConvert.DeserializeObject<Query>(await jsonReader.ReadToEndAsync());
 jsonReader.Close();
 
-var anaAsm = Assembly.Load("Giana.Api.Analysis");
-
-var analzerExecutors = new Dictionary<string, (string[], Action<ExecutionContext>)>();
-var analyzers = anaAsm.GetTypes().Where(t => t.GetCustomAttribute(typeof(AnalyzerAttribute)) != null);
-
-foreach (var analyzer in analyzers)
-{
-  var analyzerName = analyzer.GetCustomAttribute<AnalyzerAttribute>().Analyzer;
-  if (analyzerName.Equals(query.Analyzer, StringComparison.InvariantCultureIgnoreCase))
-  {
-    var executeMethod = analyzer.GetMethods(BindingFlags.Public | BindingFlags.Static).First(m => m.GetCustomAttribute(typeof(AnalyzerExecuteAttribute)) != null);
-    var outputFormats = executeMethod.GetCustomAttribute<AnalyzerExecuteAttribute>().AnalyzerExecute;
-
-    var reflectionExecutor = new Action<ExecutionContext>(context =>
-    {
-      executeMethod.Invoke(analyzer, [context]);
-    });
-    analzerExecutors.Add(analyzer.GetCustomAttribute<AnalyzerAttribute>().Analyzer, (outputFormats, reflectionExecutor));
-  }
-}
-
-var routine = Calculations.CreateRoutine(query, analzerExecutors.ToImmutableDictionary());
+var routine = query.CreateRoutine();
 
 await routine.ExecuteAsync(gitExePath, outputWriter, TimeSpan.FromSeconds(100));
 

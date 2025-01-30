@@ -94,7 +94,7 @@ public static class Calculations
     return callingMethod;
   }
 
-  private static IImmutableDictionary<string, (string[], Action<ExecutionContext>)> GetDefaultAnalyzers()
+  public static IImmutableDictionary<string, (string[], Action<ExecutionContext>)> GetDefaultAnalyzers()
   {
     return new Dictionary<string, (string[], Action<ExecutionContext>)>
     {
