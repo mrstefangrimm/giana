@@ -1,4 +1,5 @@
 ﻿using Giana.App.Shared;
+using System;
 using System.IO;
 using System.Threading.Tasks;
 
@@ -25,28 +26,30 @@ public class AppActionsExecute
     };
 
     var rouines = new Routine[100];
+    var outputs = new StringWriter[rouines.Length];
     var tasks = new Task[rouines.Length];
 
     for (int i = 0; i < rouines.Length; i++)
     {
-      var routine = query.CreateRoutine(new StringWriter());
+      var routine = query.CreateRoutine();
 
       rouines[i] = routine;
-      tasks[i] = App.Shared.Actions.ExecuteAsync(routine, () => gitExePath, 60000);
+      outputs[i] = new StringWriter();
+      tasks[i] = App.Shared.Actions.ExecuteAsync(routine, gitExePath, outputs[i], TimeSpan.FromSeconds(60));
     }
 
     Task.WaitAll(tasks);
 
     for (int i = 1; i < rouines.Length; i++)
     {
-      var result1 = rouines[i - 1].OutputWriter.ToString();
-      var result2 = rouines[i].OutputWriter.ToString();
+      var result1 = outputs[i - 1].ToString();
+      var result2 = outputs[i].ToString();
       Assert.Equal(result1, result2);
     }
 
-    foreach (var r in rouines)
+    foreach (var writer in outputs)
     {
-      r.OutputWriter.Close();
+      writer.Close();
     }
   }
 
@@ -71,28 +74,30 @@ public class AppActionsExecute
     queries[5] = new Query { Sources = [urls[5]], Analyzer = "author-ranking", OutputFormat = "csv" };
 
     var rouines = new Routine[urls.Length];
+    var outputs = new StringWriter[urls.Length];
     var tasks = new Task[urls.Length];
 
     for (int i = 0; i < queries.Length; i++)
     {
-      var routine = queries[i].CreateRoutine(new StringWriter());
+      var routine = queries[i].CreateRoutine();
 
       rouines[i] = routine;
-      tasks[i] = App.Shared.Actions.ExecuteAsync(routine, () => gitExePath, 60000);
+      outputs[i] = new StringWriter();
+      tasks[i] = App.Shared.Actions.ExecuteAsync(routine, gitExePath, outputs[i], TimeSpan.FromSeconds(60));
     }
 
     Task.WaitAll(tasks);
 
     for (int i = 0; i < rouines.Length; i++)
     {
-      var result = rouines[i].OutputWriter.ToString();
+      var result = outputs[i].ToString();
       Assert.StartsWith("Author,FileTouches", result);
       Assert.Contains("mrstefangrimm", result);
     }
 
-    foreach (var r in rouines)
+    foreach (var writer in outputs)
     {
-      r.OutputWriter.Close();
+      writer.Close();
     }
   }
 

@@ -8,7 +8,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Giana.App" Version="0.0.1" />
+    <PackageReference Include="Giana.App" Version="0.0.2" />
   </ItemGroup>
 
   <ItemGroup>
