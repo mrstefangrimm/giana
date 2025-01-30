@@ -11,7 +11,6 @@ namespace Giana.App.Shared;
 public class Routine
 {
   public string OutputFormat { get; internal set; }
-  public TextWriter OutputWriter { get; internal set; }
 
   public ICollection<string> Sources { get; internal set; }
   public DateTime? CommitsFrom { get; internal set; }

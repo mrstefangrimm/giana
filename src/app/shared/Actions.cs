@@ -2,6 +2,7 @@
 using Giana.Api.Load;
 using System;
 using System.Collections.Immutable;
+using System.IO;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -13,7 +14,7 @@ public static class Actions
 {
   private static readonly object _lock = new object();
 
-  public static async Task ExecuteAsync(this Routine routine, string gitExePath, TimeSpan timeout)
+  public static async Task ExecuteAsync(this Routine routine, string gitExePath, TextWriter outputWriter, TimeSpan timeout)
   {
     using var cancellationSource = new CancellationTokenSource(timeout);
 
@@ -55,7 +56,7 @@ public static class Actions
         }
       });
 
-      routine.Analyze(new Api.Analysis.ExecutionContext(reducedRecords, allActiveNames, routine.OutputFormat, routine.OutputWriter, cancellationSource.Token));
+      routine.Analyze(new Api.Analysis.ExecutionContext(reducedRecords, allActiveNames, routine.OutputFormat, outputWriter, cancellationSource.Token));
     }
     catch (OperationCanceledException)
     {

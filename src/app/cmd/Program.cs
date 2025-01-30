@@ -120,7 +120,7 @@ foreach (var analyzer in analyzers)
 
 var routine = Calculations.CreateRoutine(query, outputWriter, analzerExecutors.ToImmutableDictionary());
 
-await routine.ExecuteAsync(gitExePath, TimeSpan.FromSeconds(100));
+await routine.ExecuteAsync(gitExePath, outputWriter, TimeSpan.FromSeconds(100));
 
 var afterExecution  = DateTime.Now;
 
