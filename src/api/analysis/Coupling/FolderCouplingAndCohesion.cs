@@ -5,6 +5,7 @@ namespace Giana.Api.Analysis.Coupling;
 
 public record FolderCouplingAndCohesion(string FolderName, int CouplingCount, int CohesionCount, double Ratio);
 
+[Analyzer("folder-coupling-and-cohesion")]
 public static class FolderCouplingAndCohesionActions
 {
   public static void WriteAsCsv(this IImmutableList<FolderCouplingAndCohesion> records, TextWriter writer)
@@ -17,6 +18,7 @@ public static class FolderCouplingAndCohesionActions
     }
   }
 
+  [AnalyzerExecute(["csv"])]
   public static void Execute(ExecutionContext context)
   {
     var list = FolderCouplingAndCohesionRankingCalculations.CreateFolderCouplingList(context.LogRecords, context.ActiveNames);

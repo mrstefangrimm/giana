@@ -5,6 +5,7 @@ namespace Giana.Api.Analysis.Coupling;
 
 public record FileCoupling(string Name1, string Name2, int CouplingCount);
 
+[Analyzer("file-coupling")]
 public static class FileCouplingActions
 {
   public static void WriteAsCsv(this IImmutableList<FileCoupling> records, TextWriter writer)
@@ -17,6 +18,7 @@ public static class FileCouplingActions
     }
   }
 
+  [AnalyzerExecute(["csv"])]
   public static void Execute(ExecutionContext context)
   {
     var activitiesChart = FileCouplingCalculations.CreateFileCouplingList(context.LogRecords, context.ActiveNames);

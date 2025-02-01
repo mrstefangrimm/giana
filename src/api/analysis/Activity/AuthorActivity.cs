@@ -5,6 +5,7 @@ namespace Giana.Api.Analysis.Activity;
 
 public record AuthorActivity(string Author, string YearAndWeek, int TouchedFiles);
 
+[Analyzer("author-activity")]
 public static class AuthorActivityActions
 {
   public static void WriteChartAsCsv(this IImmutableList<string> chart, TextWriter writer)
@@ -15,6 +16,7 @@ public static class AuthorActivityActions
     }
   }
 
+  [AnalyzerExecute(["csv"])]
   public static void Execute(ExecutionContext context)
   {
     var activitiesChart = AuthorActivityCalculations.CreateActivityChartAsCsv(context.LogRecords);

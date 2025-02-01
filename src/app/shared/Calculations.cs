@@ -1,4 +1,5 @@
-﻿using Giana.Api.Core;
+﻿using Giana.Api.Analysis;
+using Giana.Api.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -11,18 +12,25 @@ namespace Giana.App.Shared;
 
 public static class Calculations
 {
-  public static Routine CreateRoutine(this Query query, TextWriter outputWriter)
+  public static Routine CreateRoutine(this Query query)
+  {
+    return CreateRoutine(query, GetDefaultAnalyzers());
+  }
+
+  public static Routine CreateRoutine(this Query query, IImmutableDictionary<string, (string[] Formats, Action<ExecutionContext> Execute)> analyzers)
   {
     ArgumentNullException.ThrowIfNull(query.Sources);
     ArgumentNullException.ThrowIfNull(query.Analyzer);
     ArgumentNullException.ThrowIfNull(query.OutputFormat);
-    ArgumentNullException.ThrowIfNull(outputWriter);
+    ArgumentNullException.ThrowIfNull(analyzers);
+
+    var analyzer = analyzers.First(e => e.Key.Equals(query.Analyzer, StringComparison.InvariantCultureIgnoreCase));
+    _ = analyzer.Value.Formats.First(f => f.Equals(query.OutputFormat, StringComparison.InvariantCultureIgnoreCase));
 
     var routine = new Routine();
 
-    routine.OutputWriter = outputWriter;
-
     routine.Sources = [.. query.Sources];
+    routine.OutputFormat = query.OutputFormat;
     routine.CommitsFrom = query.CommitsFrom;
 
     routine.TimeRanges = new List<(Func<IImmutableList<GitLogRecord>, DateTime, DateTime, IImmutableList<GitLogRecord>> Invoke, DateTime Begin, DateTime End)>();
@@ -77,17 +85,7 @@ public static class Calculations
       routine.Reductions.Add((Api.Core.Calculations.ExcludeMessage, new Regex(msg)));
     }
 
-    routine.Analyze = query.Analyzer.ToLower() switch
-    {
-      "author-activity" => Api.Analysis.Activity.AuthorActivityActions.Execute,
-      "file-coupling" => Api.Analysis.Coupling.FileCouplingActions.Execute,
-      "folder-coupling-and-cohesion" => Api.Analysis.Coupling.FolderCouplingAndCohesionActions.Execute,
-      "project-coupling-and-cohesion" => Api.Analysis.Coupling.ProjectCouplingAndCohesionActions.Execute,
-      "author-ranking" => Api.Analysis.Ranking.AuthorRankingActions.Execute,
-      "commit-ranking" => Api.Analysis.Ranking.CommitRankingActions.Execute,
-      "file-ranking" => Api.Analysis.Ranking.FileRankingActions.Execute,
-      _ => throw new NotImplementedException(query.Analyzer)
-    };
+    routine.Analyze = analyzer.Value.Execute;
 
     return routine;
   }
@@ -95,5 +93,19 @@ public static class Calculations
   public static string Name([CallerMemberName] string callingMethod = "")
   {
     return callingMethod;
+  }
+
+  public static IImmutableDictionary<string, (string[], Action<ExecutionContext>)> GetDefaultAnalyzers()
+  {
+    return new Dictionary<string, (string[], Action<ExecutionContext>)>
+    {
+      { "author-activity", (["csv"], Api.Analysis.Activity.AuthorActivityActions.Execute) },
+      { "file-coupling", (["csv"], Api.Analysis.Coupling.FileCouplingActions.Execute) },
+      { "folder-coupling-and-cohesion", (["csv"], Api.Analysis.Coupling.FolderCouplingAndCohesionActions.Execute) },
+      { "project-coupling-and-cohesion", (["csv"], Api.Analysis.Coupling.ProjectCouplingAndCohesionActions.Execute) },
+      { "author-ranking", (["csv"], Api.Analysis.Ranking.AuthorRankingActions.Execute) },
+      { "commit-ranking", (["csv"], Api.Analysis.Ranking.CommitRankingActions.Execute) },
+      { "file-ranking", (["csv"], Api.Analysis.Ranking.FileRankingActions.Execute) },
+    }.ToImmutableDictionary();
   }
 }

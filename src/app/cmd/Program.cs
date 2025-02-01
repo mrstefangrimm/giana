@@ -2,7 +2,6 @@
 using Giana.App.Shared;
 using Newtonsoft.Json;
 using System;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using static Giana.App.Shared.Actions;
@@ -94,9 +93,9 @@ using StreamReader jsonReader = new StreamReader(queryFilename);
 var query = JsonConvert.DeserializeObject<Query>(await jsonReader.ReadToEndAsync());
 jsonReader.Close();
 
-var routine = Calculations.CreateRoutine(query, outputWriter);
+var routine = query.CreateRoutine();
 
-await ExecuteAsync(routine, () => gitExePath, TimeSpan.FromSeconds(100));
+await routine.ExecuteAsync(gitExePath, outputWriter, TimeSpan.FromSeconds(100));
 
 var afterExecution  = DateTime.Now;
 

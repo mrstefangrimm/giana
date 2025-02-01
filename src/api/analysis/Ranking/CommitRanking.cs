@@ -5,6 +5,7 @@ namespace Giana.Api.Analysis.Ranking;
 
 public record CommitRanking(string Repository, string Commit, string Message, int CommittedFiles);
 
+[Analyzer("commit-ranking")]
 public static class CommitRankingActions
 {
   public static void WriteAsCsv(this IImmutableList<CommitRanking> records, TextWriter writer)
@@ -17,6 +18,7 @@ public static class CommitRankingActions
     }
   }
 
+  [AnalyzerExecute(["csv"])]
   public static void Execute(ExecutionContext context)
   {
     var ranking = CommitRankingCalculations.CreateCommitRankingSorted(context.LogRecords);

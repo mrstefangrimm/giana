@@ -15,22 +15,20 @@ public class CalculationsTest : AppSharedTestBase
   }
 
   [Fact]
-  public void CreateRoutine_WhenSourcesOrAnalyzerIsNull_ArgumentNullExceptionIsThrown()
+  public void CreateRoutine_WhenSourcesOrAnalyzerOrOutputFormatIsNull_ArgumentNullExceptionIsThrown()
   {
     var query = new Query();
 
-    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine(Console.Out));
+    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine());
 
     query.Sources = ["https://test"];
-    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine(Console.Out));
+    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine());
 
     query.Analyzer = "file-ranking";
-    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine(Console.Out));
+    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine());
 
     query.OutputFormat = "csv";
-    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine(null));
-
-    Assert.NotNull(query.CreateRoutine(Console.Out));
+    Assert.NotNull(query.CreateRoutine());
   }
 
   [Fact]
@@ -50,7 +48,7 @@ public class CalculationsTest : AppSharedTestBase
         Begin = DateTime.Parse("2025-02-01T00:00:00Z", _fmt), End =  DateTime.Parse("2025-02-10T10:00:00Z", _fmt)
       }];
 
-    var routine = query.CreateRoutine(Console.Out);
+    var routine = query.CreateRoutine();
 
     var result = _testRecords.Where(x => routine.TimeRanges.Any(tp => tp.Begin <= x.Date && x.Date <= tp.End)).ToArray();
 
@@ -70,7 +68,7 @@ public class CalculationsTest : AppSharedTestBase
     query.OutputFormat = "csv";
     query.CommitsFrom = DateTime.Parse("2024-12-21T10:00:00Z", _fmt);
 
-    var routine = query.CreateRoutine(Console.Out);
+    var routine = query.CreateRoutine();
 
     var result = _testRecords.Where(x => x.Date > routine.CommitsFrom).ToArray();
 
@@ -79,5 +77,44 @@ public class CalculationsTest : AppSharedTestBase
       .Contain(x => x.Commit == "bcd" || x.Commit == "cde")
       .And
       .NotContain(x => x.Commit == "abc");
+  }
+
+  [Fact]
+  public void CreateRoutine_WithCustomAnalyzerNull_ArgumentNullExceptionIsThrown()
+  {
+    var query = new Query
+    {
+      Sources = ["https://test"],
+      Analyzer = "test-analysis",
+      OutputFormat = "csv"
+    };
+
+    Assert.Throws<ArgumentNullException>(() => query.CreateRoutine(null));
+  }
+
+  [Fact]
+  public void CreateRoutine_WithUnknownCustomAnalyzer_InvalidOperationExceptionIsThrown()
+  {
+    var query = new Query
+    {
+      Sources = ["https://test"],
+      Analyzer = "I-want-this-analysis",
+      OutputFormat = "csv"
+    };
+
+    Assert.Throws<InvalidOperationException>(() => query.CreateRoutine(_testAnalyzers));
+  }
+
+  [Fact]
+  public void CreateRoutine_WithUnknownOutputFormat_InvalidOperationExceptionIsThrown()
+  {
+    var query = new Query
+    {
+      Sources = ["https://test"],
+      Analyzer = "test-analysis",
+      OutputFormat = "yml"
+    };
+
+    Assert.Throws<InvalidOperationException>(() => query.CreateRoutine(_testAnalyzers));
   }
 }

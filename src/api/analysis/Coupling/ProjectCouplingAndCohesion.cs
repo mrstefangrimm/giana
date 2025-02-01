@@ -5,6 +5,7 @@ namespace Giana.Api.Analysis.Coupling;
 
 public record ProjectCouplingAndCohesion(string ProjectName, int CouplingCount, int CohesionCount, double Ratio);
 
+[Analyzer("project-coupling-and-cohesion")]
 public static class ProjectCouplingAndCohesionActions
 {
   public static void WriteAsCsv(this IImmutableList<ProjectCouplingAndCohesion> records, TextWriter writer)
@@ -17,6 +18,7 @@ public static class ProjectCouplingAndCohesionActions
     }
   }
 
+  [AnalyzerExecute(["csv"])]
   public static void Execute(ExecutionContext context)
   {
     var list = ProjectCouplingAndCohesionRankingCalculations.CreateProjectCouplingList(context.LogRecords, context.ActiveNames);
