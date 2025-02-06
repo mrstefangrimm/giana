@@ -4,7 +4,6 @@ name: Pack Preview
 
 on:
   push:
-    branches: [ "main", "workflows" ]
     tags:
       - '*'
     branches: [ "main", "*.*.*" ]
