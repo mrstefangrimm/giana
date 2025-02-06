@@ -1,5 +1,7 @@
 # https://acraven.medium.com/a-nuget-package-workflow-using-github-actions-7da8c6557863
 
+name: Pack Preview
+
 on:
   push:
     branches: [ "main", "workflows" ]
@@ -28,6 +30,8 @@ jobs:
 #      run: dotnet build --no-restore ${{env.SOLUTION_FILE_PATH}}
     - name: Set VERSION variable from tag
       run: echo "VERSION=${GITHUB_REF/refs\/tags\/v/}" >> $GITHUB_ENV
+    - name: Show VERSION
+      run: echo "${VERSION}"
     - name: Pack API
       run: dotnet pack --configuration Release src/api/Giana.Api.csproj -p:Version=${VERSION} --output .
     - name: Pack APP
