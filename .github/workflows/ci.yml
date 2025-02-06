@@ -5,9 +5,9 @@ name: .NET
 
 on:
   push:
-    branches: [ "main" ]
+    branches: [ "main", "workflows" ]
   pull_request:
-    branches: [ "main" ]
+    branches: [ "main", "workflows" ]
 
 env:
   SOLUTION_FILE_PATH: src/Giana.Src.sln
