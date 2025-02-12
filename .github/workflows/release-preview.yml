@@ -6,11 +6,11 @@ on:
   push:
     tags:
       - "*"
-    branches: [ "main", "[0-9]+.[0-9]+.[0-9]+" ]
+    branches: [ "preview/[0-9]+.[0-9]+.[0-9]+" ]
   pull_request:
     tags:
       - "*"
-    branches: [ "main", "[0-9]+.[0-9]+.[0-9]+" ]
+    branches: [ "preview/[0-9]+.[0-9]+.[0-9]+" ]
 
 env:
   SOLUTION_FILE_PATH: src/Giana.Src.sln
@@ -30,7 +30,7 @@ jobs:
       run: dotnet pack --configuration Release src/api/Giana.Api.csproj -p:Version=${VERSION} --output .
     - name: Pack APP
       run: dotnet pack --configuration Release src/app/Giana.App.csproj -p:Version=${VERSION} --output .
-    - name: Push
-      run: dotnet nuget push Giana.Api.${VERSION}.nupkg --source https://nuget.pkg.github.com/mrstefangrimm/index.json --api-key ${GITHUB_TOKEN}
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    # - name: Push
+    #   run: dotnet nuget push Giana.Api.${VERSION}.nupkg --source https://nuget.pkg.github.com/mrstefangrimm/index.json --api-key ${GITHUB_TOKEN}
+    #   env:
+    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
