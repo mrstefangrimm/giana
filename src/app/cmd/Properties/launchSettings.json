@@ -6,12 +6,6 @@
         "GitExePath": "C:\\Program Files\\Git\\bin\\git.exe"
       }
     },
-    "Container (Dockerfile)": {
-      "commandName": "Docker",
-      "environmentVariables": {
-        "GitExePath": "/usr/bin/git"
-      }
-    },
     "WSL": {
       "commandName": "WSL2",
       "commandLineArgs": "Giana.App.Cmd.dll",
