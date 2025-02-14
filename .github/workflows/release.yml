@@ -1,14 +1,14 @@
-name: Pack Preview
+name: Pack Release
 
 on:
   push:
     tags:
       - "*"
-    branches: [ "preview/[0-9]+.[0-9]+.[0-9]+" ]
+    branches: [ "release/[0-9]+.[0-9]+.[0-9]+" ]
   pull_request:
     tags:
       - "*"
-    branches: [ "preview/[0-9]+.[0-9]+.[0-9]+" ]
+    branches: [ "release/[0-9]+.[0-9]+.[0-9]+" ]
 
 jobs:
   build:
@@ -18,7 +18,7 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Set VERSION variable from tag
-      run: echo "VERSION=${GITHUB_REF_NAME/preview\/}-preview${{github.run_number}}" >> $GITHUB_ENV
+      run: echo "VERSION=${GITHUB_REF_NAME/release\/}" >> $GITHUB_ENV
     - name: Show VERSION
       run: echo "${VERSION}"
     - name: Pack API
