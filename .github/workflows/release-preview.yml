@@ -26,6 +26,6 @@ jobs:
     - name: Pack APP
       run: dotnet pack --configuration Release src/app/Giana.App.csproj -p:Version=${VERSION} --output .
     - name: Push
-      run: dotnet nuget push Giana.Api.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${secrets.NUGET_API_KEY}
+      run: dotnet nuget push Giana.Api.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.NUGET_API_KEY }}
       env:
        GITHUB_TOKEN: ${{ secrets.PUSH_NUGET }}
