@@ -18,14 +18,14 @@ jobs:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Set VERSION variable from tag
-      run: echo "VERSION=${GITHUB_REF_NAME/preview\/}.${{github.run_number}}-alpha" >> $GITHUB_ENV
+      run: echo "VERSION=${GITHUB_REF_NAME/preview\/}-alpha" >> $GITHUB_ENV
     - name: Show VERSION
       run: echo "${VERSION}"
     - name: Pack API
       run: dotnet pack --configuration Release src/api/Giana.Api.csproj -p:Version=${VERSION} --output .
     - name: Pack APP
       run: dotnet pack --configuration Release src/app/Giana.App.csproj -p:Version=${VERSION} --output .
-    - name: Push
+    - name: Push API
       run: dotnet nuget push Giana.Api.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.PUSH_NUGET }}
-      env:
-       GITHUB_TOKEN: ${{ secrets.PUSH_NUGET }}
+    - name: Push APP
+      run: dotnet nuget push Giana.App.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.PUSH_NUGET }}
