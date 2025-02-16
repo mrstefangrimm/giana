@@ -1,4 +1,4 @@
-# Unix line endings
+#!/bin/bash
 
 echo off
 

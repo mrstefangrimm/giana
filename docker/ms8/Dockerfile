@@ -1,4 +1,3 @@
-
 FROM mcr.microsoft.com/dotnet/runtime:8.0
 RUN apt update
 RUN apt install -y git unzip
