@@ -173,42 +173,43 @@ public static class Actions
       var line = gitProcess.StandardOutput.ReadLine();
 
       // Supported formats:
-      // https://tfs-app.company.com/A/B/_git/{RepoName}
+      // https://tfs-app.company.com/A/B/_git/giana
       // https://github.com/mrstefangrimm/giana.git (fetch) [blob:none]
-      var split1 = line.Split("git/");
-      if (split1.Length == 2)
-      {
-        var split2 = split1[1].Split(" ");
-        return split2[0];
-      }
+      // git@gitlab.A/B/giana.git (fetch)
+      var lastElement = line.Split("/").Last();
 
-      split1 = line.Split("/");
-      if (split1.Length > 2)
+      if (!lastElement.Contains(".git"))
       {
-        var split2 = split1[split1.Length - 1].Split(".git");
-        return split2[0];
+        // Assume TFS
+        return lastElement;
+      }
+      if (lastElement.Contains(".git (fetch)"))
+      {
+        return lastElement.Split(".git (fetch)").First();
       }
     }
 
     throw new InvalidOperationException("repository name not found with `git remote`");
   }
 
-  public static string CreateCloneFromUri(string uri, string gitExePath)
+  public static string CreateCloneFromUri(string uri, string branch, string gitExePath)
   {
-    return CloneFromUri(uri, gitExePath);
+    return CloneFromUri(uri, branch, gitExePath);
   }
 
-  public static async Task<string> CreateCloneFromUriAsync(string uri, string gitExePath)
+  public static async Task<string> CreateCloneFromUriAsync(string uri, string branch, string gitExePath)
   {
-    return await Task.Run(() => CloneFromUri(uri, gitExePath));
+    return await Task.Run(() => CloneFromUri(uri, branch, gitExePath));
   }
 
-  private static string CloneFromUri(string uri, string gitExePath)
+  private static string CloneFromUri(string uri, string branch, string gitExePath)
   {
     var tempPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
     Directory.CreateDirectory(tempPath);
 
-    string gitCloneCmd = $"clone --filter=blob:none --no-checkout --single-branch {uri} {tempPath}";
+    var branchArg = string.IsNullOrEmpty(branch) ? "--single-branch" : $"--branch {branch}";
+
+    var gitCloneCmd = $"clone --filter=blob:none --no-checkout {branchArg} {uri} {tempPath}";
 
     var cloneProcess = CreateAndStartGitProcess(tempPath, gitExePath, gitCloneCmd);
     // Clone writes to the stderr, CheckStdErrOutput is therefore not called.

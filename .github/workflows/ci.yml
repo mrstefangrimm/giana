@@ -4,10 +4,9 @@
 name: CI
 
 on:
-  push:
-    branches: [ "main" ]
-  pull_request:
-    branches: [ "main" ]
+  - push
+  - pull_request
+  - workflow_dispatch
 
 env:
   SOLUTION_FILE_PATH: src/Giana.Src.sln

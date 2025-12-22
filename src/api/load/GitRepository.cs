@@ -26,11 +26,11 @@ public sealed class GitRepository : IDisposable
     GC.SuppressFinalize(this);
   }
 
-  public static GitRepository Create(string localPathOrUri, string gitExePath)
+  public static GitRepository Create(string localPathOrUri, string branch, string gitExePath)
   {
-    if (localPathOrUri.StartsWith("https"))
+    if (!Directory.Exists(localPathOrUri))
     {
-      var tempDir = Actions.CreateCloneFromUri(localPathOrUri, gitExePath);
+      var tempDir = Actions.CreateCloneFromUri(localPathOrUri, branch, gitExePath);
       var repoNameFromTemp = Actions.RequestRepositoryName(tempDir, gitExePath);
 
       return new GitRepository(tempDir, true, repoNameFromTemp, gitExePath);
@@ -40,11 +40,11 @@ public sealed class GitRepository : IDisposable
     return new GitRepository(localPathOrUri, false, repoName, gitExePath);
   }
 
-  public static async Task<GitRepository> CreateAsync(string localPathOrUri, string gitExePath)
+  public static async Task<GitRepository> CreateAsync(string localPathOrUri, string branch, string gitExePath)
   {
     if (localPathOrUri.StartsWith("https"))
     {
-      var tempDir = await Actions.CreateCloneFromUriAsync(localPathOrUri, gitExePath);
+      var tempDir = await Actions.CreateCloneFromUriAsync(localPathOrUri, branch, gitExePath);
       var repoNameFromTemp = await Actions.RequestRepositoryNameAsync(tempDir, gitExePath);
 
       return new GitRepository(tempDir, true, repoNameFromTemp, gitExePath);
@@ -55,9 +55,9 @@ public sealed class GitRepository : IDisposable
     return new GitRepository(localPathOrUri, false, repoName, gitExePath);
   }
 
-  public static async Task<GitRepository> CreateAsync(string localPathOrUri, string gitExePath, CancellationToken cancellationToken)
+  public static async Task<GitRepository> CreateAsync(string localPathOrUri, string branch, string gitExePath, CancellationToken cancellationToken)
   {
-    return await Task.Run(() => Create(localPathOrUri, gitExePath), cancellationToken);
+    return await Task.Run(() => Create(localPathOrUri, branch, gitExePath), cancellationToken);
   }
 
   public IImmutableList<GitLogRecord> Log(DateTime? commitsFrom = null)

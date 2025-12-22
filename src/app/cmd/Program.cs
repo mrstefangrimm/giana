@@ -100,4 +100,4 @@ await routine.ExecuteAsync(gitExePath, outputWriter, TimeSpan.FromSeconds(100));
 var afterExecution  = DateTime.Now;
 
 Console.WriteLine();
-Console.WriteLine($"Time spent: {(afterExecution - beforeExecution).TotalSeconds} sec.");
+Console.WriteLine($"Processing time: {(afterExecution - beforeExecution).TotalSeconds} sec.");
