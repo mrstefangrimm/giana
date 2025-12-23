@@ -30,7 +30,7 @@ public static class Actions
 
   private static IImmutableList<GitLogRecord> GitLog(string repositoryRoot, string repositoryName, string gitExePath, CancellationToken cancellationToken, DateTime? commitsFrom)
   {
-    const string GitLogCmd = "log --pretty=format:\"%h^%an^%as^%s\" --name-only";
+    const string GitLogCmd = "log --pretty=format:\"%h^%an^%as^%s\" --name-status";
 
     (Process gitProcess, Action defering) = CreateAndStartGitProcess(repositoryRoot, gitExePath, GitLogCmd);
     using var defer = new Defer(defering);
@@ -52,25 +52,41 @@ public static class Actions
         elements[3] = string.Join("^", msgElements);
       }
 
-      // Read lines of changed files of the commit.
-      var fileLine = gitProcess.StandardOutput.ReadLine();
+      // Read status lines of changed files of the commit.
+      var statusLine = gitProcess.StandardOutput.ReadLine();
+      var changeFileElements = statusLine.Split("\t");
       do
       {
-        GitLogRecord change = new(
-          RepoName: repositoryName,
-          Name: fileLine,
-          Commit: elements[0],
-          Author: elements[1],
-          Message: elements[3],
-          Date: DateTime.Parse(elements[2]));
+        if (changeFileElements.Count() == 2)
+        {
+          GitLogRecord change = new(
+            RepoName: repositoryName,
+            Name: changeFileElements.Last(),
+            Commit: elements[0],
+            Author: elements[1],
+            Message: elements[3],
+            Date: DateTime.Parse(elements[2]));
 
-        records.Add(change);
+          records.Add(change);
+        }
+        else
+        {
+          // Commit is without changed files - the status line is the next commit.
+          elements = statusLine.Split("^");
 
+          if (elements.Length > 4)
+          {
+            string[] msgElements = new string[elements.Length - 3];
+            Array.Copy(elements, 3, msgElements, 0, msgElements.Length);
+            elements[3] = string.Join("^", msgElements);
+          }
+        }
         cancellationToken.ThrowIfCancellationRequested(CloseOutputStreams(gitProcess));
 
-        fileLine = gitProcess.StandardOutput.ReadLine();
+        statusLine = gitProcess.StandardOutput.ReadLine();
+        changeFileElements = statusLine.Split("\t");
 
-      } while (!string.IsNullOrEmpty(fileLine));
+      } while (!string.IsNullOrEmpty(statusLine));
 
       if (commitsFrom.HasValue && records.Last().Date < commitsFrom.Value)
       {
