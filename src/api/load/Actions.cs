@@ -84,7 +84,11 @@ public static class Actions
         cancellationToken.ThrowIfCancellationRequested(CloseOutputStreams(gitProcess));
 
         statusLine = gitProcess.StandardOutput.ReadLine();
-        changeFileElements = statusLine.Split("\t");
+
+        if (statusLine != null)
+        {
+          changeFileElements = statusLine.Split("\t");
+        }
 
       } while (!string.IsNullOrEmpty(statusLine));
 
@@ -98,26 +102,28 @@ public static class Actions
     return records.ToImmutableList();
   }
 
-  public static IImmutableList<string> RequestActiveNamesFromMainBranch(string repositoryRoot, string gitExePath)
+  public static IImmutableList<string> RequestActiveNames(string repositoryRoot, string branch, string gitExePath)
   {
-    return ActiveNamesFromMainBranch(repositoryRoot, gitExePath, CancellationToken.None);
+    return ActiveNames(repositoryRoot, branch, gitExePath, CancellationToken.None);
   }
 
-  public static async Task<IImmutableList<string>> RequestActiveNamesFromMainBranchAsync(string repositoryRoot, string gitExePath)
+  public static async Task<IImmutableList<string>> RequestActiveNamesAsync(string repositoryRoot, string branch, string gitExePath)
   {
-    return await Task.Run(() => ActiveNamesFromMainBranch(repositoryRoot, gitExePath, CancellationToken.None));
+    return await Task.Run(() => ActiveNames(repositoryRoot, branch, gitExePath, CancellationToken.None));
   }
 
-  public static async Task<IImmutableList<string>> RequestActiveNamesFromMainBranchAsync(string repositoryRoot, string gitExePath, CancellationToken cancellationToken)
+  public static async Task<IImmutableList<string>> RequestActiveNamesAsync(string repositoryRoot, string branch, string gitExePath, CancellationToken cancellationToken)
   {
-    return await Task.Run(() => ActiveNamesFromMainBranch(repositoryRoot, gitExePath, cancellationToken));
+    return await Task.Run(() => ActiveNames(repositoryRoot, branch, gitExePath, cancellationToken));
   }
 
-  private static IImmutableList<string> ActiveNamesFromMainBranch(string repositoryRoot, string gitExePath, CancellationToken cancellationToken)
+  private static IImmutableList<string> ActiveNames(string repositoryRoot, string branch, string gitExePath, CancellationToken cancellationToken)
   {
-    string mainBranch = RequestMainBranchName(repositoryRoot, gitExePath, cancellationToken);
-
-    string gitCmd = $"ls-tree -r {mainBranch} --name-only";
+    if (branch == null)
+    {
+      branch = RequestMainBranchName(repositoryRoot,gitExePath, cancellationToken);
+    }
+    string gitCmd = $"ls-tree -r {branch} --name-only";
 
     (Process gitProcess, Action defering) = CreateAndStartGitProcess(repositoryRoot, gitExePath, gitCmd);
     using var defer = new Defer(defering);
@@ -138,7 +144,7 @@ public static class Actions
 
   private static string RequestMainBranchName(string repositoryRoot, string gitExePath, CancellationToken cancellationToken)
   {
-    const string GitBranchCmd = "branch";
+    const string GitBranchCmd = "symbolic-ref refs/remotes/origin/HEAD";
 
     (Process gitProcess, Action defering) = CreateAndStartGitProcess(repositoryRoot, gitExePath, GitBranchCmd);
     using var defer = new Defer(defering);
@@ -149,10 +155,10 @@ public static class Actions
       cancellationToken.ThrowIfCancellationRequested(CloseOutputStreams(gitProcess));
 
       var line = gitProcess.StandardOutput.ReadLine();
-
-      if (line.StartsWith("* "))
+      var path = line.Split('/');
+      if (path.Length == 4)
       {
-        return line.Remove(0, 2);
+        return path[3];
       }
     }
 

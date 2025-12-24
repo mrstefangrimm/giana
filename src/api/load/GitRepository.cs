@@ -13,6 +13,7 @@ public sealed class GitRepository : IDisposable
   private readonly string _localPath;
   private readonly bool _isTempDir;
   private readonly string _repoName;
+  private readonly string _branch;
   private readonly string _gitExePath;
 
   public void Dispose()
@@ -33,11 +34,11 @@ public sealed class GitRepository : IDisposable
       var tempDir = Actions.CreateCloneFromUri(localPathOrUri, branch, gitExePath);
       var repoNameFromTemp = Actions.RequestRepositoryName(tempDir, gitExePath);
 
-      return new GitRepository(tempDir, true, repoNameFromTemp, gitExePath);
+      return new GitRepository(tempDir, true, repoNameFromTemp, branch, gitExePath);
     }
 
     var repoName = Actions.RequestRepositoryName(localPathOrUri, gitExePath);
-    return new GitRepository(localPathOrUri, false, repoName, gitExePath);
+    return new GitRepository(localPathOrUri, false, repoName, branch, gitExePath);
   }
 
   public static async Task<GitRepository> CreateAsync(string localPathOrUri, string branch, string gitExePath)
@@ -47,12 +48,12 @@ public sealed class GitRepository : IDisposable
       var tempDir = await Actions.CreateCloneFromUriAsync(localPathOrUri, branch, gitExePath);
       var repoNameFromTemp = await Actions.RequestRepositoryNameAsync(tempDir, gitExePath);
 
-      return new GitRepository(tempDir, true, repoNameFromTemp, gitExePath);
+      return new GitRepository(tempDir, true, repoNameFromTemp, branch, gitExePath);
     }
 
     var repoName = await Actions.RequestRepositoryNameAsync(localPathOrUri, gitExePath);
 
-    return new GitRepository(localPathOrUri, false, repoName, gitExePath);
+    return new GitRepository(localPathOrUri, false, repoName, branch, gitExePath);
   }
 
   public static async Task<GitRepository> CreateAsync(string localPathOrUri, string branch, string gitExePath, CancellationToken cancellationToken)
@@ -82,24 +83,25 @@ public sealed class GitRepository : IDisposable
 
   public IImmutableList<string> ActiveNames()
   {
-    return Actions.RequestActiveNamesFromMainBranch(_localPath, _gitExePath);
+    return Actions.RequestActiveNames(_localPath, _branch, _gitExePath);
   }
 
   public async Task<IImmutableList<string>> ActiveNamesAsync()
   {
-    return await Actions.RequestActiveNamesFromMainBranchAsync(_localPath, _gitExePath);
+    return await Actions.RequestActiveNamesAsync(_localPath, _branch,_gitExePath);
   }
 
   public async Task<IImmutableList<string>> ActiveNamesAsync(CancellationToken cancellationToken)
   {
-    return await Actions.RequestActiveNamesFromMainBranchAsync(_localPath, _gitExePath, cancellationToken);
+    return await Actions.RequestActiveNamesAsync(_localPath, _branch, _gitExePath, cancellationToken);
   }
 
-  private GitRepository(string path, bool isTempDir, string repoName, string gitExePath)
+  private GitRepository(string path, bool isTempDir, string repoName, string branch, string gitExePath)
   {
     _localPath = path;
     _isTempDir = isTempDir;
     _repoName = repoName;
+    _branch = branch;
     _gitExePath = gitExePath;
   }
 
