@@ -33,8 +33,8 @@ public class ApiActionsRequestGitLogTest
 
     for (int i = 1; i < tasks.Length; i++)
     {
-      var result1 = tasks[i-1].Result;
-      var result2 = tasks[i].Result;
+      var result1 = await tasks[i-1];
+      var result2 = await tasks[i];
       Assert.Equal(result1, result2);
     }
   }
