@@ -9,8 +9,10 @@ on:
   - workflow_dispatch
 
 env:
-  SOLUTION_FILE_PATH: src/Giana.Src.sln
-  
+  SOLUTION_APP: src/Giana.Src.sln
+  SOLUTION_TESTS: tests/Giana.Tests.sln
+  SOLUTION_EXAMPLES: examples/Giana.Examples.sln
+
 jobs:
   build:
 
@@ -23,8 +25,12 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      run: dotnet restore ${{env.SOLUTION_FILE_PATH}}
+      run: dotnet restore ${{env.SOLUTION_APP}}
     - name: Build
-      run: dotnet build --no-restore ${{env.SOLUTION_FILE_PATH}}
+      run: dotnet build --no-restore ${{env.SOLUTION_APP}}
     - name: Test
-      run: dotnet test --no-build --verbosity normal ${{env.SOLUTION_FILE_PATH}}
+      run: dotnet test --no-build --verbosity normal ${{env.SOLUTION_APP}}
+    - name: Build tests
+      run: dotnet build --no-restore ${{env.SOLUTION_TESTS}}
+    - name: Build examples
+      run: dotnet build --no-restore ${{env.SOLUTION_EXAMPLES}}
