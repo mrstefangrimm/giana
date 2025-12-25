@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Giana.Api.Concurrency;
 
-public class ApiActionsRequestGitLog
+public class ApiActionsRequestGitLogTest
 {
   private const string gitExePath = @"C:\Program Files\Git\bin\git.exe";
   private const string gitRepository = "https://github.com/mrstefangrimm/giana.git";
@@ -15,7 +15,7 @@ public class ApiActionsRequestGitLog
   [Fact]
   public void RequestGitLog_CalledInParallel_WithSameResult()
   {
-    var localRepo = Actions.CreateCloneFromUri(gitRepository, gitExePath);
+    var localRepo = Actions.CreateCloneFromUri(gitRepository, null, gitExePath);
     var repoName = Actions.RequestRepositoryName(localRepo, gitExePath);
     using var defer = new Defer(() =>
     {
@@ -39,7 +39,7 @@ public class ApiActionsRequestGitLog
     }
   }
 
-    private static void RemoveReadOnly(string dir)
+  private static void RemoveReadOnly(string dir)
   {
     var subDirs = Directory.GetDirectories(dir);
     foreach (var subDir in subDirs)

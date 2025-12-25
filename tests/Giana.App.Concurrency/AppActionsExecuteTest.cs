@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Giana.Api.Concurrency;
 
-public class AppActionsExecute
+public class AppActionsExecuteTest
 {
   private const string gitExePath = @"C:\Program Files\Git\bin\git.exe";
   private const string gitRepositoryGiana = "https://github.com/mrstefangrimm/giana.git";
@@ -35,7 +35,7 @@ public class AppActionsExecute
 
       rouines[i] = routine;
       outputs[i] = new StringWriter();
-      tasks[i] = App.Shared.Actions.ExecuteAsync(routine, gitExePath, outputs[i], TimeSpan.FromSeconds(60));
+      tasks[i] = routine.ExecuteAsync(gitExePath, outputs[i], TimeSpan.FromSeconds(60));
     }
 
     Task.WaitAll(tasks);
@@ -53,7 +53,7 @@ public class AppActionsExecute
     }
   }
 
-    [Fact]
+  [Fact]
   public void ExecuteAsync_ManyReposCalledInParallel_WithCorrectFormat()
   {
     var urls = new string[]
@@ -83,7 +83,7 @@ public class AppActionsExecute
 
       rouines[i] = routine;
       outputs[i] = new StringWriter();
-      tasks[i] = App.Shared.Actions.ExecuteAsync(routine, gitExePath, outputs[i], TimeSpan.FromSeconds(60));
+      tasks[i] = routine.ExecuteAsync(gitExePath, outputs[i], TimeSpan.FromSeconds(60));
     }
 
     Task.WaitAll(tasks);
