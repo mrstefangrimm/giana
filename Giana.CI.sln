@@ -1,0 +1,83 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.12.35527.113
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api.Functional", "examples\Giana.Api.Functional\Giana.Api.Functional.csproj", "{8F2E0C6F-9692-478B-92F7-225B1A0DB4AA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api.Fluent", "examples\Giana.Api.Fluent\Giana.Api.Fluent.csproj", "{2529F1E1-04B8-4272-9CE4-4F594A2B205E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api.Fluent.Lazy", "examples\Giana.Api.Fluent.Lazy\Giana.Api.Fluent.Lazy.csproj", "{3D0DDF16-8479-41D4-ACEF-39FC82152F61}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.App.Query", "examples\Giana.App.Query\Giana.App.Query.csproj", "{BAD0FB41-5EE5-43FA-B635-6CCA38839AD2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.App.CustomAnalyzer", "examples\Giana.App.CustomAnalyzer\Giana.App.CustomAnalyzer.csproj", "{ED98DBB1-2020-4698-99F3-3B478504BABD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api.Concurrency", "tests\Giana.Api.Concurrency\Giana.Api.Concurrency.csproj", "{0F15949D-17AB-0175-D3F1-1DF35579D07B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api.ReposAndBranches", "tests\Giana.Api.ReposAndBranches\Giana.Api.ReposAndBranches.csproj", "{01252E98-F35A-4E04-568E-1387D3F7190D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.App.Concurrency", "tests\Giana.App.Concurrency\Giana.App.Concurrency.csproj", "{DA9E336C-7B1C-8816-5535-1F307F82D998}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api", "src\api\Giana.Api.csproj", "{09E8956A-BD36-7EB8-76DB-2684200E0278}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.App", "src\app\Giana.App.csproj", "{4125A014-B392-D56D-FA27-5C3D1113A9AB}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionDir", "SolutionDir", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		.github\workflows\ci.yml = .github\workflows\ci.yml
+		.github\workflows\release-preview.yml = .github\workflows\release-preview.yml
+		.github\workflows\release.yml = .github\workflows\release.yml
+	EndProjectSection
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8F2E0C6F-9692-478B-92F7-225B1A0DB4AA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F2E0C6F-9692-478B-92F7-225B1A0DB4AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F2E0C6F-9692-478B-92F7-225B1A0DB4AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F2E0C6F-9692-478B-92F7-225B1A0DB4AA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2529F1E1-04B8-4272-9CE4-4F594A2B205E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2529F1E1-04B8-4272-9CE4-4F594A2B205E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2529F1E1-04B8-4272-9CE4-4F594A2B205E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2529F1E1-04B8-4272-9CE4-4F594A2B205E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3D0DDF16-8479-41D4-ACEF-39FC82152F61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3D0DDF16-8479-41D4-ACEF-39FC82152F61}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3D0DDF16-8479-41D4-ACEF-39FC82152F61}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3D0DDF16-8479-41D4-ACEF-39FC82152F61}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BAD0FB41-5EE5-43FA-B635-6CCA38839AD2}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BAD0FB41-5EE5-43FA-B635-6CCA38839AD2}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BAD0FB41-5EE5-43FA-B635-6CCA38839AD2}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BAD0FB41-5EE5-43FA-B635-6CCA38839AD2}.Release|Any CPU.Build.0 = Release|Any CPU
+		{ED98DBB1-2020-4698-99F3-3B478504BABD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{ED98DBB1-2020-4698-99F3-3B478504BABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{ED98DBB1-2020-4698-99F3-3B478504BABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{ED98DBB1-2020-4698-99F3-3B478504BABD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0F15949D-17AB-0175-D3F1-1DF35579D07B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0F15949D-17AB-0175-D3F1-1DF35579D07B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0F15949D-17AB-0175-D3F1-1DF35579D07B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0F15949D-17AB-0175-D3F1-1DF35579D07B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{01252E98-F35A-4E04-568E-1387D3F7190D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{01252E98-F35A-4E04-568E-1387D3F7190D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{01252E98-F35A-4E04-568E-1387D3F7190D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{01252E98-F35A-4E04-568E-1387D3F7190D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DA9E336C-7B1C-8816-5535-1F307F82D998}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DA9E336C-7B1C-8816-5535-1F307F82D998}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DA9E336C-7B1C-8816-5535-1F307F82D998}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DA9E336C-7B1C-8816-5535-1F307F82D998}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09E8956A-BD36-7EB8-76DB-2684200E0278}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09E8956A-BD36-7EB8-76DB-2684200E0278}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09E8956A-BD36-7EB8-76DB-2684200E0278}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09E8956A-BD36-7EB8-76DB-2684200E0278}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4125A014-B392-D56D-FA27-5C3D1113A9AB}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4125A014-B392-D56D-FA27-5C3D1113A9AB}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4125A014-B392-D56D-FA27-5C3D1113A9AB}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4125A014-B392-D56D-FA27-5C3D1113A9AB}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

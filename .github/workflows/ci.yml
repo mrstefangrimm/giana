@@ -9,14 +9,11 @@ on:
   - workflow_dispatch
 
 env:
-  SOLUTION_APP: src/Giana.Src.sln
-  SOLUTION_TESTS: tests/Giana.Tests.sln
+  SOLUTION_FILE_PATH: Giana.CI.sln
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: Setup .NET
@@ -24,12 +21,8 @@ jobs:
       with:
         dotnet-version: 8.0.x
     - name: Restore dependencies
-      run: dotnet restore ${{env.SOLUTION_APP}}
+      run: dotnet restore ${{env.SOLUTION_FILE_PATH}}
     - name: Build
-      run: dotnet build --no-restore ${{env.SOLUTION_APP}}
+      run: dotnet build --no-restore ${{env.SOLUTION_FILE_PATH}}
     - name: Test
-      run: dotnet test --no-build --verbosity normal ${{env.SOLUTION_APP}}
-    - name: Restore tests dependencies
-      run: dotnet restore ${{env.SOLUTION_TESTS}}    
-    - name: Build tests
-      run: dotnet build --no-restore ${{env.SOLUTION_TESTS}}
+      run: dotnet test --no-build --verbosity normal ${{env.SOLUTION_FILE_PATH}}
