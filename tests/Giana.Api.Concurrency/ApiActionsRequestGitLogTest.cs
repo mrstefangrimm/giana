@@ -13,7 +13,7 @@ public class ApiActionsRequestGitLogTest
   private const string gitRepository = "https://github.com/mrstefangrimm/giana.git";
 
   [Fact]
-  public void RequestGitLog_CalledInParallel_WithSameResult()
+  public async Task RequestGitLog_CalledInParallel_WithSameResult()
   {
     var localRepo = Actions.CreateCloneFromUri(gitRepository, null, gitExePath);
     var repoName = Actions.RequestRepositoryName(localRepo, gitExePath);
@@ -29,7 +29,7 @@ public class ApiActionsRequestGitLogTest
       tasks[i] = Actions.RequestGitLogAsync(localRepo, repoName, gitExePath, CancellationToken.None);
     }
 
-    Task.WaitAll(tasks);
+    await Task.WhenAll(tasks);
 
     for (int i = 1; i < tasks.Length; i++)
     {

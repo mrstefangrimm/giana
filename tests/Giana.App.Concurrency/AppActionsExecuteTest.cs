@@ -16,7 +16,7 @@ public class AppActionsExecuteTest
   private const string gitRepositoryCollares = "https://github.com/mrstefangrimm/Collares.git";
 
   [Fact]
-  public void ExecuteAsync_GianaCalledInParallel_WithSameResult()
+  public async Task ExecuteAsync_GianaCalledInParallel_WithSameResult()
   {
     var query = new Query
     {
@@ -38,7 +38,7 @@ public class AppActionsExecuteTest
       tasks[i] = routine.ExecuteAsync(gitExePath, outputs[i], TimeSpan.FromSeconds(60));
     }
 
-    Task.WaitAll(tasks);
+    await Task.WhenAll(tasks);
 
     for (int i = 1; i < rouines.Length; i++)
     {
@@ -54,7 +54,7 @@ public class AppActionsExecuteTest
   }
 
   [Fact]
-  public void ExecuteAsync_ManyReposCalledInParallel_WithCorrectFormat()
+  public async Task ExecuteAsync_ManyReposCalledInParallel_WithCorrectFormat()
   {
     var urls = new string[]
     {
@@ -86,7 +86,7 @@ public class AppActionsExecuteTest
       tasks[i] = routine.ExecuteAsync(gitExePath, outputs[i], TimeSpan.FromSeconds(60));
     }
 
-    Task.WaitAll(tasks);
+    await Task.WhenAll(tasks);
 
     for (int i = 0; i < rouines.Length; i++)
     {

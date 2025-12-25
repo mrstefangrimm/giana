@@ -11,7 +11,6 @@ on:
 env:
   SOLUTION_APP: src/Giana.Src.sln
   SOLUTION_TESTS: tests/Giana.Tests.sln
-  SOLUTION_EXAMPLES: examples/Giana.Examples.sln
 
 jobs:
   build:
@@ -34,5 +33,3 @@ jobs:
       run: dotnet restore ${{env.SOLUTION_TESTS}}    
     - name: Build tests
       run: dotnet build --no-restore ${{env.SOLUTION_TESTS}}
-    - name: Build examples
-      run: dotnet build ${{env.SOLUTION_EXAMPLES}}
