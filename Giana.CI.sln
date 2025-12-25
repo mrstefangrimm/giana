@@ -5,8 +5,6 @@ VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api.Functional", "examples\Giana.Api.Functional\Giana.Api.Functional.csproj", "{8F2E0C6F-9692-478B-92F7-225B1A0DB4AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api.Fluent", "examples\Giana.Api.Fluent\Giana.Api.Fluent.csproj", "{2529F1E1-04B8-4272-9CE4-4F594A2B205E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api.Fluent.Lazy", "examples\Giana.Api.Fluent.Lazy\Giana.Api.Fluent.Lazy.csproj", "{3D0DDF16-8479-41D4-ACEF-39FC82152F61}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.App.Query", "examples\Giana.App.Query\Giana.App.Query.csproj", "{BAD0FB41-5EE5-43FA-B635-6CCA38839AD2}"
@@ -40,10 +38,6 @@ Global
 		{8F2E0C6F-9692-478B-92F7-225B1A0DB4AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F2E0C6F-9692-478B-92F7-225B1A0DB4AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F2E0C6F-9692-478B-92F7-225B1A0DB4AA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2529F1E1-04B8-4272-9CE4-4F594A2B205E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2529F1E1-04B8-4272-9CE4-4F594A2B205E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2529F1E1-04B8-4272-9CE4-4F594A2B205E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2529F1E1-04B8-4272-9CE4-4F594A2B205E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3D0DDF16-8479-41D4-ACEF-39FC82152F61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3D0DDF16-8479-41D4-ACEF-39FC82152F61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D0DDF16-8479-41D4-ACEF-39FC82152F61}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -79,5 +73,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {93E7A4F2-44B5-4D47-A886-1FEEE5DC323A}
 	EndGlobalSection
 EndGlobal
