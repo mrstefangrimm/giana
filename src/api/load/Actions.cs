@@ -30,7 +30,7 @@ public static class Actions
 
   private static IImmutableList<GitLogRecord> GitLog(string repositoryRoot, string repositoryName, string gitExePath, CancellationToken cancellationToken, DateTime? commitsFrom)
   {
-    const string GitLogCmd = "log --pretty=format:\"%h^%an^%as^%s\" --name-status";
+    const string GitLogCmd = "log --pretty=format:\"%h^%an^%as^%s\" --date-order --name-status";
 
     (Process gitProcess, Action defering) = CreateAndStartGitProcess(repositoryRoot, gitExePath, GitLogCmd);
     using var defer = new Defer(defering);
@@ -58,6 +58,18 @@ public static class Actions
       do
       {
         if (changeFileElements.Count() == 2)
+        {
+          GitLogRecord change = new(
+            RepoName: repositoryName,
+            Name: changeFileElements.Last(),
+            Commit: elements[0],
+            Author: elements[1],
+            Message: elements[3],
+            Date: DateTime.Parse(elements[2]));
+
+          records.Add(change);
+        }
+        else if (changeFileElements.Count() == 3)
         {
           GitLogRecord change = new(
             RepoName: repositoryName,
