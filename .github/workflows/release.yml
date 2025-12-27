@@ -1,22 +1,17 @@
 name: Pack Release
 
 on:
-  workflow_run:
-    workflows: ["CI"]
-    types:
-       - completed  
   push:
     paths:
-      - "src/**"
+      - ".github/workflows/release.yml"
     branches: [ "release/[0-9]+.[0-9]+.[0-9]+" ]
   pull_request:
     paths:
-      - "src/**"
+      - ".github/workflows/release.yml"
     branches: [ "release/[0-9]+.[0-9]+.[0-9]+" ]
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
