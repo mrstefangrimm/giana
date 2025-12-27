@@ -1,4 +1,7 @@
-﻿using Giana.Api.Core;
+﻿// Ignore Spelling: exe
+// Ignore Spelling: uri
+
+using Giana.Api.Core;
 using System;
 using System.Collections.Immutable;
 using System.IO;
@@ -27,73 +30,72 @@ public sealed class GitRepository : IDisposable
     GC.SuppressFinalize(this);
   }
 
-  public static GitRepository Create(string localPathOrUri, string branch, string gitExePath)
+  public static GitRepository Create(string gitExePath, string localCloneOrUri)
   {
-    if (!Directory.Exists(localPathOrUri))
+    if (!Directory.Exists(localCloneOrUri))
     {
-      var tempDir = Actions.CreateCloneFromUri(localPathOrUri, branch, gitExePath);
-      var repoNameFromTemp = Actions.RequestRepositoryName(tempDir, gitExePath);
+      var tempDir = Actions.CreateCloneFromUri(gitExePath, localCloneOrUri);
+      var repoNameFromTemp = Actions.RequestRepositoryName(gitExePath, tempDir);
+
+      return new GitRepository(tempDir, true, repoNameFromTemp, null, gitExePath);
+    }
+
+    var repoName = Actions.RequestRepositoryName(gitExePath, localCloneOrUri);
+    return new GitRepository(localCloneOrUri, false, repoName, null, gitExePath);
+  }
+
+  public static GitRepository CreateFromBranch(string gitExePath, string localCloneOrUri, string branch)
+  {
+    if (!Directory.Exists(localCloneOrUri))
+    {
+      var tempDir = Actions.CreateCloneFromUriFromBranch(gitExePath, localCloneOrUri, branch);
+      var repoNameFromTemp = Actions.RequestRepositoryName(gitExePath, tempDir);
 
       return new GitRepository(tempDir, true, repoNameFromTemp, branch, gitExePath);
     }
 
-    var repoName = Actions.RequestRepositoryName(localPathOrUri, gitExePath);
-    return new GitRepository(localPathOrUri, false, repoName, branch, gitExePath);
+    var repoName = Actions.RequestRepositoryName(gitExePath, localCloneOrUri);
+    return new GitRepository(localCloneOrUri, false, repoName, branch, gitExePath);
   }
 
-  public static async Task<GitRepository> CreateAsync(string localPathOrUri, string branch, string gitExePath)
+  public static Task<GitRepository> CreateAsync(string gitExePath, string localCloneOrUri, CancellationToken cancellationToken = default)
   {
-    if (localPathOrUri.StartsWith("https"))
-    {
-      var tempDir = await Actions.CreateCloneFromUriAsync(localPathOrUri, branch, gitExePath);
-      var repoNameFromTemp = await Actions.RequestRepositoryNameAsync(tempDir, gitExePath);
-
-      return new GitRepository(tempDir, true, repoNameFromTemp, branch, gitExePath);
-    }
-
-    var repoName = await Actions.RequestRepositoryNameAsync(localPathOrUri, gitExePath);
-
-    return new GitRepository(localPathOrUri, false, repoName, branch, gitExePath);
+    return Task.Run(() => Create(gitExePath, localCloneOrUri), cancellationToken);
   }
 
-  public static async Task<GitRepository> CreateAsync(string localPathOrUri, string branch, string gitExePath, CancellationToken cancellationToken)
+  public static Task<GitRepository> CreateFromBranchAsync(string gitExePath, string localCloneOrUri, string branch, CancellationToken cancellationToken = default)
   {
-    return await Task.Run(() => Create(localPathOrUri, branch, gitExePath), cancellationToken);
+    return Task.Run(() => CreateFromBranch(gitExePath, localCloneOrUri, branch), cancellationToken);
   }
 
-  public IImmutableList<GitLogRecord> Log(DateTime? commitsFrom = null)
+  public IImmutableList<GitLogRecord> Log(DateTime? commitsSince = null)
   {
-    return Actions.RequestGitLog(_localPath, _repoName, _gitExePath, commitsFrom);
+    return Actions.RequestGitLog(_gitExePath, _repoName, _localPath, commitsSince);
   }
 
-  public async Task<IImmutableList<GitLogRecord>> LogAsync(DateTime? commitsFrom = null)
+  public async Task<IImmutableList<GitLogRecord>> LogAsync(DateTime? commitsSince = null)
   {
-    return await Actions.RequestGitLogAsync(_localPath, _repoName, _gitExePath, CancellationToken.None, commitsFrom);
+    return await Actions.RequestGitLogAsync(_gitExePath, _repoName, _localPath, commitsSince, CancellationToken.None);
   }
 
-  public async Task<IImmutableList<GitLogRecord>> LogAsync(CancellationToken cancellationToken, DateTime? commitsFrom = null)
+  public async Task<IImmutableList<GitLogRecord>> LogAsync(CancellationToken cancellationToken, DateTime? commitsSince = null)
   {
-    return await Actions.RequestGitLogAsync(_localPath, _repoName, _gitExePath, cancellationToken, commitsFrom);
+    return await Actions.RequestGitLogAsync(_gitExePath, _repoName, _localPath, commitsSince, cancellationToken);
   }
 
-  public LazyRecords<GitLogRecord> LogLazy(DateTime? commitsFrom = null)
+  public LazyRecords<GitLogRecord> LogLazy(DateTime? commitsSince = null)
   {
-    return new LazyRecords<GitLogRecord>(() => Log(commitsFrom));
+    return new LazyRecords<GitLogRecord>(() => Log(commitsSince));
   }
 
   public IImmutableList<string> ActiveNames()
   {
-    return Actions.RequestActiveNames(_localPath, _branch, _gitExePath);
+    return Actions.RequestActiveNamesFromBranch(_gitExePath, _localPath, _branch);
   }
 
-  public async Task<IImmutableList<string>> ActiveNamesAsync()
+  public async Task<IImmutableList<string>> ActiveNamesAsync(CancellationToken cancellationToken = default)
   {
-    return await Actions.RequestActiveNamesAsync(_localPath, _branch,_gitExePath);
-  }
-
-  public async Task<IImmutableList<string>> ActiveNamesAsync(CancellationToken cancellationToken)
-  {
-    return await Actions.RequestActiveNamesAsync(_localPath, _branch, _gitExePath, cancellationToken);
+    return await Actions.RequestActiveNamesFromBranchAsync(_gitExePath, _localPath, _branch, cancellationToken);
   }
 
   private GitRepository(string path, bool isTempDir, string repoName, string branch, string gitExePath)

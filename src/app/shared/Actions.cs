@@ -32,11 +32,11 @@ public static class Actions
         if (source.Contains("@"))
         {
           var branchAndSource = source.Split("@");
-          gitRepo = await GitRepository.CreateAsync(branchAndSource[1], branchAndSource[0], gitExePath, cancellationToken);
+          gitRepo = await GitRepository.CreateFromBranchAsync(gitExePath, branchAndSource[1], branchAndSource[0], cancellationToken);
         }
         else
         {
-          gitRepo = await GitRepository.CreateAsync(source, null, gitExePath, cancellationToken);
+          gitRepo = await GitRepository.CreateAsync(gitExePath, source, cancellationToken);
         }
         cancellationToken.ThrowIfCancellationRequested();
 

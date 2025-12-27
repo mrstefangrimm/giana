@@ -1,4 +1,7 @@
-﻿using Giana.Api.Core;
+﻿// Ignore Spelling: exe
+// Ignore Spelling: uri
+
+using Giana.Api.Core;
 using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
@@ -13,23 +16,23 @@ namespace Giana.Api.Load;
 
 public static class Actions
 {
-  public static IImmutableList<GitLogRecord> RequestGitLog(string repositoryRoot, string repositoryName, string gitExePath, DateTime? commitsFrom = null)
+  public static ImmutableList<GitLogRecord> RequestGitLog(string gitExePath, string repositoryName, string repositoryRoot, DateTime? commitsSince = default)
   {
-    return GitLog(repositoryRoot, repositoryName, gitExePath, CancellationToken.None, commitsFrom);
+    return GitLog(gitExePath, repositoryName, repositoryRoot, commitsSince, CancellationToken.None);
   }
 
-  public static async Task<IImmutableList<GitLogRecord>> RequestGitLogAsync(string repositoryRoot, string repositoryName, string gitExePath, DateTime? commitsFrom = null)
+  public static Task<ImmutableList<GitLogRecord>> RequestGitLogAsync(string gitExePath, string repositoryName, string repositoryRoot, DateTime? commitsSince = default, CancellationToken cancellationToken = default)
   {
-    return await Task.Run(() => GitLog(repositoryRoot, repositoryName, gitExePath, CancellationToken.None, commitsFrom));
+    return Task.Run(() => GitLog(gitExePath, repositoryName, repositoryRoot, commitsSince, cancellationToken), cancellationToken);
   }
 
-  public static async Task<IImmutableList<GitLogRecord>> RequestGitLogAsync(string repositoryRoot, string repositoryName, string gitExePath, CancellationToken cancellationToken, DateTime? commitsFrom = null)
+  private static ImmutableList<GitLogRecord> GitLog(string gitExePath, string repositoryName, string repositoryRoot, DateTime? commitsSince, CancellationToken cancellationToken)
   {
-    return await Task.Run(() => GitLog(repositoryRoot, repositoryName, gitExePath, cancellationToken, commitsFrom), cancellationToken);
-  }
+    ArgumentException.ThrowIfNullOrEmpty(gitExePath);
+    ArgumentException.ThrowIfNullOrEmpty(repositoryName);
+    ArgumentException.ThrowIfNullOrEmpty(repositoryRoot);
+    ArgumentNullException.ThrowIfNull(cancellationToken);
 
-  private static IImmutableList<GitLogRecord> GitLog(string repositoryRoot, string repositoryName, string gitExePath, CancellationToken cancellationToken, DateTime? commitsFrom)
-  {
     const string GitLogCmd = "log --pretty=format:\"%h^%an^%as^%s\" --date-order --name-status";
 
     (Process gitProcess, Action defering) = CreateAndStartGitProcess(repositoryRoot, gitExePath, GitLogCmd);
@@ -57,19 +60,7 @@ public static class Actions
       var changeFileElements = statusLine.Split("\t");
       do
       {
-        if (changeFileElements.Count() == 2)
-        {
-          GitLogRecord change = new(
-            RepoName: repositoryName,
-            Name: changeFileElements.Last(),
-            Commit: elements[0],
-            Author: elements[1],
-            Message: elements[3],
-            Date: DateTime.Parse(elements[2]));
-
-          records.Add(change);
-        }
-        else if (changeFileElements.Count() == 3)
+        if (changeFileElements.Count() == 2 || changeFileElements.Count() == 3)
         {
           GitLogRecord change = new(
             RepoName: repositoryName,
@@ -104,7 +95,7 @@ public static class Actions
 
       } while (!string.IsNullOrEmpty(statusLine));
 
-      if (commitsFrom.HasValue && records.Last().Date < commitsFrom.Value)
+      if (commitsSince.HasValue && records.Last().Date < commitsSince.Value)
       {
         CloseOutputStreams(gitProcess)();
         break;
@@ -114,26 +105,36 @@ public static class Actions
     return records.ToImmutableList();
   }
 
-  public static IImmutableList<string> RequestActiveNames(string repositoryRoot, string branch, string gitExePath)
+
+  public static ImmutableList<string> RequestActiveNames(string gitExePath, string repositoryRoot)
   {
-    return ActiveNames(repositoryRoot, branch, gitExePath, CancellationToken.None);
+    return ActiveNames(gitExePath, repositoryRoot, null, CancellationToken.None);
   }
 
-  public static async Task<IImmutableList<string>> RequestActiveNamesAsync(string repositoryRoot, string branch, string gitExePath)
+  public static ImmutableList<string> RequestActiveNamesFromBranch(string gitExePath, string repositoryRoot, string branch)
   {
-    return await Task.Run(() => ActiveNames(repositoryRoot, branch, gitExePath, CancellationToken.None));
+    return ActiveNames(gitExePath, repositoryRoot, branch, CancellationToken.None);
   }
 
-  public static async Task<IImmutableList<string>> RequestActiveNamesAsync(string repositoryRoot, string branch, string gitExePath, CancellationToken cancellationToken)
+  public static Task<ImmutableList<string>> RequestActiveNamesAsync(string gitExePath, string repositoryRoot, CancellationToken cancellationToken = default)
   {
-    return await Task.Run(() => ActiveNames(repositoryRoot, branch, gitExePath, cancellationToken));
+    return Task.Run(() => ActiveNames(gitExePath, repositoryRoot, null, cancellationToken));
   }
 
-  private static IImmutableList<string> ActiveNames(string repositoryRoot, string branch, string gitExePath, CancellationToken cancellationToken)
+  public static Task<ImmutableList<string>> RequestActiveNamesFromBranchAsync(string gitExePath, string repositoryRoot, string branch, CancellationToken cancellationToken = default)
   {
-    if (branch == null)
+    return Task.Run(() => ActiveNames(gitExePath, repositoryRoot, branch, cancellationToken));
+  }
+
+  private static ImmutableList<string> ActiveNames(string gitExePath, string repositoryRoot, string branch, CancellationToken cancellationToken)
+  {
+    ArgumentException.ThrowIfNullOrEmpty(gitExePath);
+    ArgumentException.ThrowIfNullOrEmpty(repositoryRoot);
+    ArgumentNullException.ThrowIfNull(cancellationToken);
+
+    if (string.IsNullOrEmpty(branch))
     {
-      branch = RequestMainBranchName(repositoryRoot,gitExePath, cancellationToken);
+      branch = RequestMainBranchName(gitExePath, repositoryRoot, cancellationToken);
     }
     string gitCmd = $"ls-tree -r {branch} --name-only";
 
@@ -154,7 +155,7 @@ public static class Actions
     return records.ToImmutableList();
   }
 
-  private static string RequestMainBranchName(string repositoryRoot, string gitExePath, CancellationToken cancellationToken)
+  private static string RequestMainBranchName(string gitExePath, string repositoryRoot, CancellationToken cancellationToken)
   {
     const string GitBranchCmd = "symbolic-ref refs/remotes/origin/HEAD";
 
@@ -177,23 +178,23 @@ public static class Actions
     throw new InvalidOperationException("repository main branch not found with `git branch`");
   }
 
-  public static string RequestRepositoryName(string repositoryRoot, string gitExePath)
+
+  public static string RequestRepositoryName(string gitExePath, string repositoryRoot)
   {
-    return RepositoryName(repositoryRoot, gitExePath, CancellationToken.None);
+    return RepositoryName(gitExePath, repositoryRoot, CancellationToken.None);
   }
 
-  public static async Task<string> RequestRepositoryNameAsync(string repositoryRoot, string gitExePath)
+  public static Task<string> RequestRepositoryNameAsync(string gitExePath, string repositoryRoot, CancellationToken cancellationToken = default)
   {
-    return await Task.Run(() => RepositoryName(repositoryRoot, gitExePath, CancellationToken.None));
+    return Task.Run(() => RepositoryName(gitExePath, repositoryRoot, cancellationToken));
   }
 
-  public static async Task<string> RequestRepositoryNameAsync(string repositoryRoot, string gitExePath, CancellationToken cancellationToken)
+  private static string RepositoryName(string gitExePath, string repositoryRoot, CancellationToken cancellationToken)
   {
-    return await Task.Run(() => RepositoryName(repositoryRoot, gitExePath, cancellationToken));
-  }
+    ArgumentException.ThrowIfNullOrEmpty(gitExePath);
+    ArgumentException.ThrowIfNullOrEmpty(repositoryRoot);
+    ArgumentNullException.ThrowIfNull(cancellationToken);
 
-  private static string RepositoryName(string repositoryRoot, string gitExePath, CancellationToken cancellationToken)
-  {
     const string GitRemoteCmd = "remote -v";
 
     (Process gitProcess, Action defering) = CreateAndStartGitProcess(repositoryRoot, gitExePath, GitRemoteCmd);
@@ -210,7 +211,8 @@ public static class Actions
       // https://tfs-app.company.com/A/B/_git/giana
       // https://github.com/mrstefangrimm/giana.git (fetch) [blob:none]
       // git@gitlab.A/B/giana.git (fetch)
-      var lastElement = line.Split("/").Last();
+      var elements = line.Split('/');
+      var lastElement = elements[elements.Length - 1];
 
       if (!lastElement.Contains(".git"))
       {
@@ -219,29 +221,47 @@ public static class Actions
       }
       if (lastElement.Contains(".git (fetch)"))
       {
-        return lastElement.Split(".git (fetch)").First();
+        return lastElement.Split(".git (fetch)")[0];
       }
     }
 
     throw new InvalidOperationException("repository name not found with `git remote`");
   }
 
-  public static string CreateCloneFromUri(string uri, string branch, string gitExePath)
+
+  public static string CreateCloneFromUri(string gitExePath, string uri)
   {
-    return CloneFromUri(uri, branch, gitExePath);
+    return CloneFromUri(gitExePath, uri, null);
   }
 
-  public static async Task<string> CreateCloneFromUriAsync(string uri, string branch, string gitExePath)
+  public static string CreateCloneFromUriFromBranch(string gitExePath, string uri, string branch)
   {
-    return await Task.Run(() => CloneFromUri(uri, branch, gitExePath));
+    return CloneFromUri(gitExePath, uri, branch);
   }
 
-  private static string CloneFromUri(string uri, string branch, string gitExePath)
+  public static Task<string> CreateCloneFromUriAsync(string gitExePath, string uri, CancellationToken cancellationToken = default)
   {
+    ArgumentNullException.ThrowIfNull(cancellationToken);
+
+    return Task.Run(() => CloneFromUri(gitExePath, uri, null), cancellationToken);
+  }
+
+  public static Task<string> CreateCloneFromUriFromBranchAsync(string gitExePath, string uri, string branch, CancellationToken cancellationToken = default)
+  {
+    ArgumentNullException.ThrowIfNull(cancellationToken);
+
+    return Task.Run(() => CloneFromUri(gitExePath, uri, branch), cancellationToken);
+  }
+
+  private static string CloneFromUri(string gitExePath, string uri, string branch)
+  {
+    ArgumentException.ThrowIfNullOrEmpty(gitExePath);
+    ArgumentException.ThrowIfNullOrEmpty(uri);
+
     var tempPath = Path.Combine(Path.GetTempPath(), Path.GetRandomFileName());
     Directory.CreateDirectory(tempPath);
 
-    var branchArg = string.IsNullOrEmpty(branch) ? "--single-branch" : $"--branch {branch}";
+    var branchArg = branch == null ? "--single-branch" : $"--branch {branch}";
 
     var gitCloneCmd = $"clone --filter=blob:none --no-checkout {branchArg} {uri} {tempPath}";
 
@@ -252,6 +272,7 @@ public static class Actions
 
     return tempPath;
   }
+
 
   private static (Process Git, Action Defering) CreateAndStartGitProcess(string woringDir, string gitExePath, string gitCmd)
   {
