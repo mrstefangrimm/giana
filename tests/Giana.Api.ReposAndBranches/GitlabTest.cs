@@ -23,7 +23,7 @@ public class GitlabTest
     DateTime entriesTo = new DateTime(2025, 11, 01, 0, 0, 0, DateTimeKind.Utc);
     DateTime commitsSince = new DateTime(2020, 01, 01, 0, 0, 0, DateTimeKind.Utc);
 
-    var repository = await GitRepository.CreateAsync(gitRepository, branch, gitExePath);
+    var repository = await GitRepository.CreateFromBranchAsync(gitExePath, gitRepository, branch);
 
     var records = await repository.LogAsync(commitsSince);
     records = records.WithTimeRange(entriesFrom, entriesTo);

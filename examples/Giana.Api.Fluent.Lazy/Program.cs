@@ -6,7 +6,7 @@ using System;
 const string gitExePath = @"C:\Program Files\Git\bin\git.exe";
 const string gitRepository = "https://github.com/dotnet/wpf.git";
 
-var repo = await GitRepository.CreateAsync(gitRepository, gitExePath);
+var repo = await GitRepository.CreateAsync(gitExePath, gitRepository);
 
 var lazyRecords = repo.LogLazy();
 

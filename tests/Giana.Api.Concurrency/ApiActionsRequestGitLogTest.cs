@@ -2,7 +2,6 @@
 using Giana.Api.Load;
 using System.Collections.Immutable;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Giana.Api.Concurrency;
@@ -15,18 +14,18 @@ public class ApiActionsRequestGitLogTest
   [Fact]
   public async Task RequestGitLog_CalledInParallel_WithSameResult()
   {
-    var localRepo = Actions.CreateCloneFromUri(gitRepository, null, gitExePath);
-    var repoName = Actions.RequestRepositoryName(localRepo, gitExePath);
+    var localRepo = await Actions.CreateCloneFromUriAsync(gitExePath, gitRepository);
+    var repoName = await Actions.RequestRepositoryNameAsync(gitExePath, localRepo);
     using var defer = new Defer(() =>
     {
       RemoveReadOnly(localRepo);
       Directory.Delete(localRepo, true);
     });
 
-    var tasks = new Task<IImmutableList<GitLogRecord>>[1000];
+    var tasks = new Task<ImmutableList<GitLogRecord>>[1000];
     for (int i = 0; i < tasks.Length; i++)
     {
-      tasks[i] = Actions.RequestGitLogAsync(localRepo, repoName, gitExePath, CancellationToken.None);
+      tasks[i] = Actions.RequestGitLogAsync(gitExePath, repoName, localRepo);
     }
 
     await Task.WhenAll(tasks);
