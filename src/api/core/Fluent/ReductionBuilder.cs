@@ -34,8 +34,8 @@ internal record Reduction(
 
 public interface IReductionBuilder
 {
-  IImmutableList<GitLogRecord> Build();
-  Task<IImmutableList<GitLogRecord>> BuildAsync();
+  ImmutableList<GitLogRecord> Build();
+  Task<ImmutableList<GitLogRecord>> BuildAsync();
   LazyRecords<GitLogRecord> BuildLazy();
 }
 
@@ -43,7 +43,7 @@ internal class ReductionBuilder : IReductionBuilder
 {
   protected Reduction _query;
 
-  public IImmutableList<GitLogRecord> Build()
+  public ImmutableList<GitLogRecord> Build()
   {
     ImmutableList<GitLogRecord> reducedList = _query.LazyRecords.Value
       .Where(item => _query.TimePeriods.Count == 0 || _query.TimePeriods.Any(tp => tp.Begin <= item.Date && item.Date <= tp.End)).ToImmutableList();
@@ -87,7 +87,7 @@ internal class ReductionBuilder : IReductionBuilder
     return includedAndExcluded;
   }
 
-  public async Task<IImmutableList<GitLogRecord>> BuildAsync()
+  public async Task<ImmutableList<GitLogRecord>> BuildAsync()
   {
     return await Task.Run(Build);
   }
