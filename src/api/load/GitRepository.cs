@@ -68,17 +68,17 @@ public sealed class GitRepository : IDisposable
     return Task.Run(() => CreateFromBranch(gitExePath, localCloneOrUri, branch), cancellationToken);
   }
 
-  public IImmutableList<GitLogRecord> Log(DateTime? commitsSince = null)
+  public ImmutableList<GitLogRecord> Log(DateTime? commitsSince = null)
   {
     return Actions.RequestGitLog(_gitExePath, _repoName, _localPath, commitsSince);
   }
 
-  public async Task<IImmutableList<GitLogRecord>> LogAsync(DateTime? commitsSince = null)
+  public async Task<ImmutableList<GitLogRecord>> LogAsync(DateTime? commitsSince = null)
   {
     return await Actions.RequestGitLogAsync(_gitExePath, _repoName, _localPath, commitsSince, CancellationToken.None);
   }
 
-  public async Task<IImmutableList<GitLogRecord>> LogAsync(CancellationToken cancellationToken, DateTime? commitsSince = null)
+  public async Task<ImmutableList<GitLogRecord>> LogAsync(CancellationToken cancellationToken, DateTime? commitsSince = null)
   {
     return await Actions.RequestGitLogAsync(_gitExePath, _repoName, _localPath, commitsSince, cancellationToken);
   }
@@ -88,12 +88,12 @@ public sealed class GitRepository : IDisposable
     return new LazyRecords<GitLogRecord>(() => Log(commitsSince));
   }
 
-  public IImmutableList<string> ActiveNames()
+  public ImmutableList<string> ActiveNames()
   {
     return Actions.RequestActiveNamesFromBranch(_gitExePath, _localPath, _branch);
   }
 
-  public async Task<IImmutableList<string>> ActiveNamesAsync(CancellationToken cancellationToken = default)
+  public async Task<ImmutableList<string>> ActiveNamesAsync(CancellationToken cancellationToken = default)
   {
     return await Actions.RequestActiveNamesFromBranchAsync(_gitExePath, _localPath, _branch, cancellationToken);
   }
