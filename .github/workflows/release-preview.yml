@@ -2,9 +2,8 @@ name: Pack Preview
 
 on:
   workflow_run:
-    workflows: ["CI"]
-    types:
-       - completed  
+    workflows: [CI]
+    types: [completed]
   push:
     paths:
       - "src/**"
@@ -16,8 +15,8 @@ on:
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     timeout-minutes: 15
     steps:
     - name: Checkout
