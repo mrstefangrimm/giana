@@ -9,8 +9,8 @@ var query = new Query
   Sources = [gitRepository],
   Analyzer = "custom-analysis",
   OutputFormat = "html",
-  Renames = [new Author() { To = "Thomas Goulet", From = "ThomasGoulet73" }],
-  TimeRanges = [new TimePeriod() { Begin = DateTime.Now.AddMonths(-6), End = DateTime.Now }]
+  TimeRanges = [new TimePeriod() { Begin = DateTime.Now.AddMonths(-1), End = DateTime.Now }],
+  CommitsSince = new DateTime(2025, 01, 01, 0, 0, 0, DateTimeKind.Utc)
 };
 
 var analyzers = Calculations.GetDefaultAnalyzers();
