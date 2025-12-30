@@ -1,15 +1,22 @@
-
 FROM mcr.microsoft.com/dotnet/runtime:8.0
-RUN apt update
-RUN apt install -y git unzip
+
+ARG RELEASE_VERSION=v0.0.7
+ARG BUILD_VERSION=0.0.9
+
+RUN apt update && \
+    apt install -y git unzip vim && \
+    rm -rf /var/lib/apt/lists/*
 
 WORKDIR /app
-ADD https://github.com/mrstefangrimm/giana/releases/download/v0.0.6/Giana.App.Cmd.0.0.2.zip /app
-RUN unzip Giana.App.Cmd.0.0.2.zip
 
-WORKDIR /app/Giana.App.Cmd.0.0.2
+ADD "https://github.com/mrstefangrimm/giana/releases/download/$RELEASE_VERSION/Giana.App.Cmd.$BUILD_VERSION.zip" /app
+RUN unzip "Giana.App.Cmd.$BUILD_VERSION.zip"
+RUN chmod 766 ./Giana.App.Cmd.sh
+RUN rm "Giana.App.Cmd.$BUILD_VERSION.zip"
+
 ENV GitExePath=/usr/bin/git
-ENTRYPOINT ["dotnet", "Giana.App.Cmd.dll"]
 
-#RUN chmod 777 ./Giana.App.Cmd.sh
+# Optional entry point
+#ENTRYPOINT ["dotnet", "Giana.App.Cmd.dll"]
+# or
 #ENTRYPOINT ["./Giana.App.Cmd.sh", ""]
