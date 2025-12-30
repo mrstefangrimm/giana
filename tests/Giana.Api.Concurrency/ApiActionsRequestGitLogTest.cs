@@ -2,44 +2,43 @@
 using Giana.Api.Load;
 using System.Collections.Immutable;
 using System.IO;
-using System.Threading;
 using System.Threading.Tasks;
 
 namespace Giana.Api.Concurrency;
 
-public class ApiActionsRequestGitLog
+public class ApiActionsRequestGitLogTest
 {
   private const string gitExePath = @"C:\Program Files\Git\bin\git.exe";
   private const string gitRepository = "https://github.com/mrstefangrimm/giana.git";
 
   [Fact]
-  public void RequestGitLog_CalledInParallel_WithSameResult()
+  public async Task RequestGitLog_CalledInParallel_WithSameResult()
   {
-    var localRepo = Actions.CreateCloneFromUri(gitRepository, gitExePath);
-    var repoName = Actions.RequestRepositoryName(localRepo, gitExePath);
+    var localRepo = await Actions.CreateCloneFromUriAsync(gitExePath, gitRepository);
+    var repoName = await Actions.RequestRepositoryNameAsync(gitExePath, localRepo);
     using var defer = new Defer(() =>
     {
       RemoveReadOnly(localRepo);
       Directory.Delete(localRepo, true);
     });
 
-    var tasks = new Task<IImmutableList<GitLogRecord>>[1000];
+    var tasks = new Task<ImmutableList<GitLogRecord>>[1000];
     for (int i = 0; i < tasks.Length; i++)
     {
-      tasks[i] = Actions.RequestGitLogAsync(localRepo, repoName, gitExePath, CancellationToken.None);
+      tasks[i] = Actions.RequestGitLogAsync(gitExePath, repoName, localRepo);
     }
 
-    Task.WaitAll(tasks);
+    await Task.WhenAll(tasks);
 
     for (int i = 1; i < tasks.Length; i++)
     {
-      var result1 = tasks[i-1].Result;
-      var result2 = tasks[i].Result;
+      var result1 = await tasks[i-1];
+      var result2 = await tasks[i];
       Assert.Equal(result1, result2);
     }
   }
 
-    private static void RemoveReadOnly(string dir)
+  private static void RemoveReadOnly(string dir)
   {
     var subDirs = Directory.GetDirectories(dir);
     foreach (var subDir in subDirs)

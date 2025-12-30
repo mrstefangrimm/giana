@@ -27,10 +27,20 @@ public static class Actions
     {
       await Parallel.ForEachAsync(routine.Sources, cancellationSource.Token, async (source, cancellationToken) =>
       {
-        using var gitRepo = await GitRepository.CreateAsync(source, gitExePath, cancellationToken);
+        GitRepository gitRepo;
+        
+        if (source.Contains("@"))
+        {
+          var branchAndSource = source.Split("@");
+          gitRepo = await GitRepository.CreateFromBranchAsync(gitExePath, branchAndSource[1], branchAndSource[0], cancellationToken);
+        }
+        else
+        {
+          gitRepo = await GitRepository.CreateAsync(gitExePath, source, cancellationToken);
+        }
         cancellationToken.ThrowIfCancellationRequested();
 
-        var records = await gitRepo.LogAsync(cancellationToken, routine.CommitsFrom);
+        var records = await gitRepo.LogAsync(cancellationToken, routine.CommitsSince ?? default);
 
         records = records.Where(x => routine.TimeRanges.Count == 0 || routine.TimeRanges.Any(tp => tp.Begin <= x.Date && x.Date <= tp.End)).ToImmutableList();
 
@@ -56,6 +66,8 @@ public static class Actions
         {
           allActiveNames = allActiveNames.AddRange(reducedActiveNames);
         }
+
+        gitRepo.Dispose();
       });
 
       routine.Analyze(new Api.Analysis.ExecutionContext(reducedRecords, allActiveNames, routine.OutputFormat, outputWriter, cancellationSource.Token));

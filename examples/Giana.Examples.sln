@@ -5,13 +5,13 @@ VisualStudioVersion = 17.12.35527.113
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api.Functional", "Giana.Api.Functional\Giana.Api.Functional.csproj", "{8F2E0C6F-9692-478B-92F7-225B1A0DB4AA}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api.Fluent", "Giana.Api.Fluent\Giana.Api.Fluent.csproj", "{2529F1E1-04B8-4272-9CE4-4F594A2B205E}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.Api.Fluent.Lazy", "Giana.Api.Fluent.Lazy\Giana.Api.Fluent.Lazy.csproj", "{3D0DDF16-8479-41D4-ACEF-39FC82152F61}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.App.Query", "Giana.App.Query\Giana.App.Query.csproj", "{BAD0FB41-5EE5-43FA-B635-6CCA38839AD2}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.App.CustomAnalyzer", "Giana.App.CustomAnalyzer\Giana.App.CustomAnalyzer.csproj", "{ED98DBB1-2020-4698-99F3-3B478504BABD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.API.Fluent", "Giana.API.Fluent\Giana.API.Fluent.csproj", "{48344BF3-68D0-C331-A676-B68A479E8381}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,10 +23,6 @@ Global
 		{8F2E0C6F-9692-478B-92F7-225B1A0DB4AA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8F2E0C6F-9692-478B-92F7-225B1A0DB4AA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8F2E0C6F-9692-478B-92F7-225B1A0DB4AA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{2529F1E1-04B8-4272-9CE4-4F594A2B205E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{2529F1E1-04B8-4272-9CE4-4F594A2B205E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{2529F1E1-04B8-4272-9CE4-4F594A2B205E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{2529F1E1-04B8-4272-9CE4-4F594A2B205E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{3D0DDF16-8479-41D4-ACEF-39FC82152F61}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{3D0DDF16-8479-41D4-ACEF-39FC82152F61}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3D0DDF16-8479-41D4-ACEF-39FC82152F61}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -39,6 +35,10 @@ Global
 		{ED98DBB1-2020-4698-99F3-3B478504BABD}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{ED98DBB1-2020-4698-99F3-3B478504BABD}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{ED98DBB1-2020-4698-99F3-3B478504BABD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{48344BF3-68D0-C331-A676-B68A479E8381}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{48344BF3-68D0-C331-A676-B68A479E8381}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{48344BF3-68D0-C331-A676-B68A479E8381}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{48344BF3-68D0-C331-A676-B68A479E8381}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

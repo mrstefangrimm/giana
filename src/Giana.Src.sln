@@ -27,6 +27,14 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.App.Shared.Tests", "a
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Giana.App", "app\Giana.App.csproj", "{823C461A-01FD-4DE4-8E49-1C891E649F83}"
 EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "SolutionDir", "SolutionDir", "{02EA681E-C7D8-13C7-8484-4AC65E1B71E8}"
+	ProjectSection(SolutionItems) = preProject
+		..\.github\workflows\ci.yml = ..\.github\workflows\ci.yml
+		..\README.md = ..\README.md
+		..\.github\workflows\release-preview.yml = ..\.github\workflows\release-preview.yml
+		..\.github\workflows\release.yml = ..\.github\workflows\release.yml
+	EndProjectSection
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -84,5 +92,8 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{1A9A5D1E-E90B-4FDC-846C-2693471D9933} = {2419EC0E-E322-448A-A044-23E28DB239D9}
 		{823C461A-01FD-4DE4-8E49-1C891E649F83} = {2419EC0E-E322-448A-A044-23E28DB239D9}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {E4D1D8A6-5E13-4E10-8BD9-10F10906CC3F}
 	EndGlobalSection
 EndGlobal

@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Giana.Api.Concurrency;
 
-public class AppActionsExecute
+public class AppActionsExecuteTest
 {
   private const string gitExePath = @"C:\Program Files\Git\bin\git.exe";
   private const string gitRepositoryGiana = "https://github.com/mrstefangrimm/giana.git";
@@ -16,7 +16,7 @@ public class AppActionsExecute
   private const string gitRepositoryCollares = "https://github.com/mrstefangrimm/Collares.git";
 
   [Fact]
-  public void ExecuteAsync_GianaCalledInParallel_WithSameResult()
+  public async Task ExecuteAsync_GianaCalledInParallel_WithSameResult()
   {
     var query = new Query
     {
@@ -35,10 +35,10 @@ public class AppActionsExecute
 
       rouines[i] = routine;
       outputs[i] = new StringWriter();
-      tasks[i] = App.Shared.Actions.ExecuteAsync(routine, gitExePath, outputs[i], TimeSpan.FromSeconds(60));
+      tasks[i] = routine.ExecuteAsync(gitExePath, outputs[i], TimeSpan.FromSeconds(60));
     }
 
-    Task.WaitAll(tasks);
+    await Task.WhenAll(tasks);
 
     for (int i = 1; i < rouines.Length; i++)
     {
@@ -53,8 +53,8 @@ public class AppActionsExecute
     }
   }
 
-    [Fact]
-  public void ExecuteAsync_ManyReposCalledInParallel_WithCorrectFormat()
+  [Fact]
+  public async Task ExecuteAsync_ManyReposCalledInParallel_WithCorrectFormat()
   {
     var urls = new string[]
     {
@@ -83,10 +83,10 @@ public class AppActionsExecute
 
       rouines[i] = routine;
       outputs[i] = new StringWriter();
-      tasks[i] = App.Shared.Actions.ExecuteAsync(routine, gitExePath, outputs[i], TimeSpan.FromSeconds(60));
+      tasks[i] = routine.ExecuteAsync(gitExePath, outputs[i], TimeSpan.FromSeconds(60));
     }
 
-    Task.WaitAll(tasks);
+    await Task.WhenAll(tasks);
 
     for (int i = 0; i < rouines.Length; i++)
     {

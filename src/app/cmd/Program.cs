@@ -21,7 +21,7 @@ if (idxHelp > 0)
   return;
 }
 
-var beforeExecution  = DateTime.Now;
+var beforeExecution = DateTime.Now;
 
 string gitExePath = Environment.GetEnvironmentVariable(GitExePathEnvName);
 if (string.IsNullOrEmpty(gitExePath))
@@ -52,17 +52,22 @@ int idxQueryFile = Math.Max(cmdLineArgs.IndexOf("-q"), cmdLineArgs.IndexOf("--qu
 if (idxQueryFile > 0 && cmdLineArgs.Count > idxQueryFile + 1)
 {
   queryFilename = cmdLineArgs[idxQueryFile + 1];
+  if (!File.Exists(queryFilename))
+  {
+    Console.WriteLine($"File '{queryFilename}' defined with the command line argument '{cmdLineArgs[idxQueryFile]}' not found.");
+    return;
+  }
 }
 else
 {
   var cwd = Directory.GetCurrentDirectory();
   queryFilename = Path.Combine(cwd, "query.json");
-}
 
-if (!File.Exists(queryFilename))
-{
-  Console.WriteLine($"File '{queryFilename}' defined with the command line argument '{cmdLineArgs[idxQueryFile]}' not found.");
-  return;
+  if (!File.Exists(queryFilename))
+  {
+  Console.WriteLine($"File '{queryFilename}' not found. Define a query-file with `--query-file` ");
+    return;
+  }
 }
 
 int idxOutputFile = Math.Max(cmdLineArgs.IndexOf("-o"), cmdLineArgs.IndexOf("--output-file"));
@@ -97,7 +102,7 @@ var routine = query.CreateRoutine();
 
 await routine.ExecuteAsync(gitExePath, outputWriter, TimeSpan.FromSeconds(100));
 
-var afterExecution  = DateTime.Now;
+var afterExecution = DateTime.Now;
 
 Console.WriteLine();
-Console.WriteLine($"Time spent: {(afterExecution - beforeExecution).TotalSeconds} sec.");
+Console.WriteLine($"Processing time: {(afterExecution - beforeExecution).TotalSeconds} sec.");

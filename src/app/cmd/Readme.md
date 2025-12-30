@@ -1,9 +1,9 @@
 # Giana.App.Cmd readme
 
-Command line:
+A command line tool that uses an input file for the git repository analysis:
 
 ```sh
->./Giana.App.Cmd.sh
+>.\Giana.App.Cmd.bat
 usage: Giana.Cmd.App.[bat|sh] [(-q | --query-file) <filename>] [(-o | output-file) <filename>]
 
 --query-file    json file with the query arguments. By default, query.json for the bin folder is used.
@@ -12,17 +12,27 @@ usage: Giana.Cmd.App.[bat|sh] [(-q | --query-file) <filename>] [(-o | output-fil
 
 
 
-query.json
+An example input file for the command line tool. All commits since 2024-01-01 and within the time ranges 2024-01-01 to 2024-07-01 and 2025-02-01 to 2025-04-30 are analysed in the repositories giana and parc. The analysis only includes *.cs, *.h and *.cpp files; the two commits 5a6678c and aa3acf4 are excluded though.
 
 ```json
+// query.json
 {
   "sources": [ "https://github.com/mrstefangrimm/giana.git", "https://github.com/mrstefangrimm/parc.git" ],
   "analyzer": "file-ranking",
   "outputformat": "csv",
-  "timeranges": [],
+  "timeranges": [
+    {
+      "begin": "2024-01-01",
+      "end": "2024-07-01"
+    },
+    {
+      "begin": "2025-02-01",
+      "end": "2025-04-30"
+    }
+  ],
   "renames": [],
   "includes": {
-    "names": [".*.cs", ".*.[h|cpp]"],
+    "names": [ "\\.cs$", "\\.h$", "\\.cpp$" ],
     "commits": [],
     "authors": [],
     "messages": []
@@ -33,7 +43,7 @@ query.json
     "authors": [],
     "messages": []
   },
-  "commitsFrom": ""
+  "commitsSince": "2024-01-01"
 }
 ```
 

@@ -1,31 +1,40 @@
 name: Pack Preview
 
 on:
+  # workflow_run:
+  #   workflows:
+  #     - CI
+  #   types:
+  #     - completed
+  #   branches: [ "preview/[0-9]+.[0-9]+.[0-9]+" ]
   push:
-    tags:
-      - "*"
+    paths:
+      - "src/**"
+      - ".github/workflows/release-preview.yml"
     branches: [ "preview/[0-9]+.[0-9]+.[0-9]+" ]
   pull_request:
-    tags:
-      - "*"
+    paths:
+      - "src/**"
+      - ".github/workflows/release-preview.yml"
     branches: [ "preview/[0-9]+.[0-9]+.[0-9]+" ]
 
 jobs:
-  build:
+  deploy:
     runs-on: ubuntu-latest
+    # if: ${{ github.event.workflow_run.conclusion == 'success' }}
     timeout-minutes: 15
     steps:
     - name: Checkout
       uses: actions/checkout@v4
     - name: Set VERSION variable from tag
-      run: echo "VERSION=${GITHUB_REF_NAME/preview\/}-preview${{github.run_number}}" >> $GITHUB_ENV
+      run: echo "VERSION=${GITHUB_REF_NAME/preview\/}-preview.${{github.run_number}}" >> $GITHUB_ENV
     - name: Show VERSION
       run: echo "${VERSION}"
     - name: Pack API
       run: dotnet pack --configuration Release src/api/Giana.Api.csproj -p:Version=${VERSION} --output .
     - name: Pack APP
       run: dotnet pack --configuration Release src/app/Giana.App.csproj -p:Version=${VERSION} --output .
-    # - name: Push
-    #   run: dotnet nuget push Giana.Api.${VERSION}.nupkg --source https://nuget.pkg.github.com/mrstefangrimm/index.json --api-key ${GITHUB_TOKEN}
-    #   env:
-    #    GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Push API
+      run: dotnet nuget push Giana.Api.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.PUSH_NUGET }}
+    - name: Push APP
+      run: dotnet nuget push Giana.App.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.PUSH_NUGET }}

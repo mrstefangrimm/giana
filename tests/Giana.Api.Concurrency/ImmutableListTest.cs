@@ -16,7 +16,7 @@ public class ImmutableListTest
   private static readonly object _lock = new object();
 
   [Fact]
-  public void AddRange_CalledFromDifferentTasks_ItemsAreNotMixed()
+  public async Task AddRange_CalledFromDifferentTasks_ItemsAreNotMixed()
   {
     var mergedRecords = ImmutableList.Create<GitLogRecord>();
 
@@ -42,10 +42,10 @@ public class ImmutableListTest
       tasks[i].Start();
     }
 
-    Task.WaitAll(tasks);
+    await Task.WhenAll(tasks);
 
     // Wait for the OnCompleted event handlers
-    Thread.Sleep(1000);
+    await Task.Delay(1000);
 
     Assert.Equal(tasks.Length * 10, mergedRecords.Count);
 
