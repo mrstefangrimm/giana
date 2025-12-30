@@ -1,24 +1,29 @@
 {
-  "sources": [ "https://github.com/mrstefangrimm/giana.git" ],
-  "analyzer": "author-ranking",
+  "sources": [ "https://github.com/mrstefangrimm/giana.git", "https://github.com/mrstefangrimm/parc.git" ],
+  "analyzer": "file-ranking",
   "outputformat": "csv",
-  "timeranges": [],
-  "renames": [
+  "timeranges": [
     {
-      "to": "Stefan Grimm",
-      "from": "mrstefangrimm"
+      "begin": "2024-01-01",
+      "end": "2024-07-01"
+    },
+    {
+      "begin": "2025-02-01",
+      "end": "2025-04-30"
     }
   ],
+  "renames": [],
   "includes": {
-    "names": [],
+    "names": [ "\\.cs$", "\\.h$", "\\.cpp$" ],
     "commits": [],
     "authors": [],
     "messages": []
   },
   "excludes": {
     "names": [],
-    "commits": [],
+    "commits": [ "5a6678c", "aa3acf4" ],
     "authors": [],
     "messages": []
-  }
+  },
+  "commitsSince": "2024-01-01"
 }

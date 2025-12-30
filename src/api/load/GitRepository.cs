@@ -68,22 +68,22 @@ public sealed class GitRepository : IDisposable
     return Task.Run(() => CreateFromBranch(gitExePath, localCloneOrUri, branch), cancellationToken);
   }
 
-  public ImmutableList<GitLogRecord> Log(DateTime? commitsSince = null)
+  public ImmutableList<GitLogRecord> Log(DateTime commitsSince = default)
   {
     return Actions.RequestGitLog(_gitExePath, _repoName, _localPath, commitsSince);
   }
 
-  public async Task<ImmutableList<GitLogRecord>> LogAsync(DateTime? commitsSince = null)
+  public async Task<ImmutableList<GitLogRecord>> LogAsync(DateTime commitsSince = default)
   {
     return await Actions.RequestGitLogAsync(_gitExePath, _repoName, _localPath, commitsSince, CancellationToken.None);
   }
 
-  public async Task<ImmutableList<GitLogRecord>> LogAsync(CancellationToken cancellationToken, DateTime? commitsSince = null)
+  public async Task<ImmutableList<GitLogRecord>> LogAsync(CancellationToken cancellationToken, DateTime commitsSince = default)
   {
     return await Actions.RequestGitLogAsync(_gitExePath, _repoName, _localPath, commitsSince, cancellationToken);
   }
 
-  public LazyRecords<GitLogRecord> LogLazy(DateTime? commitsSince = null)
+  public LazyRecords<GitLogRecord> LogLazy(DateTime commitsSince = default)
   {
     return new LazyRecords<GitLogRecord>(() => Log(commitsSince));
   }

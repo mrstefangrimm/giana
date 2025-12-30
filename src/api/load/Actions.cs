@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Collections.Immutable;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -16,21 +17,22 @@ namespace Giana.Api.Load;
 
 public static class Actions
 {
-  public static ImmutableList<GitLogRecord> RequestGitLog(string gitExePath, string repositoryName, string repositoryRoot, DateTime? commitsSince = default)
+  public static ImmutableList<GitLogRecord> RequestGitLog(string gitExePath, string repositoryName, string repositoryRoot, DateTime commitsSince = default)
   {
     return GitLog(gitExePath, repositoryName, repositoryRoot, commitsSince, CancellationToken.None);
   }
 
-  public static Task<ImmutableList<GitLogRecord>> RequestGitLogAsync(string gitExePath, string repositoryName, string repositoryRoot, DateTime? commitsSince = default, CancellationToken cancellationToken = default)
+  public static Task<ImmutableList<GitLogRecord>> RequestGitLogAsync(string gitExePath, string repositoryName, string repositoryRoot, DateTime commitsSince = default, CancellationToken cancellationToken = default)
   {
     return Task.Run(() => GitLog(gitExePath, repositoryName, repositoryRoot, commitsSince, cancellationToken), cancellationToken);
   }
 
-  private static ImmutableList<GitLogRecord> GitLog(string gitExePath, string repositoryName, string repositoryRoot, DateTime? commitsSince, CancellationToken cancellationToken)
+  private static ImmutableList<GitLogRecord> GitLog(string gitExePath, string repositoryName, string repositoryRoot, DateTime commitsSince, CancellationToken cancellationToken)
   {
     ArgumentException.ThrowIfNullOrEmpty(gitExePath);
     ArgumentException.ThrowIfNullOrEmpty(repositoryName);
     ArgumentException.ThrowIfNullOrEmpty(repositoryRoot);
+    ArgumentNullException.ThrowIfNull(commitsSince);
     ArgumentNullException.ThrowIfNull(cancellationToken);
 
     const string GitLogCmd = "log --pretty=format:\"%h^%an^%as^%s\" --date-order --name-status";
@@ -60,15 +62,18 @@ public static class Actions
       var changeFileElements = statusLine.Split("\t");
       do
       {
-        if (changeFileElements.Count() == 2 || changeFileElements.Count() == 3)
+        var elementCount = changeFileElements.Count();
+        // M\tnewname.txt
+        // R076\toldname.txt\tnewname.txt
+        if (elementCount == 2 || elementCount == 3)
         {
           GitLogRecord change = new(
             RepoName: repositoryName,
-            Name: changeFileElements.Last(),
+            Name: changeFileElements[elementCount - 1],
             Commit: elements[0],
             Author: elements[1],
             Message: elements[3],
-            Date: DateTime.Parse(elements[2]));
+            Date: DateTime.Parse(elements[2], CultureInfo.InvariantCulture));
 
           records.Add(change);
         }
@@ -95,7 +100,7 @@ public static class Actions
 
       } while (!string.IsNullOrEmpty(statusLine));
 
-      if (commitsSince.HasValue && records.Last().Date < commitsSince.Value)
+      if (records[records.Count - 1].Date < commitsSince)
       {
         CloseOutputStreams(gitProcess)();
         break;

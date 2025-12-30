@@ -6,10 +6,10 @@
 const string gitExePath = @"C:\Program Files\Git\bin\git.exe";
 const string gitRepository = "https://github.com/dotnet/wpf.git";
 
-string tempClone = Actions.CreateCloneFromUri(gitRepository, gitExePath);
-string repoName = Actions.RequestRepositoryName(tempClone, gitExePath);
+string tempClone = await Actions.CreateCloneFromUriAsync(gitExePath, gitRepository);
+string repoName = await Actions.RequestRepositoryNameAsync(gitExePath, tempClone);
 
-var records = Actions.RequestGitLog(tempClone, repoName, gitExePath);
+var records = await Actions.RequestGitLogAsync(gitExePath, repoName, tempClone);
 
 records = records.WithTimeRange(DateTime.Now.AddMonths(-6), DateTime.Now);
 records = records.RenameAuthor("Thomas Goulet", "ThomasGoulet73");
@@ -47,7 +47,7 @@ Loni Tra,5
 const string gitExePath = @"C:\Program Files\Git\bin\git.exe";
 const string gitRepository = "https://github.com/dotnet/wpf.git";
 
-var repo = await GitRepository.CreateAsync(gitRepository, gitExePath);
+var repo = await GitRepository.CreateAsync(gitExePath, gitRepository);
 
 var records = await repo.LogAsync();
 

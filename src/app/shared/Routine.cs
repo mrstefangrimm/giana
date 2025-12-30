@@ -12,7 +12,7 @@ public class Routine
   public string OutputFormat { get; internal set; }
 
   public ICollection<string> Sources { get; internal set; }
-  public DateTime? CommitsFrom { get; internal set; }
+  public DateTime? CommitsSince { get; internal set; }
 
   public ICollection<(Func<IImmutableList<GitLogRecord>, DateTime, DateTime, ImmutableList<GitLogRecord>> Invoke, DateTime Begin, DateTime End)> TimeRanges { get; internal set; }
   public ICollection<(Func<IImmutableList<GitLogRecord>, string, string, ImmutableList<GitLogRecord>> Invoke, string To, string From)> Renames { get; internal set; }

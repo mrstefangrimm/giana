@@ -40,7 +40,7 @@ public static class Actions
         }
         cancellationToken.ThrowIfCancellationRequested();
 
-        var records = await gitRepo.LogAsync(cancellationToken, routine.CommitsFrom);
+        var records = await gitRepo.LogAsync(cancellationToken, routine.CommitsSince ?? default);
 
         records = records.Where(x => routine.TimeRanges.Count == 0 || routine.TimeRanges.Any(tp => tp.Begin <= x.Date && x.Date <= tp.End)).ToImmutableList();
 

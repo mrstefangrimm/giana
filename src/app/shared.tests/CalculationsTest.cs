@@ -66,11 +66,11 @@ public class CalculationsTest : AppSharedTestBase
     query.Sources = ["https://test"];
     query.Analyzer = "file-ranking";
     query.OutputFormat = "csv";
-    query.CommitsFrom = DateTime.Parse("2024-12-21T10:00:00Z", _fmt);
+    query.CommitsSince = DateTime.Parse("2024-12-21T10:00:00Z", _fmt);
 
     var routine = query.CreateRoutine();
 
-    var result = _testRecords.Where(x => x.Date > routine.CommitsFrom).ToArray();
+    var result = _testRecords.Where(x => x.Date > routine.CommitsSince).ToArray();
 
     result
       .Should()

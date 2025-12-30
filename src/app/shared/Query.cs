@@ -12,5 +12,5 @@ public class Query
   public List<Author> Renames { get; set; } = [];
   public Reduction Includes { get; set; } = new Reduction();
   public Reduction Excludes { get; set; } = new Reduction();
-  public DateTime? CommitsFrom { get; set; }
+  public DateTime? CommitsSince { get; set; }
 }
