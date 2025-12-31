@@ -35,6 +35,6 @@ jobs:
         context: .
         file: ./src/Dockerfile
         push: false
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/giana:${VERSION}
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/giana:${{ VERSION }}
 
 
