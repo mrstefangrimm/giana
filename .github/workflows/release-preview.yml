@@ -26,14 +26,22 @@ jobs:
     steps:
     - name: Checkout
       uses: actions/checkout@v4
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: 8.0.x
     - name: Set VERSION variable from tag
-      run: echo "VERSION=${GITHUB_REF_NAME/preview\/}-preview.${{github.run_number}}" >> $GITHUB_ENV
-    - name: Show VERSION
-      run: echo "${VERSION}"
+      run: |
+        echo "VERSION=${GITHUB_REF_NAME/preview\/}-preview.${{github.run_number}}" >> $GITHUB_ENV
+        echo "${VERSION}"
     - name: Pack API
-      run: dotnet pack --configuration Release src/api/Giana.Api.csproj -p:Version=${VERSION} --output .
+      run: |
+        dotnet restore src/api/Giana.Api.csproj
+        dotnet pack --configuration Release src/api/Giana.Api.csproj -p:Version=${VERSION} --output .
     - name: Pack APP
-      run: dotnet pack --configuration Release src/app/Giana.App.csproj -p:Version=${VERSION} --output .
+      run: |
+        dotnet restore src/app/Giana.App.csproj
+        dotnet pack --configuration Release src/app/Giana.App.csproj -p:Version=${VERSION} --output .
     - name: Push API
       run: dotnet nuget push Giana.Api.${VERSION}.nupkg --source https://api.nuget.org/v3/index.json --api-key ${{ secrets.PUSH_NUGET }}
     - name: Push APP
