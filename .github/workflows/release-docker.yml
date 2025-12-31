@@ -19,7 +19,7 @@ jobs:
     - name: Set VERSION variable from tag
       run: |
         echo "VERSION=${GITHUB_REF_NAME/preview\/}-preview.${{github.run_number}}" >> $GITHUB_ENV
-        echo "$VERSION"
+        sh echo "$VERSION"
     - name: Publish Cmd
       run: |
         dotnet restore src/app/cmd/Giana.App.Cmd.csproj
