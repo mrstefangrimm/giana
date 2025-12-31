@@ -22,8 +22,8 @@ jobs:
         echo "${VERSION}"
     - name: Publish Cmd
       run: |
-        dotnet restore src/app/cmd/Giana.App.Cmd.csproj
-        dotnet publish src/app/cmd/Giana.App.Cmd.csproj -c Release -o publish
+        dotnet restore src/app/cmd/Giana.App.Cmd.csproj -p:Version=${VERSION}
+        dotnet publish src/app/cmd/Giana.App.Cmd.csproj -c Release -p:Version=${VERSION} -o publish
     - name: Log in to Docker Hub
       uses: docker/login-action@v3
       with:
