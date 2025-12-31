@@ -1,3 +1,6 @@
+# docker build -f .\src\Dockerfile -t giana:latest .
+# docker run -it --rm  giana:latest
+
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
 WORKDIR /app
 
@@ -14,3 +17,5 @@ RUN apt update && \
     apt install -y git vim && \
     rm -rf /var/lib/apt/lists/* && \
     chmod 766 ./Giana.App.Cmd.sh
+
+ENTRYPOINT ["/bin/bash"]    

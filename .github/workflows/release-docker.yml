@@ -18,7 +18,7 @@ jobs:
         dotnet-version: "8.0.x"
     - name: Set VERSION variable from tag
       run: |
-        echo "VERSION=${GITHUB_REF_NAME/preview\/}-preview.${{github.run_number}}" >> $GITHUB_ENV
+        echo "VERSION=${GITHUB_REF_NAME/preview\/}" >> $GITHUB_ENV
         echo "$VERSION"
     - name: Publish Cmd
       run: |
@@ -34,7 +34,7 @@ jobs:
       with:
         context: .
         file: ./src/Dockerfile
-        push: true
-        tags: ${{ secrets.DOCKERHUB_USERNAME }}/giana:latest
+        push: false
+        tags: ${{ secrets.DOCKERHUB_USERNAME }}/giana:${VERSION}
 
 
