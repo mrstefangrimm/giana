@@ -3,7 +3,7 @@ WORKDIR /app
 
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
-COPY . .
+COPY ./src .
 RUN dotnet publish ./app/cmd/Giana.App.Cmd.csproj -c Release -o /app/publish
 
 FROM base AS final
