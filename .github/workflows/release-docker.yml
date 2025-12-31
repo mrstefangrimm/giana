@@ -18,11 +18,11 @@ jobs:
         dotnet-version: "8.0.x"
     - name: Set VERSION variable from tag
       run: |
-        echo "VERSION=${GITHUB_REF_NAME/release\/}" >> $GITHUB_ENV
-        echo "${VERSION}"
+        echo "VERSION=${GITHUB_REF_NAME/preview\/}-preview.${{github.run_number}}" >> $GITHUB_ENV
+        echo "$VERSION"
     - name: Publish Cmd
       run: |
-        dotnet restore src/app/cmd/Giana.App.Cmd.csproj -p:Version=${VERSION}
+        dotnet restore src/app/cmd/Giana.App.Cmd.csproj
         dotnet publish src/app/cmd/Giana.App.Cmd.csproj -c Release -p:Version=${VERSION} -o publish
     - name: Log in to Docker Hub
       uses: docker/login-action@v3
