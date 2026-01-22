@@ -129,7 +129,7 @@ public class RoutineTest : AppSharedTestBase
     routine.Analyze(context);
 
     var result = writer.ToString();
-    Assert.StartsWith(",2024-51,2024-52,2024-01,2025-01,2025-02,2025-03,2025-04,2025-05", result);
+    Assert.StartsWith(",2024-51,2024-52,2025-01,2025-02,2025-03,2025-04,2025-05", result);
   }
 
   [Fact]
