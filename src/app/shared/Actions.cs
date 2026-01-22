@@ -29,9 +29,9 @@ public static class Actions
       {
         GitRepository gitRepo;
         
-        if (source.Contains("@"))
+        if (source.Contains("#"))
         {
-          var branchAndSource = source.Split("@");
+          var branchAndSource = source.Split("#");
           gitRepo = await GitRepository.CreateFromBranchAsync(gitExePath, branchAndSource[1], branchAndSource[0], cancellationToken);
         }
         else

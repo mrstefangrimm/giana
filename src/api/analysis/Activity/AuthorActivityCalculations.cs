@@ -48,13 +48,13 @@ public static class AuthorActivityCalculations
     return authorFileTouches.ToImmutableList();
   }
 
-  private static IImmutableList<string> CreateListOfWeeks(DateTime begin, DateTime end)
+  public static IImmutableList<string> CreateListOfWeeks(DateTime begin, DateTime end)
   {
     var listOfWeeks = new List<string>();
 
-    for (DateTime dt = begin; dt < end; dt += new TimeSpan(7, 0, 0))
+    for (DateTime dt = begin; dt < end; dt += TimeSpan.FromDays(1))
     {
-      int year = dt.Year;
+      int year = GetIso8601Year(dt);
       int week = GetIso8601WeekOfYear(dt);
       listOfWeeks.Add($"{year}-{week:00}");
     }
@@ -102,6 +102,21 @@ public static class AuthorActivityCalculations
 
     // Return the week of our adjusted day
     return CultureInfo.InvariantCulture.Calendar.GetWeekOfYear(time, CalendarWeekRule.FirstFourDayWeek, DayOfWeek.Monday);
+  }
+
+  private static int GetIso8601Year(DateTime time)
+  {
+    // Seriously cheat.  If its Monday, Tuesday or Wednesday, then it'll 
+    // be the same week# as whatever Thursday, Friday or Saturday are,
+    // and we always get those right
+    DayOfWeek day = CultureInfo.InvariantCulture.Calendar.GetDayOfWeek(time);
+    if (day >= DayOfWeek.Monday && day <= DayOfWeek.Wednesday)
+    {
+      time = time.AddDays(3);
+    }
+
+    // Return the week of our adjusted day
+    return CultureInfo.InvariantCulture.Calendar.GetYear(time);
   }
 
   private sealed record CommitOfAuthor(string Author, int Year, int WeekOfYear)
