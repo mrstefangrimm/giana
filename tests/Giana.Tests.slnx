@@ -1,0 +1,5 @@
+<Solution>
+  <Project Path="Giana.Api.Concurrency/Giana.Api.Concurrency.csproj" />
+  <Project Path="Giana.Api.ReposAndBranches/Giana.Api.ReposAndBranches.csproj" />
+  <Project Path="Giana.App.Concurrency/Giana.App.Concurrency.csproj" />
+</Solution>

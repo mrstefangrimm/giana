@@ -1,0 +1,21 @@
+<Solution>
+  <Folder Name="/Build/">
+    <Project Path="api/Giana.Api.csproj" />
+    <Project Path="app/Giana.App.csproj" />
+  </Folder>
+  <Folder Name="/SolutionDir/">
+    <File Path="../.github/workflows/ci.yml" />
+    <File Path="../.github/workflows/release-preview.yml" />
+    <File Path="../.github/workflows/release.yml" />
+    <File Path="../README.md" />
+  </Folder>
+  <Project Path="api/analysis.tests/Giana.Api.Analysis.Tests.csproj" />
+  <Project Path="api/analysis/Giana.Api.Analysis.csproj" />
+  <Project Path="api/core.tests/Giana.Api.Core.Tests.csproj" />
+  <Project Path="api/core/Giana.Api.Core.csproj" />
+  <Project Path="api/load.tests/Giana.Api.Load.Tests.csproj" />
+  <Project Path="api/load/Giana.Api.Load.csproj" />
+  <Project Path="app/cmd/Giana.App.Cmd.csproj" />
+  <Project Path="app/shared.tests/Giana.App.Shared.Tests.csproj" />
+  <Project Path="app/shared/Giana.App.Shared.csproj" />
+</Solution>

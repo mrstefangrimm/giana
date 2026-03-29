@@ -1,0 +1,7 @@
+<Solution>
+  <Project Path="Giana.Api.Fluent.Lazy/Giana.Api.Fluent.Lazy.csproj" />
+  <Project Path="Giana.API.Fluent/Giana.API.Fluent.csproj" />
+  <Project Path="Giana.Api.Functional/Giana.Api.Functional.csproj" />
+  <Project Path="Giana.App.CustomAnalyzer/Giana.App.CustomAnalyzer.csproj" />
+  <Project Path="Giana.App.Query/Giana.App.Query.csproj" />
+</Solution>
