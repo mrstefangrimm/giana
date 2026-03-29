@@ -1,7 +1,7 @@
-FROM mcr.microsoft.com/dotnet/runtime:8.0
+FROM mcr.microsoft.com/dotnet/runtime:10.0
 
-ARG RELEASE_VERSION=v0.0.7
-ARG BUILD_VERSION=0.0.9
+ARG RELEASE_VERSION=v0.0.8
+ARG BUILD_VERSION=0.0.10
 
 RUN apt update && \
     apt install -y git unzip vim && \

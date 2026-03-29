@@ -32,8 +32,6 @@ public static class Actions
     ArgumentException.ThrowIfNullOrEmpty(gitExePath);
     ArgumentException.ThrowIfNullOrEmpty(repositoryName);
     ArgumentException.ThrowIfNullOrEmpty(repositoryRoot);
-    ArgumentNullException.ThrowIfNull(commitsSince);
-    ArgumentNullException.ThrowIfNull(cancellationToken);
 
     const string GitLogCmd = "log --pretty=format:\"%h^%an^%as^%s\" --date-order --name-status";
 
@@ -135,7 +133,6 @@ public static class Actions
   {
     ArgumentException.ThrowIfNullOrEmpty(gitExePath);
     ArgumentException.ThrowIfNullOrEmpty(repositoryRoot);
-    ArgumentNullException.ThrowIfNull(cancellationToken);
 
     if (string.IsNullOrEmpty(branch))
     {
@@ -198,7 +195,6 @@ public static class Actions
   {
     ArgumentException.ThrowIfNullOrEmpty(gitExePath);
     ArgumentException.ThrowIfNullOrEmpty(repositoryRoot);
-    ArgumentNullException.ThrowIfNull(cancellationToken);
 
     const string GitRemoteCmd = "remote -v";
 
@@ -246,15 +242,11 @@ public static class Actions
 
   public static Task<string> CreateCloneFromUriAsync(string gitExePath, string uri, CancellationToken cancellationToken = default)
   {
-    ArgumentNullException.ThrowIfNull(cancellationToken);
-
     return Task.Run(() => CloneFromUri(gitExePath, uri, null), cancellationToken);
   }
 
   public static Task<string> CreateCloneFromUriFromBranchAsync(string gitExePath, string uri, string branch, CancellationToken cancellationToken = default)
   {
-    ArgumentNullException.ThrowIfNull(cancellationToken);
-
     return Task.Run(() => CloneFromUri(gitExePath, uri, branch), cancellationToken);
   }
 
