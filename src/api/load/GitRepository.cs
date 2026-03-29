@@ -46,16 +46,11 @@ public sealed class GitRepository : IDisposable
 
   public static GitRepository CreateFromBranch(string gitExePath, string localCloneOrUri, string branch)
   {
-    if (!Directory.Exists(localCloneOrUri))
-    {
-      var tempDir = Actions.CreateCloneFromUriFromBranch(gitExePath, localCloneOrUri, branch);
-      var repoNameFromTemp = Actions.RequestRepositoryName(gitExePath, tempDir);
+    // For a specific branch, a clone is always created
+    var tempDir = Actions.CreateCloneFromUriFromBranch(gitExePath, localCloneOrUri, branch);
+    var repoNameFromTemp = Actions.RequestRepositoryName(gitExePath, tempDir);
 
-      return new GitRepository(tempDir, true, repoNameFromTemp, branch, gitExePath);
-    }
-
-    var repoName = Actions.RequestRepositoryName(gitExePath, localCloneOrUri);
-    return new GitRepository(localCloneOrUri, false, repoName, branch, gitExePath);
+    return new GitRepository(tempDir, true, repoNameFromTemp, branch, gitExePath);
   }
 
   public static Task<GitRepository> CreateAsync(string gitExePath, string localCloneOrUri, CancellationToken cancellationToken = default)

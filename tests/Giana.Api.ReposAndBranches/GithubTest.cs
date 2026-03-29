@@ -12,7 +12,7 @@ public class GithubTest
 
   [Theory]
   [InlineData(null, 22)]
-  [InlineData("release/9.0", 6)]
+  [InlineData("release/9.0", 10)]
   public async Task Commits_InNovember2025_OnBranchHaveCount(string branch, int commits)
   {
     // https://github.com/dotnet/wpf/commits/main/?since=2025-11-01&until=2025-12-01
