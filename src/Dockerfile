@@ -1,10 +1,10 @@
 # docker build -f .\src\Dockerfile -t giana:latest .
 # docker run -it --rm  giana:latest
 
-FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+FROM mcr.microsoft.com/dotnet/aspnet:10.0 AS base
 WORKDIR /app
 
-FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+FROM mcr.microsoft.com/dotnet/sdk:10.0 AS build
 WORKDIR /src
 COPY ./src .
 RUN dotnet publish ./app/cmd/Giana.App.Cmd.csproj -c Release -o /app/publish
