@@ -4,7 +4,7 @@
    "packageRules": [
     {
       "matchPackageNames": [
-        "Giana..App",
+        "Giana.App",
         "Giana.Api"
       ],
       "groupName": "Giana packages",
