@@ -1,6 +1,6 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "baseBranchPatterns": ["preview/0.0.9"],
+  "baseBranchPatterns": ["preview/0.0.11"],
    "packageRules": [
     {
       "matchPackageNames": [
