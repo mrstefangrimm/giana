@@ -1,4 +1,22 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-  "baseBranchPatterns": ["preview/0.0.9"]
+  "baseBranchPatterns": ["preview/0.0.9"],
+   "packageRules": [
+    {
+      "matchPackageNames": [
+        "Giana..App",
+        "Giana.Api"
+      ],
+      "groupName": "Giana packages",
+      "ignoreUnstable": false
+    },
+    {
+      "matchPackageNames": ["/^Microsoft\\.Extensions\\./"],
+      "groupName": "Microsoft.Extensions"
+    },
+    {
+      "matchPackageNames": ["/^Microsoft\\.AspNetCore\\./"],
+      "groupName": "Microsoft.AspNetCore"
+    }
+  ]
 }
