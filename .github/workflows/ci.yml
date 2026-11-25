@@ -30,10 +30,6 @@ jobs:
     - name: Build
       working-directory: src
       run: dotnet build --no-restore ${{env.SOLUTION_APP}}
-    - name: Show .NET info
-      run: dotnet --info
-    - run: pwd
-    - run: dir
     - name: Test
       working-directory: src
       run: dotnet test --no-build --verbosity normal ${{env.SOLUTION_APP}}
