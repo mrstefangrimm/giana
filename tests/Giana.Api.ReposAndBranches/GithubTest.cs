@@ -1,8 +1,6 @@
 ﻿using Giana.Api.Analysis.Ranking;
 using Giana.Api.Core;
 using Giana.Api.Load;
-using System;
-using System.Threading.Tasks;
 
 namespace Giana.Api.ReposAndBranches;
 
