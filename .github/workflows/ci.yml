@@ -28,6 +28,8 @@ jobs:
       run: dotnet restore ${{env.SOLUTION_APP}}
     - name: Build
       run: dotnet build --no-restore ${{env.SOLUTION_APP}}
+    - name: Show .NET info
+      run: dotnet --info
     - name: Test
       run: dotnet test --no-build --verbosity normal ${{env.SOLUTION_APP}}
     - name: Restore tests dependencies
