@@ -1,6 +1,5 @@
 ﻿using Giana.Api.Analysis.Coupling;
 using System.Collections.Immutable;
-using System.Linq;
 
 namespace Giana.Api.Analysis.Tests;
 

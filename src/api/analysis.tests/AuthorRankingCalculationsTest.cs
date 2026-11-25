@@ -1,5 +1,4 @@
 ﻿using Giana.Api.Analysis.Ranking;
-using System.Linq;
 
 namespace Giana.Api.Analysis.Tests;
 

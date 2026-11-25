@@ -1,6 +1,4 @@
-﻿using System.Collections.Generic;
-
-namespace Giana.Api.Analysis.Tests;
+﻿namespace Giana.Api.Analysis.Tests;
 
 internal static class LinqExtensions
 {

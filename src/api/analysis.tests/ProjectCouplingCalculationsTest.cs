@@ -1,5 +1,4 @@
 ﻿using Giana.Api.Analysis.Coupling;
-using System.Linq;
 
 namespace Giana.Api.Analysis.Tests;
 

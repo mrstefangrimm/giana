@@ -1,6 +1,4 @@
 ﻿using Giana.Api.Analysis.Activity;
-using System;
-using System.Linq;
 
 namespace Giana.Api.Analysis.Tests;
 
