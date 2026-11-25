@@ -33,6 +33,7 @@ jobs:
     - run: pwd
     - run: dir
     - name: Test
+      working-directory: src
       run: dotnet test --no-build --verbosity normal ${{env.SOLUTION_APP}}
     - name: Restore tests dependencies
       run: dotnet restore ${{env.SOLUTION_TESTS}}
