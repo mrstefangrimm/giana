@@ -1,10 +1,9 @@
 ﻿using Giana.Api.Load;
 using Giana.App.Shared;
-using Newtonsoft.Json;
 using System;
 using System.IO;
 using System.Linq;
-using static Giana.App.Shared.Actions;
+using System.Text.Json;
 
 const string GitExePathEnvName = "GitExePath";
 
@@ -95,7 +94,7 @@ if (!File.Exists(queryFilename))
 }
 
 using StreamReader jsonReader = new StreamReader(queryFilename);
-var query = JsonConvert.DeserializeObject<Query>(await jsonReader.ReadToEndAsync());
+var query = await JsonSerializer.DeserializeAsync<Query>(jsonReader.BaseStream);
 jsonReader.Close();
 
 var routine = query.CreateRoutine();
