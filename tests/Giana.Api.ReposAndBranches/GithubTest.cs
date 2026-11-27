@@ -6,7 +6,10 @@ namespace Giana.Api.ReposAndBranches;
 
 public class GithubTest
 {
-  private const string gitExePath = @"C:\Program Files\Git\bin\git.exe";
+  private static readonly string GitExePath =
+    OperatingSystem.IsWindows()
+      ? @"C:\Program Files\Git\bin\git.exe"
+      : "/usr/bin/git";   
 
   [Theory]
   [InlineData(null, 22)]
@@ -21,7 +24,7 @@ public class GithubTest
     DateTime entriesTo = new DateTime(2025, 12, 01, 0, 0, 0, DateTimeKind.Utc);
     DateTime commitsSince = new DateTime(2025, 01, 01, 0, 0, 0, DateTimeKind.Utc);
 
-    var repository = await GitRepository.CreateFromBranchAsync(gitExePath, gitRepository, branch);
+    var repository = await GitRepository.CreateFromBranchAsync(GitExePath, gitRepository, branch, TestContext.Current.CancellationToken);
 
     var records = await repository.LogAsync(commitsSince);
     records = records.WithTimeRange(entriesFrom, entriesTo);

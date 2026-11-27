@@ -1,9 +1,5 @@
-﻿using Giana.Api.Core;
-using System;
-using System.Collections.Generic;
-using System.Collections.Immutable;
-using System.Threading;
-using System.Threading.Tasks;
+﻿using System.Collections.Immutable;
+using Giana.Api.Core;
 
 namespace Giana.Api.Concurrency;
 
@@ -13,7 +9,7 @@ namespace Giana.Api.Concurrency;
 public class ImmutableListTest
 {
   private readonly Random _random = new Random();
-  private static readonly object _lock = new object();
+  private static readonly object Lock = new object();
 
   [Fact]
   public async Task AddRange_CalledFromDifferentTasks_ItemsAreNotMixed()
@@ -23,13 +19,14 @@ public class ImmutableListTest
     var tasks = new Task<IImmutableList<GitLogRecord>>[100];
     for (int i = 0; i < tasks.Length; i++)
     {
+      var j = i;
       var task = new Task<IImmutableList<GitLogRecord>>(() =>
       {
-        return CreateItems($"task{i}");
+        return CreateItems($"task{j}");
       });
       task.GetAwaiter().OnCompleted(() =>
       {
-        lock (_lock)
+        lock (Lock)
         {
           mergedRecords = mergedRecords.AddRange(task.Result);
         }
@@ -45,7 +42,7 @@ public class ImmutableListTest
     await Task.WhenAll(tasks);
 
     // Wait for the OnCompleted event handlers
-    await Task.Delay(1000);
+    await Task.Delay(1000, TestContext.Current.CancellationToken);
 
     Assert.Equal(tasks.Length * 10, mergedRecords.Count);
 

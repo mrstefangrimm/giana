@@ -1,21 +1,22 @@
 ﻿using Giana.Api.Core;
 using Giana.Api.Load;
 using System.Collections.Immutable;
-using System.IO;
-using System.Threading.Tasks;
 
 namespace Giana.Api.Concurrency;
 
 public class ApiActionsRequestGitLogTest
 {
-  private const string gitExePath = @"C:\Program Files\Git\bin\git.exe";
-  private const string gitRepository = "https://github.com/mrstefangrimm/giana.git";
+  private static readonly string GitExePath =
+    OperatingSystem.IsWindows()
+      ? @"C:\Program Files\Git\bin\git.exe"
+      : "/usr/bin/git";   
+  private const string GitRepository = "https://github.com/mrstefangrimm/giana.git";
 
   [Fact]
   public async Task RequestGitLog_CalledInParallel_WithSameResult()
   {
-    var localRepo = await Actions.CreateCloneFromUriAsync(gitExePath, gitRepository);
-    var repoName = await Actions.RequestRepositoryNameAsync(gitExePath, localRepo);
+    var localRepo = await Actions.CreateCloneFromUriAsync(GitExePath, GitRepository, TestContext.Current.CancellationToken);
+    var repoName = await Actions.RequestRepositoryNameAsync(GitExePath, localRepo, TestContext.Current.CancellationToken);
     using var defer = new Defer(() =>
     {
       RemoveReadOnly(localRepo);
@@ -23,9 +24,10 @@ public class ApiActionsRequestGitLogTest
     });
 
     var tasks = new Task<ImmutableList<GitLogRecord>>[1000];
+    var commitsSince = new DateTime(2020, 01, 01);
     for (int i = 0; i < tasks.Length; i++)
     {
-      tasks[i] = Actions.RequestGitLogAsync(gitExePath, repoName, localRepo);
+      tasks[i] = Actions.RequestGitLogAsync(GitExePath, repoName, localRepo, commitsSince, TestContext.Current.CancellationToken);
     }
 
     await Task.WhenAll(tasks);

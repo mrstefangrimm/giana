@@ -1,46 +1,46 @@
 ﻿using Giana.App.Shared;
-using System;
-using System.IO;
-using System.Threading.Tasks;
 
-namespace Giana.Api.Concurrency;
+namespace Giana.App.Concurrency;
 
 public class AppActionsExecuteTest
 {
-  private const string gitExePath = @"C:\Program Files\Git\bin\git.exe";
-  private const string gitRepositoryGiana = "https://github.com/mrstefangrimm/giana.git";
-  private const string gitRepositoryGrpc = "https://github.com/mrstefangrimm/Modern-API-Design-with-gRPC-CSharp.git";
-  private const string gitRepositoryPhaso = "https://github.com/mrstefangrimm/Phaso.git";
-  private const string gitRepositoryParc = "https://github.com/mrstefangrimm/Parc.git";
-  private const string gitRepositoryTSM = "https://github.com/mrstefangrimm/TemplateStateMachine.git";
-  private const string gitRepositoryCollares = "https://github.com/mrstefangrimm/Collares.git";
+  private static readonly string GitExePath =
+    OperatingSystem.IsWindows()
+      ? @"C:\Program Files\Git\bin\git.exe"
+      : "/usr/bin/git";
+  private const string GitRepositoryGiana = "https://github.com/mrstefangrimm/giana.git";
+  private const string GitRepositoryGrpc = "https://github.com/mrstefangrimm/Modern-API-Design-with-gRPC-CSharp.git";
+  private const string GitRepositoryPhaso = "https://github.com/mrstefangrimm/Phaso.git";
+  private const string GitRepositoryParc = "https://github.com/mrstefangrimm/Parc.git";
+  private const string GitRepositoryTsm = "https://github.com/mrstefangrimm/TemplateStateMachine.git";
+  private const string GitRepositoryCollares = "https://github.com/mrstefangrimm/Collares.git";
 
   [Fact]
   public async Task ExecuteAsync_GianaCalledInParallel_WithSameResult()
   {
     var query = new Query
     {
-      Sources = [gitRepositoryGiana],
+      Sources = [GitRepositoryGiana],
       Analyzer = "author-ranking",
       OutputFormat = "csv",
     };
 
-    var rouines = new Routine[100];
-    var outputs = new StringWriter[rouines.Length];
-    var tasks = new Task[rouines.Length];
+    var routines = new Routine[100];
+    var outputs = new StringWriter[routines.Length];
+    var tasks = new Task[routines.Length];
 
-    for (int i = 0; i < rouines.Length; i++)
+    for (int i = 0; i < routines.Length; i++)
     {
       var routine = query.CreateRoutine();
 
-      rouines[i] = routine;
+      routines[i] = routine;
       outputs[i] = new StringWriter();
-      tasks[i] = routine.ExecuteAsync(gitExePath, outputs[i], TimeSpan.FromSeconds(60));
+      tasks[i] = routine.ExecuteAsync(GitExePath, outputs[i], TimeSpan.FromSeconds(60));
     }
 
     await Task.WhenAll(tasks);
 
-    for (int i = 1; i < rouines.Length; i++)
+    for (int i = 1; i < routines.Length; i++)
     {
       var result1 = outputs[i - 1].ToString();
       var result2 = outputs[i].ToString();
@@ -58,12 +58,12 @@ public class AppActionsExecuteTest
   {
     var urls = new string[]
     {
-      gitRepositoryGiana,
-      gitRepositoryGrpc,
-      gitRepositoryPhaso,
-      gitRepositoryParc,
-      gitRepositoryTSM,
-      gitRepositoryCollares,
+      GitRepositoryGiana,
+      GitRepositoryGrpc,
+      GitRepositoryPhaso,
+      GitRepositoryParc,
+      GitRepositoryTsm,
+      GitRepositoryCollares,
     };
     var queries = new Query[urls.Length];
     queries[0] = new Query { Sources = [urls[0]], Analyzer = "author-ranking", OutputFormat = "csv" };
@@ -73,7 +73,7 @@ public class AppActionsExecuteTest
     queries[4] = new Query { Sources = [urls[4]], Analyzer = "author-ranking", OutputFormat = "csv" };
     queries[5] = new Query { Sources = [urls[5]], Analyzer = "author-ranking", OutputFormat = "csv" };
 
-    var rouines = new Routine[urls.Length];
+    var routines = new Routine[urls.Length];
     var outputs = new StringWriter[urls.Length];
     var tasks = new Task[urls.Length];
 
@@ -81,14 +81,14 @@ public class AppActionsExecuteTest
     {
       var routine = queries[i].CreateRoutine();
 
-      rouines[i] = routine;
+      routines[i] = routine;
       outputs[i] = new StringWriter();
-      tasks[i] = routine.ExecuteAsync(gitExePath, outputs[i], TimeSpan.FromSeconds(60));
+      tasks[i] = routine.ExecuteAsync(GitExePath, outputs[i], TimeSpan.FromSeconds(60));
     }
 
     await Task.WhenAll(tasks);
 
-    for (int i = 0; i < rouines.Length; i++)
+    for (int i = 0; i < routines.Length; i++)
     {
       var result = outputs[i].ToString();
       Assert.StartsWith("Author,FileTouches", result);

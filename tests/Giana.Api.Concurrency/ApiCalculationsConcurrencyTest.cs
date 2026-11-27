@@ -1,17 +1,13 @@
 using Giana.Api.Core;
-using System;
 using System.Collections.Concurrent;
 using System.Collections.Immutable;
-using System.Linq;
 using System.Text.RegularExpressions;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Giana.Api.Concurrency;
 
 public class ApiCalculationsConcurrencyTest
 {
-  static long counter = 0;
+  static long _counter;
 
   [Fact]
   public void ExcludeAuthor_RunFor100sec_Successful()
@@ -95,7 +91,7 @@ public class ApiCalculationsConcurrencyTest
 
   private static GitLogRecord CreateDummyRecord()
   {
-    counter++;
-    return new GitLogRecord(string.Empty, $"Core/Package/File{counter}.cs", $"Commit{counter}", $"Joe Doe{counter}", $"Message with no {counter}", DateTime.Now);
+    _counter++;
+    return new GitLogRecord(string.Empty, $"Core/Package/File{_counter}.cs", $"Commit{_counter}", $"Joe Doe{_counter}", $"Message with no {_counter}", DateTime.Now);
   }
 }
