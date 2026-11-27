@@ -1,7 +1,10 @@
 ﻿using Giana.App.Shared;
 using System;
 
-const string gitExePath = @"C:\Program Files\Git\bin\git.exe";
+string gitExePath =
+  OperatingSystem.IsWindows()
+    ? @"C:\Program Files\Git\bin\git.exe"
+    : "/usr/bin/git";
 const string gitRepository = "https://github.com/dotnet/wpf.git";
 
 var query = new Query

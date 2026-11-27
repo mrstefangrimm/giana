@@ -3,7 +3,10 @@ using Giana.Api.Core;
 using Giana.Api.Load;
 using System;
 
-const string gitExePath = @"C:\Program Files\Git\bin\git.exe";
+string gitExePath =
+  OperatingSystem.IsWindows()
+    ? @"C:\Program Files\Git\bin\git.exe"
+    : "/usr/bin/git";
 const string gitRepository = "https://github.com/dotnet/wpf.git";
 
 string tempClone = await Actions.CreateCloneFromUriAsync(gitExePath, gitRepository);
