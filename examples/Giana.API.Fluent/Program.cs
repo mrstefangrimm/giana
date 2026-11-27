@@ -20,3 +20,5 @@ records = await records
 
 var authorRanking = AuthorRankingCalculations.CreateAuthorRankingSorted(records);
 AuthorRankingActions.WriteAsCsv(authorRanking, Console.Out);
+
+repo.Dispose();

@@ -22,3 +22,5 @@ var records = await lazyRecords.ValueAsync;
 
 var authorRanking = AuthorRankingCalculations.CreateAuthorRankingSorted(records);
 AuthorRankingActions.WriteAsCsv(authorRanking, Console.Out);
+
+repo.Dispose();

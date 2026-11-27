@@ -2,6 +2,7 @@
 using Giana.Api.Core;
 using Giana.Api.Load;
 using System;
+using System.IO;
 
 string gitExePath =
   OperatingSystem.IsWindows()
@@ -19,3 +20,5 @@ records = records.RenameAuthor("Thomas Goulet", "ThomasGoulet73");
 
 var authorRanking = AuthorRankingCalculations.CreateAuthorRankingSorted(records);
 AuthorRankingActions.WriteAsCsv(authorRanking, Console.Out);
+
+Directory.Delete(tempClone, true);

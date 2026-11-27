@@ -5,7 +5,9 @@ string gitExePath =
   OperatingSystem.IsWindows()
     ? @"C:\Program Files\Git\bin\git.exe"
     : "/usr/bin/git";
-const string gitRepository = "https://github.com/dotnet/wpf.git";
+
+// branch#url (main branch would be used if branch is not specified.
+const string gitRepository = "main#https://github.com/dotnet/wpf.git";
 
 var query = new Query
 {
